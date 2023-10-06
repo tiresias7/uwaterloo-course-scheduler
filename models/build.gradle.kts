@@ -1,9 +1,9 @@
 plugins {
     kotlin("jvm") version "1.9.0"
-    application
+    kotlin("plugin.serialization") version "1.9.10"
 }
 
-group = "me.lya"
+group = "org.example"
 version = "1.0-SNAPSHOT"
 
 repositories {
@@ -11,6 +11,7 @@ repositories {
 }
 
 dependencies {
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
     testImplementation(kotlin("test"))
 }
 
@@ -20,8 +21,4 @@ tasks.test {
 
 kotlin {
     jvmToolchain(8)
-}
-
-application {
-    mainClass.set("MainKt")
 }
