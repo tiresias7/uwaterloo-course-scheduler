@@ -24,9 +24,13 @@ import navcontroller.composable
 import navcontroller.rememberNavController
 import screens.WelcomePage
 import screens.SchedulePage
+import style.AppTheme
 
 fun main() = application {
-    Window(onCloseRequest = ::exitApplication) {
+    Window(
+        title = "UW Course Scheduler",
+        onCloseRequest = ::exitApplication
+    ) {
         AppTheme { App() }
     }
 }
@@ -45,17 +49,9 @@ fun App(){
  * Screens
  */
 enum class Screen(
-    val label: String,
-    val icon: ImageVector
 ) {
-    WelcomePage(
-        label = "Home",
-        icon = Icons.Filled.Home
-    ),
-    SchedulePage(
-        label = "Notifications",
-        icon = Icons.Filled.Notifications
-    )
+    WelcomePage,
+    SchedulePage
 }
 
 

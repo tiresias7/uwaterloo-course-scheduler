@@ -14,10 +14,11 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.text.font.FontStyle
 import navcontroller.NavController
+import style.welcomeFontFamily
 
 
 @Composable
@@ -51,7 +52,13 @@ fun welcomeMessage() {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ){
-        Text("Welcome to", fontSize = 50.sp, fontStyle = FontStyle.Italic)
+        Text(
+            text = "Welcome to",
+            style = TextStyle(
+                fontSize = 80.sp,
+                fontFamily = welcomeFontFamily
+            )
+        )
         Text("ω", fontSize = 90.sp)
         Text("UW Course Scheduler", fontSize = 30.sp)
     }

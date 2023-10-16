@@ -36,7 +36,7 @@ fun SchedulePage(
             onClick = {
                 navController.navigateBack()
             },
-            icon = { Icon(Icons.Filled.Edit, "Begin Scheduling.") },
+            icon = { Icon(Icons.Filled.Edit, "Go Back") },
             text = { Text(text = "Go Back") },
         )
     }

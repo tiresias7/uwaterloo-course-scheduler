@@ -1,10 +1,13 @@
+package style
 
-
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.platform.Font
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.font.FontStyle
 
 
 private val LightColorScheme = lightColorScheme(
@@ -70,6 +73,14 @@ private val DarkColorScheme = darkColorScheme(
 //    surfaceTint = md_theme_dark_surfaceTint,
 //    outlineVariant = md_theme_dark_outlineVariant,
 //    scrim = md_theme_dark_scrim,
+)
+
+val welcomeFontFamily = FontFamily(
+    Font(
+        resource = "beauRivage_regular.ttf",
+        weight = FontWeight.W400,
+        style = FontStyle.Normal
+    )
 )
 
 @Composable
