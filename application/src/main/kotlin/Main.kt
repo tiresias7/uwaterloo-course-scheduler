@@ -22,10 +22,8 @@ import navcontroller.NavController
 import navcontroller.NavigationHost
 import navcontroller.composable
 import navcontroller.rememberNavController
-import screens.CourseSelectionPage
-import screens.PreferenceSelectionPage
-import screens.WelcomePage
-import screens.SchedulePage
+import screens.schedulePage
+import screens.welcomePage
 import style.AppTheme
 
 fun main() = application {
@@ -39,11 +37,7 @@ fun main() = application {
 
 @Composable
 fun App(){
-    val screens = Screen.values().toList()
     val navController by rememberNavController(Screen.WelcomePage.name)
-    val currentScreen by remember {
-        navController.currentScreen
-    }
     CustomNavigationHost(navController = navController)
 }
 
@@ -53,9 +47,7 @@ fun App(){
 enum class Screen(
 ) {
     WelcomePage,
-    SchedulePage,
-    CourseSelectionPage,
-    PreferenceSelectionPage
+    SchedulePage
 }
 
 
@@ -64,20 +56,14 @@ fun CustomNavigationHost(
     navController: NavController
 ) {
     NavigationHost(navController) {
+
         composable(Screen.WelcomePage.name) {
-            WelcomePage(navController)
+            welcomePage(navController)
         }
 
         composable(Screen.SchedulePage.name) {
-            SchedulePage(navController)
+            schedulePage(navController)
         }
 
-        composable(Screen.CourseSelectionPage.name) {
-            CourseSelectionPage(navController)
-        }
-
-        composable(Screen.PreferenceSelectionPage.name) {
-            PreferenceSelectionPage(navController)
-        }
     }.build()
 }
