@@ -18,6 +18,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.text.font.FontStyle
@@ -25,7 +26,7 @@ import androidx.compose.ui.text.font.FontFamily
 import navcontroller.NavController
 
 @Composable
-fun SchedulePage(
+fun CourseSelectionPage(
     navController: NavController
 ) {
     Column(
@@ -33,20 +34,11 @@ fun SchedulePage(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ){
-        ExtendedFloatingActionButton(
-            onClick = {
-                navController.navigate(Screen.CourseSelectionPage.name)
-            },
-            icon = { Icon(Icons.Filled.Add, "Add Courses") },
-            text = { Text(text = "Add Courses") },
-        )
-        Spacer(modifier = Modifier.padding(vertical = 20.dp))
-        ExtendedFloatingActionButton(
-            onClick = {
-                navController.navigate(Screen.PreferenceSelectionPage.name)
-            },
-            icon = { Icon(Icons.Filled.Add, "Add Preferences") },
-            text = { Text(text = "Add Preferences") },
+        Text(
+            text = "Select Your Courses",
+            style = TextStyle(
+                fontSize = 20.sp
+            )
         )
         Spacer(modifier = Modifier.padding(vertical = 20.dp))
         ExtendedFloatingActionButton(

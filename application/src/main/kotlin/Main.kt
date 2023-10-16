@@ -22,6 +22,8 @@ import navcontroller.NavController
 import navcontroller.NavigationHost
 import navcontroller.composable
 import navcontroller.rememberNavController
+import screens.CourseSelectionPage
+import screens.PreferenceSelectionPage
 import screens.WelcomePage
 import screens.SchedulePage
 import style.AppTheme
@@ -51,7 +53,9 @@ fun App(){
 enum class Screen(
 ) {
     WelcomePage,
-    SchedulePage
+    SchedulePage,
+    CourseSelectionPage,
+    PreferenceSelectionPage
 }
 
 
@@ -68,5 +72,12 @@ fun CustomNavigationHost(
             SchedulePage(navController)
         }
 
+        composable(Screen.CourseSelectionPage.name) {
+            CourseSelectionPage(navController)
+        }
+
+        composable(Screen.PreferenceSelectionPage.name) {
+            PreferenceSelectionPage(navController)
+        }
     }.build()
 }
