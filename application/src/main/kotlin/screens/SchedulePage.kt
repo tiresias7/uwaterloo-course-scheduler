@@ -24,7 +24,7 @@ import androidx.compose.ui.text.font.FontFamily
 import navcontroller.NavController
 
 @Composable
-fun SchedulePage(
+fun schedulePage(
     navController: NavController
 ) {
     Column(

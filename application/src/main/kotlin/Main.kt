@@ -22,7 +22,7 @@ import navcontroller.NavController
 import navcontroller.NavigationHost
 import navcontroller.composable
 import navcontroller.rememberNavController
-import screens.SchedulePage
+import screens.schedulePage
 import screens.welcomePage
 import style.AppTheme
 
@@ -55,12 +55,14 @@ enum class Screen(
 fun CustomNavigationHost(
     navController: NavController
 ) {
+    NavigationHost(navController) {
+
         composable(Screen.WelcomePage.name) {
             welcomePage(navController)
         }
 
         composable(Screen.SchedulePage.name) {
-            SchedulePage(navController)
+            schedulePage(navController)
         }
 
     }.build()
