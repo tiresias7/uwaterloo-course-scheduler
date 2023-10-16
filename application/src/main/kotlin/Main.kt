@@ -22,8 +22,8 @@ import navcontroller.NavController
 import navcontroller.NavigationHost
 import navcontroller.composable
 import navcontroller.rememberNavController
-import screens.WelcomePage
 import screens.SchedulePage
+import screens.welcomePage
 import style.AppTheme
 
 fun main() = application {
@@ -61,7 +61,7 @@ fun CustomNavigationHost(
 ) {
     NavigationHost(navController) {
         composable(Screen.WelcomePage.name) {
-            WelcomePage(navController)
+            welcomePage(navController)
         }
 
         composable(Screen.SchedulePage.name) {
