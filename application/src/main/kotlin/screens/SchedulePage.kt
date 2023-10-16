@@ -22,6 +22,8 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontFamily
 import navcontroller.NavController
+import screens.schedulePage
+import screens.welcomePage
 
 @Composable
 fun schedulePage(
