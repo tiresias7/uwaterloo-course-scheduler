@@ -37,11 +37,7 @@ fun main() = application {
 
 @Composable
 fun App(){
-    val screens = Screen.values().toList()
     val navController by rememberNavController(Screen.WelcomePage.name)
-    val currentScreen by remember {
-        navController.currentScreen
-    }
     CustomNavigationHost(navController = navController)
 }
 
@@ -59,7 +55,6 @@ enum class Screen(
 fun CustomNavigationHost(
     navController: NavController
 ) {
-    NavigationHost(navController) {
         composable(Screen.WelcomePage.name) {
             WelcomePage(navController)
         }
