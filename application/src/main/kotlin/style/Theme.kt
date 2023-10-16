@@ -77,7 +77,7 @@ private val DarkColorScheme = darkColorScheme(
 
 val welcomeFontFamily = FontFamily(
     Font(
-        resource = "beauRivage_regular.ttf",
+        resource = "Parisienne-Regular.ttf",
         weight = FontWeight.W400,
         style = FontStyle.Normal
     )
