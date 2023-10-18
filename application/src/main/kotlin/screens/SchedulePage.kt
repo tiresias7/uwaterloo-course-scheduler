@@ -1,22 +1,19 @@
 package screens
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.*
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Text
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Card
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material.icons.outlined.Star
+import androidx.compose.material3.*
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.Alignment
@@ -63,6 +60,7 @@ fun schedulePageContent(
 }
 @Composable
 fun selectSection() {
+    val preferences : List<String> = listOf("Time for classes", "Time for breaks", "Time of conflicts", "Location" , "Instructor", )
     Column(
         modifier = Modifier
             .fillMaxHeight(),
@@ -97,19 +95,31 @@ fun selectSection() {
             modifier = Modifier
                 .size(width = 200.dp, height = 56.dp)
         )
-        ElevatedCard(
+        Card(
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 6.dp
             ),
-            modifier = Modifier
-                .size(width = 446.dp, height = 238.dp)
+            modifier = Modifier.size(width = 446.dp, height = 238.dp),
+            shape = RoundedCornerShape(0.dp)
         ) {
-            Text(
-                text = "Selected preferences",
-                modifier = Modifier
-                    .padding(16.dp),
-                textAlign = TextAlign.Center,
-            )
+            LazyColumn(
+                //modifier = Modifier.verticalScroll(rememberScrollState())
+            ) {
+                items(preferences) { preference ->
+                    FloatingActionButton(
+                        onClick = {},
+                        modifier = Modifier.fillMaxSize(),
+                        shape = RoundedCornerShape(0.dp),
+                    ) {
+
+                        Text(
+                            text = preference,
+                            textAlign = TextAlign.Start
+                        )
+                    }
+                    Divider()
+                }
+            }
         }
         OutlinedButton(
             onClick = {},
