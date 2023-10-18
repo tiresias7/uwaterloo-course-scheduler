@@ -30,12 +30,8 @@ fun navDrawer(
         drawerContent = {
             ModalDrawerSheet {
                 Box(
-                    modifier = Modifier.fillMaxWidth(),
                     contentAlignment = Alignment.CenterStart
                 ){
-                    Row(
-
-                    ){  }
                     TextButton(
                         onClick = {
                             scope.launch {
@@ -50,6 +46,7 @@ fun navDrawer(
 
                 }
                 NavigationDrawerItem(
+                    modifier = Modifier.padding(10.dp, 0.dp),
                     icon = { Icon(Icons.Outlined.CheckCircle, "") },
                     label = { Text(text = "New Schedule") },
                     selected = navController.currentScreen.value == Screen.WelcomePage.name,
@@ -61,6 +58,7 @@ fun navDrawer(
                     }
                 )
                 NavigationDrawerItem(
+                    modifier = Modifier.padding(10.dp, 0.dp),
                     icon = { Icon(Icons.Outlined.CheckCircle, "") },
                     label = { Text(text = "My Schedule (now goes to generate schedule page)") },
                     badge = { Text(text = "0") },
