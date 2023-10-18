@@ -3,6 +3,7 @@ package screens
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.ElevatedCard
@@ -56,16 +57,15 @@ fun schedulePageContent(
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        generateSection()
+        selectSection()
         scheduleSection()
     }
 }
 @Composable
-fun generateSection() {
+fun selectSection() {
     Column(
         modifier = Modifier
             .fillMaxHeight(),
-            //.padding(start = 80.dp),
         verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.Start
     ) {
@@ -133,18 +133,18 @@ fun scheduleSection() {
         horizontalAlignment = Alignment.End
     ) {
         Card(
-            modifier = Modifier.requiredSize(width = 800.dp, height = 800.dp),
-            border = BorderStroke(1.dp,Color.Black),
-            colors = CardDefaults.cardColors(containerColor = White)
+            modifier = Modifier.onSizeChanged{
+                img_width = it.width.dp;
+                img_height = it.height.dp;
+            },
+            border = BorderStroke(0.1.dp,Color.Black),
+            colors = CardDefaults.cardColors(containerColor = White),
+            shape = RoundedCornerShape((0.dp))
         ) {
             Box(
                 contentAlignment = TopStart
             ) {
                 Image(
-                    modifier = Modifier.fillMaxSize().onSizeChanged{
-                        img_width = it.width.dp;
-                        img_height = it.height.dp;
-                    },
                     painter = painterResource("schedule_bg.svg"),
                     contentDescription = "schedule background"
                 )
