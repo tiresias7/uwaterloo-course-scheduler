@@ -1,6 +1,9 @@
 import androidx.compose.runtime.*
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.window.Window
+import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.application
+import androidx.compose.ui.window.rememberWindowState
 import navcontroller.NavController
 import navcontroller.NavigationHost
 import navcontroller.composable
@@ -10,7 +13,9 @@ import screens.welcomePage
 import style.AppTheme
 
 fun main() = application {
+    val windowState = rememberWindowState(placement = WindowPlacement.Maximized)
     Window(
+        state = windowState,
         title = "UW Course Scheduler",
         onCloseRequest = ::exitApplication
     ) {
