@@ -45,6 +45,7 @@ fun schedulePage(
 fun schedulePageContent(
     navController: NavController
 ) {
+    var clicked =  remember { mutableStateOf(false) }
     Row(
         modifier = Modifier
             .fillMaxSize()
@@ -54,12 +55,14 @@ fun schedulePageContent(
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        selectSection()
-        scheduleSection()
+        selectSection(clicked)
+        scheduleSection(clicked)
     }
 }
 @Composable
-fun selectSection() {
+fun selectSection(
+    clicked: MutableState<Boolean>
+) {
     val preferences : List<String> = listOf("Time for classes", "Time for breaks", "Time of conflicts", "Location" , "Instructor", )
     Column(
         modifier = Modifier
@@ -122,7 +125,7 @@ fun selectSection() {
             }
         }
         OutlinedButton(
-            onClick = {},
+            onClick = { clicked.value = true},
             modifier = Modifier
                 .size(width = 180.dp, height = 56.dp)
                 .align(CenterHorizontally)
@@ -133,7 +136,9 @@ fun selectSection() {
 }
 
 @Composable
-fun scheduleSection() {
+fun scheduleSection(
+    clicked: MutableState<Boolean>
+) {
     var img_width by remember { mutableStateOf(0.dp) }
     var img_height by remember { mutableStateOf(0.dp) }
     Column(
@@ -158,34 +163,68 @@ fun scheduleSection() {
                     painter = painterResource("schedule_bg.svg"),
                     contentDescription = "schedule background"
                 )
-                ElevatedCard(
-                    elevation = CardDefaults.cardElevation(
-                        defaultElevation = 6.dp
-                    ),
-                    modifier = Modifier
-                        .size(width = img_width / 7, height = img_width / 30 * 4).offset(x = img_width.div(6.3.toFloat()), y = img_height / 8),
-                ) {
-                    Text(
-                        text = "CS346",
-                        modifier = Modifier
-                            .padding(16.dp),
-                        textAlign = TextAlign.Center,
-                    )
+                if (clicked.value){
+                    Box(){
+                        ElevatedCard(
+                            elevation = CardDefaults.cardElevation(
+                                defaultElevation = 6.dp
+                            ),
+                            modifier = Modifier
+                                .size(width = img_width / 7, height = img_width / 30 * 4).offset(x = img_width / 6.3.toFloat() * 3.2.toFloat(), y = img_height / 2.25.toFloat()),
+                        ) {
+                            Text(
+                                text = "CS346",
+                                modifier = Modifier
+                                    .padding(16.dp),
+                                textAlign = TextAlign.Center,
+                            )
+                        }
+                        ElevatedCard(
+                            elevation = CardDefaults.cardElevation(
+                                defaultElevation = 6.dp
+                            ),
+                            modifier = Modifier
+                                .size(width = img_width / 7, height = img_width / 30 * 4).offset(x = img_width / 6.3.toFloat() * 5.4.toFloat(), y = img_height / 2.25.toFloat()),
+                        ) {
+                            Text(
+                                text = "CS346",
+                                modifier = Modifier
+                                    .padding(16.dp),
+                                textAlign = TextAlign.Center,
+                            )
+                        }
+                        ElevatedCard(
+                            elevation = CardDefaults.cardElevation(
+                                defaultElevation = 6.dp
+                            ),
+                            modifier = Modifier
+                                .size(width = img_width / 7, height = img_width / 30 * 4).offset(x = img_width / 6.3.toFloat() * 2.1.toFloat(), y = img_height / 5.6.toFloat()),
+                        ) {
+                            Text(
+                                text = "CS350",
+                                modifier = Modifier
+                                    .padding(16.dp),
+                                textAlign = TextAlign.Center,
+                            )
+                        }
+                        ElevatedCard(
+                            elevation = CardDefaults.cardElevation(
+                                defaultElevation = 6.dp
+                            ),
+                            modifier = Modifier
+                                .size(width = img_width / 7, height = img_width / 30 * 4).offset(x = img_width / 6.3.toFloat() * 4.3.toFloat(), y = img_height / 5.6.toFloat()),
+                        ) {
+                            Text(
+                                text = "CS350",
+                                modifier = Modifier
+                                    .padding(16.dp),
+                                textAlign = TextAlign.Center,
+                            )
+                        }
+                    }
                 }
-                ElevatedCard(
-                    elevation = CardDefaults.cardElevation(
-                        defaultElevation = 6.dp
-                    ),
-                    modifier = Modifier
-                        .size(width = img_width / 7, height = img_width / 30 * 4).offset(x = img_width / 6.3.toFloat() * 2.1.toFloat(), y = img_height / 8),
-                ) {
-                    Text(
-                        text = "CS350",
-                        modifier = Modifier
-                            .padding(16.dp),
-                        textAlign = TextAlign.Center,
-                    )
-                }
+
+
             }
         }
         Row() {
