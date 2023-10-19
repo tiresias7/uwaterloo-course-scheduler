@@ -24,16 +24,10 @@ dependencies {
     // compose.desktop.currentOs should be used in launcher-sourceSet
     // (in a separate module for demo project and in testMain).
     // With compose.desktop.common you will also lose @Preview functionality
-    //val voyagerVersion = "1.0.0-rc05"
-    //implementation("cafe.adriel.voyager:voyager-navigator:$voyagerVersion")
-    //implementation("cafe.adriel.voyager:voyager-bottom-sheet-navigator:$voyagerVersion")
-    //implementation("cafe.adriel.voyager:voyager-tab-navigator:$voyagerVersion")
     implementation(compose.desktop.currentOs)
     implementation("io.ktor:ktor-client-core:$ktor_version")
     implementation("io.ktor:ktor-client-cio:$ktor_version")
     implementation("org.jetbrains.compose.material3:material3:$material3_version")
-    implementation("com.arkivanov.decompose:decompose:1.0.0-beta-01")
-    implementation("com.arkivanov.decompose:extensions-compose-jetbrains:1.0.0-beta-01")
 }
 
 compose.desktop {
