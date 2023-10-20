@@ -29,7 +29,7 @@ Welcome to the Waterloo Course Scheduler applicataion made by TEAM PP-Legend. Th
 #### Installers
 
 - [Windows Installer](https://git.uwaterloo.ca/q258wu/pplegend-project/-/blob/74a52838d704b9d7bf0ee870276ea028007eb902/releases/0.1.0/course-scheduler-0.1.0.msi)
-- [macOS Installer](releases/0.1.0/ProjectName_macOS_Installer.pkg)
+- [macOS Installer](https://git.uwaterloo.ca/q258wu/pplegend-project/-/blob/main/releases/0.1.0/course-scheduler-0.1.0.dmg)
 
 **Note:** Make sure to choose the installer corresponding to your platform.
 
