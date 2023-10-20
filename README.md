@@ -41,7 +41,8 @@ Stay tuned for our next release, which will include exciting new features and im
 
 1. Download the installer for your platform from the links above.
 2. Run the installer.
-3. Once installed, you can launch the application from your system.
+3. Follow the installation wizard to install the application.
+4. Once installed, you can launch the application from your system.
 
 <!-- This is a comment. It won't be visible when rendered. 
 For additional information on installation, troubleshooting, and usage instructions, please refer to the [Documentation](docs/).
