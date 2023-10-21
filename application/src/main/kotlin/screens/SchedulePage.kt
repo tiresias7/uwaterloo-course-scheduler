@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.TopStart
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -29,7 +30,10 @@ import screens.schedulePage
 import screens.welcomePage
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
+import androidx.compose.ui.input.pointer.PointerEventType
+import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 
@@ -105,9 +109,7 @@ fun selectSection(
             modifier = Modifier.size(width = 446.dp, height = 238.dp),
             shape = RoundedCornerShape(0.dp)
         ) {
-            LazyColumn(
-                //modifier = Modifier.verticalScroll(rememberScrollState())
-            ) {
+            LazyColumn() {
                 items(preferences) { preference ->
                     FloatingActionButton(
                         onClick = {},
@@ -135,12 +137,14 @@ fun selectSection(
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun scheduleSection(
     clicked: MutableState<Boolean>
 ) {
     var img_width by remember { mutableStateOf(0.dp) }
     var img_height by remember { mutableStateOf(0.dp) }
+    val density = LocalDensity.current.density
     Column(
         modifier = Modifier
             .fillMaxHeight(),
@@ -148,18 +152,20 @@ fun scheduleSection(
         horizontalAlignment = Alignment.End
     ) {
         Card(
-            modifier = Modifier.onSizeChanged{
-                img_width = it.width.dp;
-                img_height = it.height.dp;
-            },
             border = BorderStroke(0.1.dp,Color.Black),
             colors = CardDefaults.cardColors(containerColor = White),
             shape = RoundedCornerShape((0.dp))
         ) {
             Box(
-                contentAlignment = TopStart
+                contentAlignment = TopStart,
             ) {
                 Image(
+                    modifier = Modifier.onSizeChanged{ layoutSize ->
+                        img_width = (layoutSize.width / density).dp
+                        img_height = (layoutSize.height / density).dp
+                        println(img_width.value)
+                        println(img_height.value)
+                    },
                     painter = painterResource("schedule_bg.svg"),
                     contentDescription = "schedule background"
                 )
@@ -170,7 +176,24 @@ fun scheduleSection(
                                 defaultElevation = 6.dp
                             ),
                             modifier = Modifier
-                                .size(width = img_width / 7, height = img_width / 30 * 4).offset(x = img_width / 6.3.toFloat() * 3.2.toFloat(), y = img_height / 2.25.toFloat()),
+                                .size(width = img_width / 7, height = img_width / 30 * 4)
+                                .offset(x = 0.dp, y = 0.dp),
+                        ) {
+                            Text(
+                                text = "CS341",
+                                modifier = Modifier
+                                    .padding(16.dp),
+                                textAlign = TextAlign.Center,
+                            )
+                        }
+                        ElevatedCard(
+                            elevation = CardDefaults.cardElevation(
+                                defaultElevation = 6.dp
+                            ),
+                            modifier = Modifier
+                                .size(width = img_width / 7, height = img_width / 30 * 4)
+                                .offset(x = img_width / 6.3.toFloat() * 5.4.toFloat(), y = img_height / 2.25.toFloat()),
+
                         ) {
                             Text(
                                 text = "CS346",
@@ -184,21 +207,8 @@ fun scheduleSection(
                                 defaultElevation = 6.dp
                             ),
                             modifier = Modifier
-                                .size(width = img_width / 7, height = img_width / 30 * 4).offset(x = img_width / 6.3.toFloat() * 5.4.toFloat(), y = img_height / 2.25.toFloat()),
-                        ) {
-                            Text(
-                                text = "CS346",
-                                modifier = Modifier
-                                    .padding(16.dp),
-                                textAlign = TextAlign.Center,
-                            )
-                        }
-                        ElevatedCard(
-                            elevation = CardDefaults.cardElevation(
-                                defaultElevation = 6.dp
-                            ),
-                            modifier = Modifier
-                                .size(width = img_width / 7, height = img_width / 30 * 4).offset(x = img_width / 6.3.toFloat() * 2.1.toFloat(), y = img_height / 5.6.toFloat()),
+                                .size(width = img_width / 7, height = img_width / 30 * 4)
+                                .offset(x = img_width / 6.3.toFloat() * 2.1.toFloat(), y = img_height / 5.6.toFloat()),
                         ) {
                             Text(
                                 text = "CS350",
@@ -212,7 +222,8 @@ fun scheduleSection(
                                 defaultElevation = 6.dp
                             ),
                             modifier = Modifier
-                                .size(width = img_width / 7, height = img_width / 30 * 4).offset(x = img_width / 6.3.toFloat() * 4.3.toFloat(), y = img_height / 5.6.toFloat()),
+                                .size(width = img_width / 7, height = img_width / 30 * 4)
+                                .offset(x = img_width / 6.3.toFloat() * 4.3.toFloat(), y = img_height / 5.6.toFloat()),
                         ) {
                             Text(
                                 text = "CS350",
