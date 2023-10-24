@@ -1,42 +1,102 @@
 package screens
 
-import androidx.compose.foundation.*
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material.icons.outlined.Share
-import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.*
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
-import androidx.compose.ui.Alignment.Companion.TopStart
-import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import components.courseSelectionSection
 import components.navDrawer
+import components.preferenceSelectionSection
+import components.scheduleSection
+import data.SectionUnit
+import data.SelectedCourse
+import kotlinx.serialization.json.*
 import navcontroller.NavController
-import screens.schedulePage
-import screens.welcomePage
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.White
-import androidx.compose.ui.input.pointer.PointerEventType
-import androidx.compose.ui.input.pointer.onPointerEvent
-import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.Dp
 
+
+val sections_string = """
+    [
+  {
+    "day": 0,
+    "startTime": 9,
+    "finishTime": 11,
+    "courseName": "CS341",
+    "profName": "banana",
+    "location": "HH"
+  },
+  {
+    "day": 0,
+    "startTime": 15,
+    "finishTime": 16.5,
+    "courseName": "CS342",
+    "profName": "canana",
+    "location": "FF"
+  },
+  {
+    "day": 0,
+    "startTime": 18,
+    "finishTime": 20,
+    "courseName": "CS343",
+    "profName": "danana",
+    "location": "DD"
+  },
+  {
+    "day": 0,
+    "startTime": 20,
+    "finishTime": 22,
+    "courseName": "CS343",
+    "profName": "danana",
+    "location": "DD"
+  },
+  {
+    "day": 1,
+    "startTime": 14.5,
+    "finishTime": 15.8,
+    "courseName": "CS343",
+    "profName": "danana",
+    "location": "DD"
+  },
+  {
+    "day": 2,
+    "startTime": 14.5,
+    "finishTime": 15.8,
+    "courseName": "CS343",
+    "profName": "danana",
+    "location": "DD"
+  },
+  {
+    "day": 3,
+    "startTime": 14.5,
+    "finishTime": 15.8,
+    "courseName": "CS343",
+    "profName": "danana",
+    "location": "DD"
+  },
+  {
+    "day": 4,
+    "startTime": 14.5,
+    "finishTime": 15.8,
+    "courseName": "CS343",
+    "profName": "danana",
+    "location": "DD"
+  }
+]
+""".trimIndent()
+
+val sections = Json.decodeFromString<List<SectionUnit>>(sections_string)
 
 @Composable
 fun schedulePage(
@@ -49,228 +109,84 @@ fun schedulePage(
 fun schedulePageContent(
     navController: NavController
 ) {
-    var clicked =  remember { mutableStateOf(false) }
+    val clicked = remember { mutableStateOf(false) }
+    val interactionSource = remember { MutableInteractionSource() }
     Row(
         modifier = Modifier
             .fillMaxSize()
-            .padding(start = 40.dp)
-            .padding(top = 10.dp)
-            .padding(bottom = 10.dp),
+            .padding(start = 40.dp, top = 10.dp, bottom = 10.dp)
+            .clickable(
+                interactionSource = interactionSource,
+                indication = null,
+                onClick = {}
+            ),
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically
     ) {
         selectSection(clicked)
-        scheduleSection(clicked)
+        scheduleSection(clicked, sections)
     }
 }
+
 @Composable
 fun selectSection(
     clicked: MutableState<Boolean>
 ) {
-    val preferences : List<String> = listOf("Time for classes", "Time for breaks", "Time of conflicts", "Location" , "Instructor", )
+    // Need Data: Course Name Strings/All Preferences
+    val allCourses = listOf(
+        "CS350", "CS341", "CS346", "ECON371", "CO487",
+        "CS136", "CS135", "CS246", "ECON101", "MATH239",
+        "CS245", "CS251", "CS240", "ECON102", "GEOG101",
+        "PHY101", "HLTH101", "EARTH123", "CLAS101", "SPCOM223"
+    ).sorted()
+    val preferences: List<String> = listOf(
+        "Time for classes", "Time for breaks",
+        "Time of conflicts", "Location", "Instructor",
+    )
+
+    var selectedCourses = remember { mutableStateListOf<SelectedCourse>() }  // state hoisting
+
     Column(
         modifier = Modifier
             .fillMaxHeight(),
         verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.Start
     ) {
-        ExtendedFloatingActionButton(
-            onClick = {},
-            icon = { Icon(Icons.Filled.Add, "Add Courses") },
-            text = { Text(text = "Add Courses") },
-            modifier = Modifier
-                .size(width = 180.dp, height = 56.dp)
-        )
-        ElevatedCard(
-            elevation = CardDefaults.cardElevation(
-                defaultElevation = 6.dp
-            ),
-            modifier = Modifier
-                .size(width = 446.dp, height = 238.dp)
-        ) {
-            Text(
-                text = "Selected Courses",
-                modifier = Modifier
-                    .padding(16.dp),
-                textAlign = TextAlign.Center,
-            )
-        }
-        ExtendedFloatingActionButton(
-            onClick = {},
-            icon = { Icon(Icons.Filled.Add, "Add Preferences") },
-            text = { Text(text = "Add Preferences") },
-            modifier = Modifier
-                .size(width = 200.dp, height = 56.dp)
-        )
-        Card(
-            elevation = CardDefaults.cardElevation(
-                defaultElevation = 6.dp
-            ),
-            modifier = Modifier.size(width = 446.dp, height = 238.dp),
-            shape = RoundedCornerShape(0.dp)
-        ) {
-            LazyColumn() {
-                items(preferences) { preference ->
-                    FloatingActionButton(
-                        onClick = {},
-                        modifier = Modifier.fillMaxSize(),
-                        shape = RoundedCornerShape(0.dp),
-                    ) {
-
-                        Text(
-                            text = preference,
-                            textAlign = TextAlign.Start
-                        )
+        //Course Selection Section
+        courseSelectionSection(
+            allCourses, selectedCourses,
+            addCallBack = { courseName: String ->
+                var alreadyAdded = false
+                for (course in selectedCourses) {
+                    if (course.courseName == courseName) {
+                        alreadyAdded = true
                     }
-                    Divider()
                 }
+                if (!alreadyAdded) {
+                    selectedCourses.add(SelectedCourse(courseName, true))
+                }
+            },
+            toggleCallBack = { index: Int ->
+                val prev_required = selectedCourses[index].required
+                selectedCourses[index] = selectedCourses[index].copy(required = !prev_required)
+            },
+            deleteCallBack = { index: Int ->
+                selectedCourses.removeAt(index)
             }
-        }
+        )
+
+        //Preference Selection Section
+        preferenceSelectionSection(preferences)
+
+        //Generate Button
         OutlinedButton(
-            onClick = { clicked.value = true},
+            onClick = { clicked.value = true },
             modifier = Modifier
                 .size(width = 180.dp, height = 56.dp)
-                .align(CenterHorizontally)
+                .align(Alignment.CenterHorizontally)
         ) {
             Text("Generate Schedule")
         }
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
-@Composable
-fun scheduleSection(
-    clicked: MutableState<Boolean>
-) {
-    var img_width by remember { mutableStateOf(0.dp) }
-    var img_height by remember { mutableStateOf(0.dp) }
-    val density = LocalDensity.current.density
-    Column(
-        modifier = Modifier
-            .fillMaxHeight(),
-        verticalArrangement = Arrangement.SpaceEvenly,
-        horizontalAlignment = Alignment.End
-    ) {
-        Card(
-            border = BorderStroke(0.1.dp,Color.Black),
-            colors = CardDefaults.cardColors(containerColor = White),
-            shape = RoundedCornerShape((0.dp))
-        ) {
-            Box(
-                contentAlignment = TopStart,
-            ) {
-                Image(
-                    modifier = Modifier.onSizeChanged{ layoutSize ->
-                        img_width = (layoutSize.width / density).dp
-                        img_height = (layoutSize.height / density).dp
-                        println(img_width.value)
-                        println(img_height.value)
-                    },
-                    painter = painterResource("schedule_bg.svg"),
-                    contentDescription = "schedule background"
-                )
-                if (clicked.value){
-                    Box(){
-                        ElevatedCard(
-                            elevation = CardDefaults.cardElevation(
-                                defaultElevation = 6.dp
-                            ),
-                            modifier = Modifier
-                                .size(width = img_width / 7, height = img_width / 30 * 4)
-                                .offset(x = 0.dp, y = 0.dp),
-                        ) {
-                            Text(
-                                text = "CS341",
-                                modifier = Modifier
-                                    .padding(16.dp),
-                                textAlign = TextAlign.Center,
-                            )
-                        }
-                        ElevatedCard(
-                            elevation = CardDefaults.cardElevation(
-                                defaultElevation = 6.dp
-                            ),
-                            modifier = Modifier
-                                .size(width = img_width / 7, height = img_width / 30 * 4)
-                                .offset(x = img_width / 6.3.toFloat() * 5.4.toFloat(), y = img_height / 2.25.toFloat()),
-
-                        ) {
-                            Text(
-                                text = "CS346",
-                                modifier = Modifier
-                                    .padding(16.dp),
-                                textAlign = TextAlign.Center,
-                            )
-                        }
-                        ElevatedCard(
-                            elevation = CardDefaults.cardElevation(
-                                defaultElevation = 6.dp
-                            ),
-                            modifier = Modifier
-                                .size(width = img_width / 7, height = img_width / 30 * 4)
-                                .offset(x = img_width / 6.3.toFloat() * 2.1.toFloat(), y = img_height / 5.6.toFloat()),
-                        ) {
-                            Text(
-                                text = "CS350",
-                                modifier = Modifier
-                                    .padding(16.dp),
-                                textAlign = TextAlign.Center,
-                            )
-                        }
-                        ElevatedCard(
-                            elevation = CardDefaults.cardElevation(
-                                defaultElevation = 6.dp
-                            ),
-                            modifier = Modifier
-                                .size(width = img_width / 7, height = img_width / 30 * 4)
-                                .offset(x = img_width / 6.3.toFloat() * 4.3.toFloat(), y = img_height / 5.6.toFloat()),
-                        ) {
-                            Text(
-                                text = "CS350",
-                                modifier = Modifier
-                                    .padding(16.dp),
-                                textAlign = TextAlign.Center,
-                            )
-                        }
-                    }
-                }
-
-
-            }
-        }
-        Row() {
-            FloatingActionButton(
-                onClick = {},
-                modifier = Modifier
-                    .size(width = 40.dp, height = 40.dp)
-            ) {
-                Icon(
-                    Icons.Outlined.Star,
-                    "Save to my schedule"
-                )
-            }
-            Spacer(modifier = Modifier.width(30.dp))
-            FloatingActionButton(
-                onClick = {},
-                modifier = Modifier
-                    .size(width = 40.dp, height = 40.dp)
-            ) {
-                Icon(
-                    Icons.Outlined.Person,
-                    "Share to friends"
-                )
-            }
-            Spacer(modifier = Modifier.width(30.dp))
-            FloatingActionButton(
-                onClick = {},
-                modifier = Modifier
-                    .size(width = 40.dp, height = 40.dp)
-            ) {
-                Icon(
-                    Icons.Outlined.Share,
-                    "Export"
-                )
-            }
-        }
-    }
-}

@@ -7,6 +7,7 @@ val logback_version: String by project
 
 plugins {
     kotlin("jvm")
+    kotlin("plugin.serialization") version "1.9.0"
     id("org.jetbrains.compose")
 }
 
@@ -28,6 +29,7 @@ dependencies {
     implementation("io.ktor:ktor-client-core:$ktor_version")
     implementation("io.ktor:ktor-client-cio:$ktor_version")
     implementation("org.jetbrains.compose.material3:material3:$material3_version")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
 }
 
 compose.desktop {
