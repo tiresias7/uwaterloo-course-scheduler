@@ -11,6 +11,7 @@ import androidx.compose.ui.window.PopupProperties
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.font.FontStyle
 import data.SelectedCourse
 
 
@@ -23,9 +24,8 @@ fun courseSearchInputField(
     all: List<String>,
     addCallBack: (courseName: String) -> Unit
 ) {
-    var label by remember { mutableStateOf("Add Courses") }
+    var label by remember { mutableStateOf("Start from adding your courses here") }
     val ifFocused = mutableStateOf(true)
-    var placeholder by remember { mutableStateOf("Eg. CS346") }
     val focusManager = LocalFocusManager.current
     Box() {
         Row(
@@ -37,9 +37,8 @@ fun courseSearchInputField(
                         ifFocused.value = focusState.isFocused
                         if (!ifFocused.value) {
                             value.value = TextFieldValue("")
-                            placeholder = "Eg. CS346"
                         } else {
-                            label = "Add Courses"
+                            label = "Add more courses"
                             dropDownExpanded.value = true
                             list.value = all
                         }
@@ -51,10 +50,10 @@ fun courseSearchInputField(
                     value.value = newValue
                     list.value = searchFilter(newValue.text, all)
                 },
-                label = { Text(label) },
-                placeholder = { Text(placeholder) },
+                label = { Text(label, fontStyle = FontStyle.Italic) },
+                placeholder = { Text("Eg. CS346") },
                 leadingIcon = {
-                    Icon(Icons.Outlined.Search, "Share to friends")
+                    Icon(Icons.Outlined.Search, "Search Course")
                 }
             )
         }
@@ -85,7 +84,7 @@ fun courseSearchInputField(
                     modifier = Modifier.size(446.dp, 35.dp),
                     onClick = {}
                 ) {
-                    Text(text = "No Course Found")
+                    Text(text = "No Matching Course")
                 }
             }
         }

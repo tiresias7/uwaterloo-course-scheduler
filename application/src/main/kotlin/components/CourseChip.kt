@@ -68,7 +68,7 @@ fun courseChip(
                     toggleCallBack(index)
                 }
             ) {
-                Text(text = if (course.required) "Mark as optional" else "Mark as required")
+                Text(text = if (course.required) "Set to low priority " else "Set to high priority")
             }
             DropdownMenuItem(
                 onClick = {
@@ -76,7 +76,7 @@ fun courseChip(
                     deleteCallBack(index)
                 }
             ) {
-                Text(text = "Delete")
+                Text(text = "Remove this course")
             }
         }
     }

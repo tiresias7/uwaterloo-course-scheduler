@@ -114,7 +114,7 @@ fun schedulePageContent(
     Row(
         modifier = Modifier
             .fillMaxSize()
-            .padding(start = 40.dp, top = 10.dp, bottom = 10.dp)
+            .padding(start = 40.dp)
             .clickable(
                 interactionSource = interactionSource,
                 indication = null,

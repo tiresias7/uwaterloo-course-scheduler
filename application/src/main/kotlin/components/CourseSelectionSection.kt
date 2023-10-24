@@ -12,10 +12,13 @@ import courseSearchInputField
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.icons.outlined.Done
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.sp
 import data.SelectedCourse
 import style.*
+import javax.swing.text.Style
 
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
@@ -33,8 +36,9 @@ fun courseSelectionSection(
     ) {
         courseSearchInputField(allCourses, addCallBack)
         Text(
-            text = "Click on the course below to modify.",
-            fontSize = 13.sp
+            text = "Click on a selected course to modify its priority:",
+            fontSize = 12.sp,
+            fontStyle = FontStyle.Italic
         )
         ElevatedCard(
             elevation = CardDefaults.cardElevation(
