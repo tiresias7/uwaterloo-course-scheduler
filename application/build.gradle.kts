@@ -2,10 +2,12 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 val ktor_version: String by project
 val kotlin_version: String by project
+val material3_version: String by project
 val logback_version: String by project
 
 plugins {
     kotlin("jvm")
+    kotlin("plugin.serialization") version "1.9.0"
     id("org.jetbrains.compose")
 }
 

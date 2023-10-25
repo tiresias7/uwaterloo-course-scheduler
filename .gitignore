@@ -1,5 +1,6 @@
 .gradle
 build/
+.idea/
 !../pplegend-project/gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
@@ -9,6 +10,9 @@ build/
 ../pplegend-project/.idea/jarRepositories.xml
 ../pplegend-project/.idea/compiler.xml
 ../pplegend-project/.idea/libraries/
+../pplegend-project/.idea/gradle.xml/
+../pplegend-project/.idea/vcs.xml/
+../pplegend-project/.idea/workspace.xml/
 *.iws
 *.iml
 *.ipr
@@ -65,10 +69,6 @@ bin/
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
-.gradle
-build/
-out/
-
 # Ignore Gradle GUI config
 gradle-app.setting
 
@@ -79,5 +79,4 @@ gradle-app.setting
 .gradletasknamecache
 
 #Mac
-.DS_Store
 www/public
