@@ -37,6 +37,8 @@ dependencies {
     implementation ("mysql:mysql-connector-java:8.0.33")
     implementation ("com.zaxxer:HikariCP:4.0.3")
     implementation(group = "org.json", name = "json", version = "20231013")
+    implementation("org.jetbrains.compose.material3:material3:$material3_version")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
 //    implementation ("com.fasterxml.jackson.module:jackson-module-kotlin:2.15.0")
     implementation ("com.squareup.okhttp3:okhttp:4.9.1")
     implementation ("org.seleniumhq.selenium:selenium-java:4.0.0")
