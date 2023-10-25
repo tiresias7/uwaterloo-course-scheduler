@@ -38,7 +38,7 @@ fun preferenceSelectionSection(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 6.dp
         ),
-        modifier = Modifier.size(width = 446.dp, height = 238.dp),
+        modifier = Modifier.size(width = 446.dp, height = 400.dp),
         shape = RoundedCornerShape(0.dp)
     ) {
         LazyColumn() {

@@ -45,7 +45,7 @@ fun courseSelectionSection(
                 defaultElevation = 6.dp
             ),
             modifier = Modifier
-                .size(width = 446.dp, height = 238.dp)
+                .size(width = 446.dp, height = 119.dp)
         ) {
             courseGrid(selectedCourses, toggleCallBack, deleteCallBack)
         }
