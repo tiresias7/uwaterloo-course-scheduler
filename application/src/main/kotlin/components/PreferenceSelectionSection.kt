@@ -1,34 +1,24 @@
 package components
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material3.ListItem
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import components.courseSelectionSection
-import components.navDrawer
-import components.scheduleSection
-import data.SectionUnit
-import kotlinx.serialization.json.*
-import navcontroller.NavController
 
 @Composable
 fun preferenceSelectionSection(
-    preferences : List<String>
+    preferences: List<String>,
+    showCallBack: () -> Unit
 ) {
     ExtendedFloatingActionButton(
-        onClick = {},
+        onClick = { showCallBack() },
         icon = { Icon(Icons.Filled.Add, "Add Preferences") },
         text = { Text(text = "Add Preferences") },
         modifier = Modifier
@@ -43,17 +33,10 @@ fun preferenceSelectionSection(
     ) {
         LazyColumn() {
             items(preferences) { preference ->
-                FloatingActionButton(
-                    onClick = {},
-                    modifier = Modifier.fillMaxSize(),
-                    shape = RoundedCornerShape(0.dp),
-                ) {
+                ListItem(
+                    headlineContent = { Text(preference) },
 
-                    Text(
-                        text = preference,
-                        textAlign = TextAlign.Start
                     )
-                }
                 Divider()
             }
         }
