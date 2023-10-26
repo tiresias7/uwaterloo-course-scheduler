@@ -21,7 +21,6 @@ import style.*
 import javax.swing.text.Style
 
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun courseSelectionSection(
     allCourses: List<String>,
