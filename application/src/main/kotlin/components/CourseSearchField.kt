@@ -96,7 +96,6 @@ fun searchFilter(inputValue : String, allCourses : List<String>) : List<String> 
         it.startsWith(inputValue, ignoreCase = true) ||
                 inputValue.startsWith(it, ignoreCase = true)
     }.sorted()
-    println(startWith)
     val containWith = allCourses.filter {
         !startWith.contains(it) &&
                 (inputValue.replace("\\s".toRegex(), "").contains(it, ignoreCase = true) ||

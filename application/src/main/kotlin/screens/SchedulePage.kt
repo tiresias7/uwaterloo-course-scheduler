@@ -25,6 +25,7 @@ import data.SectionUnit
 import data.SelectedCourse
 import kotlinx.serialization.json.*
 import navcontroller.NavController
+import testAlgo
 
 
 val sections_string = """
@@ -111,6 +112,8 @@ fun schedulePageContent(
 ) {
     val clicked = remember { mutableStateOf(false) }
     val interactionSource = remember { MutableInteractionSource() }
+    var selectedCourses = remember { mutableStateListOf<SelectedCourse>() }  // state hoisting
+    var returnedSections = remember { mutableStateListOf<SectionUnit>() }
     Row(
         modifier = Modifier
             .fillMaxSize()
@@ -123,38 +126,7 @@ fun schedulePageContent(
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        selectSection(clicked)
-        scheduleSection(clicked, sections)
-    }
-}
-
-@Composable
-fun selectSection(
-    clicked: MutableState<Boolean>
-) {
-    // Need Data: Course Name Strings/All Preferences
-    val allCourses = listOf(
-        "CS350", "CS341", "CS346", "ECON371", "CO487",
-        "CS136", "CS135", "CS246", "ECON101", "MATH239",
-        "CS245", "CS251", "CS240", "ECON102", "GEOG101",
-        "PHY101", "HLTH101", "EARTH123", "CLAS101", "SPCOM223"
-    ).sorted()
-    val preferences: List<String> = listOf(
-        "Time for classes", "Time for breaks",
-        "Time of conflicts", "Location", "Instructor",
-    )
-
-    var selectedCourses = remember { mutableStateListOf<SelectedCourse>() }  // state hoisting
-
-    Column(
-        modifier = Modifier
-            .fillMaxHeight(),
-        verticalArrangement = Arrangement.SpaceEvenly,
-        horizontalAlignment = Alignment.Start
-    ) {
-        //Course Selection Section
-        courseSelectionSection(
-            allCourses, selectedCourses,
+        selectSection(clicked, selectedCourses,
             addCallBack = { courseName: String ->
                 var alreadyAdded = false
                 for (course in selectedCourses) {
@@ -172,7 +144,51 @@ fun selectSection(
             },
             deleteCallBack = { index: Int ->
                 selectedCourses.removeAt(index)
-            }
+            },
+            generateCallBack = {
+                println(111111111)
+                returnedSections.clear()
+                returnedSections.addAll(testAlgo(selectedCourses).toMutableStateList())
+                //returnedSections.add(SectionUnit(0,9f,11f,"cs","jkjkj","HHH"))
+                println(returnedSections.toList())
+            })
+        scheduleSection(clicked, returnedSections)
+    }
+}
+
+@Composable
+fun selectSection(
+    clicked: MutableState<Boolean>,
+    selectedCourses: MutableList<SelectedCourse>,
+    addCallBack: (courseName: String) -> Unit,
+    toggleCallBack: (index: Int) -> Unit,
+    deleteCallBack: (index: Int) -> Unit,
+    generateCallBack: () -> Unit
+) {
+    // Need Data: Course Name Strings/All Preferences
+    val allCourses = listOf(
+        "CS350", "CS341", "CS346", "ECON371", "CO487",
+        "CS136", "CS135", "CS246", "ECON101", "MATH239",
+        "CS245", "CS251", "CS240", "ECON102", "GEOG101",
+        "PHY101", "HLTH101", "EARTH123", "CLAS101", "SPCOM223"
+    ).sorted()
+    val preferences: List<String> = listOf(
+        "Time for classes", "Time for breaks",
+        "Time of conflicts", "Location", "Instructor",
+    )
+
+    Column(
+        modifier = Modifier
+            .fillMaxHeight(),
+        verticalArrangement = Arrangement.SpaceEvenly,
+        horizontalAlignment = Alignment.Start
+    ) {
+        //Course Selection Section
+        courseSelectionSection(
+            allCourses, selectedCourses,
+            addCallBack,
+            toggleCallBack,
+            deleteCallBack
         )
 
         //Preference Selection Section
@@ -180,7 +196,10 @@ fun selectSection(
 
         //Generate Button
         OutlinedButton(
-            onClick = { clicked.value = true },
+            onClick = {
+                clicked.value = true;
+                generateCallBack()
+            },
             modifier = Modifier
                 .size(width = 180.dp, height = 56.dp)
                 .align(Alignment.CenterHorizontally)

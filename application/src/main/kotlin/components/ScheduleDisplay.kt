@@ -28,11 +28,12 @@ import data.SectionUnit
 @Composable
 fun scheduleSection(
     clicked: MutableState<Boolean>,
-    sections: List<SectionUnit>
+    sections: MutableList<SectionUnit>
 ) {
     var img_width by remember { mutableStateOf(0.dp) }
     var img_height by remember { mutableStateOf(0.dp) }
     val density = LocalDensity.current.density
+    println("am i being called?")
 
     Column(
         modifier = Modifier
