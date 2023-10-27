@@ -2,7 +2,7 @@ import java.io.File
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 
-fun createDataSource(url: String, dbUser:String, dbPass: String): HikariDataSource {
+fun createDataSource(url: String = "jdbc:mysql://34.130.134.71:3306/courses", dbUser:String = "root", dbPass: String = "PPLegend"): HikariDataSource {
     val config = HikariConfig()
     config.jdbcUrl = url
     config.username = dbUser
@@ -168,6 +168,14 @@ fun queryDistinctFaculties(db: HikariDataSource): List<String> {
     return faculties
 }
 
+fun queryAllClasses(db: HikariDataSource): List<String> {
+    return queryDistinctFaculties(db).map { faculty ->
+        queryCoursesByFaculty(faculty, db).map { courseId ->
+            faculty + courseId
+        }
+    }.flatten()
+}
+
 fun deleteRowsByHours(hours: Int, db: HikariDataSource) {
     db.connection.use { conn ->
         val deleteSQL = """
@@ -183,12 +191,9 @@ fun deleteRowsByHours(hours: Int, db: HikariDataSource) {
 // example usage, make modification in the future
 fun main() {
     val directoryPath = "C:\\Users\\YZM\\Desktop\\courses"
-    val databaseUrl = "jdbc:mysql://34.130.134.71:3306/courses"
-    val databaseUser = "root"
-    val databasePassword = "PPLegend"
 
     // Connect to the MySQL database
-    val database = createDataSource(databaseUrl, databaseUser, databasePassword)
+    val database = createDataSource()
 
     // Create a table (if it doesn't exist)
     createTableIfNotExists(database)

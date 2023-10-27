@@ -1,3 +1,5 @@
+import data.SectionUnit
+import data.SelectedCourse
 import kotlin.Comparator
 import java.util.PriorityQueue
 
@@ -30,7 +32,7 @@ class BasicConflictPreference : Preference() {
     }
 }
 
-fun algorithm(sectionsList: List<Set<Section>>, preferences: List<Preference>, totalSchedules: Int): List<List<Section>>{
+fun algorithm(sectionsList: List<List<Section>>, preferences: List<Preference>, totalSchedules: Int): List<List<Section>>{
     val cartesianSections: Sequence<List<Section>> =  sectionsList.fold(emptySequence()) {
             acc, set -> acc.flatMap { list -> set.map { element -> list + element } }
     }
@@ -47,4 +49,14 @@ fun algorithm(sectionsList: List<Set<Section>>, preferences: List<Preference>, t
     return topTenSections.map { it.first }
         .sortedBy { sections -> sections.maxByOrNull { it.endTime }?.endTime }
         .take(totalSchedules)
+}
+
+fun testAlgo(selectSections: List<SelectedCourse>): List<SectionUnit> {
+    val allCourseSections = selectSections.map { it ->
+        val faculty = it.courseName.takeWhile { it.isLetter() }
+        val courseId = it.courseName.dropWhile { it.isLetter() }
+        createDataSource().use{ querySectionsByFacultyId(faculty, courseId, it) }
+    }.flatten()
+    val topOneSection = algorithm(allCourseSections, listOf(BasicConflictPreference()), 1).first()
+    return sectionListToUnits(topOneSection)
 }
