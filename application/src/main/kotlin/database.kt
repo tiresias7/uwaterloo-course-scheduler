@@ -106,6 +106,9 @@ fun querySectionsByFacultyId(faculty: String, courseID: String, db: HikariDataSo
 
             stmt.executeQuery().use { result ->
                 while (result.next()) {
+                    // Here should be a warning where TBA / ONLINE classes will have no days, specially for TBA classes
+                    val days: Set<Day> = if (result.getString("days") == "") emptySet()
+                        else result.getString("days").split(",").map { Day.valueOf(it) }.toSet()
                     sections.add(
                         Section(
                             result.getInt("classNumber"),
@@ -116,7 +119,7 @@ fun querySectionsByFacultyId(faculty: String, courseID: String, db: HikariDataSo
                             result.getString("instructor"),
                             result.getTime("startTime").toLocalTime(),
                             result.getTime("endTime").toLocalTime(),
-                            result.getString("days").split(",").map { Day.valueOf(it) }.toSet(),
+                            days,
                             result.getString("faculty") + result.getString("courseID")
                         )
                     )

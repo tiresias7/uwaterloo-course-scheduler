@@ -75,15 +75,15 @@ fun testAlgo(selectSections: List<SelectedCourse>): List<SectionUnit> {
     return sectionListToUnits(topOneSection)
 }
 
-//fun main() {
-//    testAlgo(listOf(
-//        SelectedCourse("CS240", true),
+fun main() {
+    testAlgo(listOf(
+        SelectedCourse("CS798", true),
 //        SelectedCourse("CS135", true),
 //        SelectedCourse("CS245", true),
 //        SelectedCourse("CS251", true),
 //        SelectedCourse("CS341", true),
 //        SelectedCourse("CS346", true)
-//    )).forEach {
-//        println(it.courseName + " " + it.startTime + " " + it.finishTime + "  Day: " + it.day)
-//    }
-//}
+    )).forEach {
+        println(it.courseName + " " + it.startTime + " " + it.finishTime + "  Day: " + it.day)
+    }
+}
