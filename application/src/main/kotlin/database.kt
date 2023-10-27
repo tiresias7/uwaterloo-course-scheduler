@@ -124,7 +124,8 @@ fun querySectionsByFacultyId(faculty: String, courseID: String, db: HikariDataSo
             }
         }
     }
-   return sections.groupBy { it.component }.values.toList()
+   // return return sections.groupBy { it.component }.values.toList()
+   return sections.groupBy { it.component }.values.toList().filter { it.isNotEmpty() && !it.first().component.contains("TST") }
 }
 
 fun queryCoursesByFaculty(faculty: String, db: HikariDataSource): List<String> {
