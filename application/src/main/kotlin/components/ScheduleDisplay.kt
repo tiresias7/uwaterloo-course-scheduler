@@ -33,12 +33,8 @@ fun scheduleSection(
     var img_width by remember { mutableStateOf(0.dp) }
     var img_height by remember { mutableStateOf(0.dp) }
     val density = LocalDensity.current.density
-    println("am i being called?")
 
     Column(
-        modifier = Modifier
-            .fillMaxHeight(),
-        verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.End
     ) {
         Card(
@@ -54,10 +50,10 @@ fun scheduleSection(
                 contentAlignment = Alignment.TopStart,
             ) {
                 Image(
-                    modifier = Modifier.onSizeChanged { layoutSize ->
+                    modifier = Modifier.onSizeChanged {
                         img_width =
-                            (layoutSize.width / density).dp     // layoutSize returns the value same as mouse offset
-                        img_height = (layoutSize.height / density).dp
+                            (it.width / density).dp     // layoutSize returns the value same as mouse offset
+                        img_height = (it.height / density).dp
                     },
                     painter = painterResource("schedule_bg.svg"),
                     contentDescription = "schedule background"
@@ -93,7 +89,9 @@ fun scheduleSection(
                 }
             }
         }
-        Row() {
+        Row(
+            modifier = Modifier.requiredHeight(60.dp)
+        ) {
             FloatingActionButton(
                 onClick = {},
                 modifier = Modifier
