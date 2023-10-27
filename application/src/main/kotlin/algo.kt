@@ -1,5 +1,6 @@
 import kotlin.Comparator
 import java.util.PriorityQueue
+
 abstract class Preference {
     abstract operator fun invoke(sections: List<Section>): Int
 }
