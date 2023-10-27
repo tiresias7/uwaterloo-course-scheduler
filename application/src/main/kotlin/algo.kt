@@ -32,14 +32,27 @@ class BasicConflictPreference : Preference() {
     }
 }
 
-fun algorithm(sectionsList: List<List<Section>>, preferences: List<Preference>, totalSchedules: Int): List<List<Section>>{
-    val cartesianSections: Sequence<List<Section>> =  sectionsList.fold(emptySequence()) {
-            acc, set -> acc.flatMap { list -> set.map { element -> list + element } }
+fun <T> List<List<T>>.cartesianProduct(): List<List<T>> {
+    if (isEmpty()) return listOf(emptyList())
+    val result = mutableListOf<List<T>>()
+    fun generateCombinations(index: Int, currentList: List<T>) {
+        if (index == size) {
+            result.add(currentList)
+            return
+        }
+        for (element in this[index]) {
+            generateCombinations(index + 1, currentList + element)
+        }
     }
 
+    generateCombinations(0, emptyList())
+    return result
+}
+
+fun algorithm(sectionsList: List<List<Section>>, preferences: List<Preference>, totalSchedules: Int): List<List<Section>>{
     val customComparator = Comparator<Pair<List<Section>, Int>> { o1, o2 -> o1.second - o2.second }
     val topTenSections = PriorityQueue(customComparator)
-    cartesianSections.forEach { sections ->
+    sectionsList.cartesianProduct().forEach { sections ->
         val totalRating = preferences.sumOf { it(sections) }
         topTenSections.add(Pair(sections, totalRating))
         if (topTenSections.size > totalSchedules) {
@@ -60,3 +73,5 @@ fun testAlgo(selectSections: List<SelectedCourse>): List<SectionUnit> {
     val topOneSection = algorithm(allCourseSections, listOf(BasicConflictPreference()), 1).first()
     return sectionListToUnits(topOneSection)
 }
+
+

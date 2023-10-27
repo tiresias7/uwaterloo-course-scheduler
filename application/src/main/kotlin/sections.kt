@@ -1,7 +1,7 @@
 import data.SectionUnit
 import java.time.LocalTime
 
-val MINUTESPERHOUR = 60
+const val MINUTESPERHOUR = 60
 data class ClassInfo(
     val classNbr: String,
     val classSection: String,

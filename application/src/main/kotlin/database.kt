@@ -173,7 +173,7 @@ fun queryAllClasses(db: HikariDataSource): List<String> {
         queryCoursesByFaculty(faculty, db).map { courseId ->
             faculty + courseId
         }
-    }.flatten()
+    }.flatten().sorted()
 }
 
 fun deleteRowsByHours(hours: Int, db: HikariDataSource) {

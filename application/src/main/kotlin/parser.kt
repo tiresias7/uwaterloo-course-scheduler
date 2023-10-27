@@ -6,11 +6,6 @@ import java.util.Locale
 import java.util.EnumSet
 import java.time.format.DateTimeFormatter
 
-fun main() {
-    parser("C:\\Users\\YZM\\Desktop\\courses\\")
-}
-
-
 fun parseDayInfo(input: String): Triple<LocalTime, LocalTime, Set<Day>> {
     if (input.isEmpty()) {
         return Triple(LocalTime.parse("00:00"), LocalTime.parse("00:00"), emptySet())
