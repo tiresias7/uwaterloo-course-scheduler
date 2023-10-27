@@ -3,6 +3,7 @@ import data.SelectedCourse
 import kotlin.Comparator
 import java.util.PriorityQueue
 
+const val ACCEPTLEVEL = 95;
 abstract class Preference {
     abstract operator fun invoke(sections: List<Section>): Int
 }
@@ -52,11 +53,11 @@ fun <T> List<List<T>>.cartesianProduct(): List<List<T>> {
 fun algorithm(sectionsList: List<List<Section>>, preferences: List<Preference>, totalSchedules: Int): List<List<Section>>{
     val customComparator = Comparator<Pair<List<Section>, Int>> { o1, o2 -> o1.second - o2.second }
     val topTenSections = PriorityQueue(customComparator)
-    sectionsList.cartesianProduct().forEach { sections ->
+    for (sections in sectionsList.cartesianProduct()) {
         val totalRating = preferences.sumOf { it(sections) }
         topTenSections.add(Pair(sections, totalRating))
-        if (topTenSections.size > totalSchedules) {
-            topTenSections.poll()
+        if (topTenSections.size > totalSchedules && topTenSections.poll().second / (preferences.size) >= ACCEPTLEVEL) {
+            break;
         }
     }
     return topTenSections.map { it.first }
@@ -76,9 +77,12 @@ fun testAlgo(selectSections: List<SelectedCourse>): List<SectionUnit> {
 
 //fun main() {
 //    testAlgo(listOf(
+//        SelectedCourse("CS240", true),
+//        SelectedCourse("CS135", true),
 //        SelectedCourse("CS245", true),
-//        SelectedCourse("CS246", true),
-//        SelectedCourse("CS350", true)
+//        SelectedCourse("CS251", true),
+//        SelectedCourse("CS341", true),
+//        SelectedCourse("CS346", true)
 //    )).forEach {
 //        println(it.courseName + " " + it.startTime + " " + it.finishTime + "  Day: " + it.day)
 //    }
