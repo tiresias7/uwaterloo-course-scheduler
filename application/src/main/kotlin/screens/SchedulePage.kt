@@ -21,13 +21,15 @@ import components.courseSelectionSection
 import components.navDrawer
 import components.preferenceSelectionSection
 import components.scheduleSection
+import createDataSource
 import data.SectionUnit
 import data.SelectedCourse
 import kotlinx.serialization.json.*
 import navcontroller.NavController
+import queryAllClasses
 import testAlgo
 
-
+val allCourses = queryAllClasses(createDataSource())
 val sections_string = """
     [
   {
@@ -165,13 +167,7 @@ fun selectSection(
     deleteCallBack: (index: Int) -> Unit,
     generateCallBack: () -> Unit
 ) {
-    // Need Data: Course Name Strings/All Preferences
-    val allCourses = listOf(
-        "CS350", "CS341", "CS346", "ECON371", "CO487",
-        "CS136", "CS135", "CS246", "ECON101", "MATH239",
-        "CS245", "CS251", "CS240", "ECON102", "GEOG101",
-        "PHY101", "HLTH101", "EARTH123", "CLAS101", "SPCOM223"
-    ).sorted()
+    // Need Data: Course Name Strings/All Preference
     val preferences: List<String> = listOf(
         "Time for classes", "Time for breaks",
         "Time of conflicts", "Location", "Instructor",
