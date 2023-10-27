@@ -222,12 +222,15 @@ fun preferenceSelectionWrapper(
     clicked: MutableState<Boolean>,
     showCallBack: () -> Unit
 ) {
-    val preferences: List<String> = listOf(
+    val preferences = remember { mutableStateListOf(
         "Time for classes", "Time for breaks",
         "Time of conflicts", "Location", "Instructor",
-    )
+    )}
     //var addedPreferences = remember { mutableStateListOf<Preference>() }  // state hoisting
-
-    preferenceSelectionSection(preferences, showCallBack)
+    preferenceSelectionSection(preferences, showCallBack,
+        changeCallBack = { from : Int , to : Int ->
+            val removeElement = preferences.removeAt(from)
+            preferences.add(to, removeElement)
+        })
 }
 
