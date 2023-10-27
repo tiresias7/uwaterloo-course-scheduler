@@ -30,7 +30,7 @@ dependencies {
     // (in a separate module for demo project and in testMain).
     // With compose.desktop.common you will also lose @Preview functionality
     implementation(compose.desktop.currentOs)
-    implementation("org.jsoup:jsoup:1.14.3")
+    implementation("org.jsoup:jsoup:1.15.3")
     implementation("io.ktor:ktor-client-core:$ktor_version")
     implementation("io.ktor:ktor-client-cio:$ktor_version")
     testImplementation(kotlin("test"))
@@ -44,7 +44,7 @@ dependencies {
     implementation ("org.seleniumhq.selenium:selenium-java:4.0.0")
     implementation ("org.seleniumhq.selenium:selenium-api:4.0.0")
     implementation ("org.seleniumhq.selenium:selenium-chrome-driver:4.0.0")
-    implementation ("ch.qos.logback:logback-classic:1.2.6")
+    implementation ("ch.qos.logback:logback-classic:1.2.9")
 }
 
 compose.desktop {

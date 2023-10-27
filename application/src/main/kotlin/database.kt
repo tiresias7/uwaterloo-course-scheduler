@@ -116,7 +116,8 @@ fun querySectionsByFacultyId(faculty: String, courseID: String, db: HikariDataSo
                             result.getString("instructor"),
                             result.getTime("startTime").toLocalTime(),
                             result.getTime("endTime").toLocalTime(),
-                            result.getString("days").split(",").map { Day.valueOf(it) }.toSet()
+                            result.getString("days").split(",").map { Day.valueOf(it) }.toSet(),
+                            result.getString("faculty") + result.getString("courseID")
                         )
                     )
                 }
@@ -184,7 +185,7 @@ fun main() {
     val directoryPath = "C:\\Users\\YZM\\Desktop\\courses"
     val databaseUrl = "jdbc:mysql://34.130.134.71:3306/courses"
     val databaseUser = "root"
-    val databasePassword = ""
+    val databasePassword = "PPLegend"
 
     // Connect to the MySQL database
     val database = createDataSource(databaseUrl, databaseUser, databasePassword)
@@ -193,20 +194,20 @@ fun main() {
     createTableIfNotExists(database)
 
     // Parse HTML files in the directory and insert data into the database
-    parseAndInsert(directoryPath, database)
+//    parseAndInsert(directoryPath, database)
 
     // Test out old data cleanup
 //    deleteRowsByHours(0, database)
 
 
     // Test out section queries
-//    val section = querySectionsByFacultyId("CS", "111", database)
-//    section.forEach { list ->
-//        println("newlist")
-//        list.forEach{
-//            sec -> println(sec)
-//        }
-//    }
+    val section = querySectionsByFacultyId("CS", "137", database)
+    section.forEach { list ->
+        println("newlist")
+        list.forEach{
+            sec -> println(sec)
+        }
+    }
 
     // Test out courseId queries
 //    val ids = queryCoursesByFaculty("CS", database)

@@ -6,41 +6,6 @@ import java.util.Locale
 import java.util.EnumSet
 import java.time.format.DateTimeFormatter
 
-
-data class ClassInfo(
-    val classNbr: String,
-    val classSection: String,
-    val campus: String,
-    val daytime: String,
-    val room: String,
-    val instructor: String,
-    val meetingDates: String
-)
-
-enum class Day {
-    MON, TUE, WED, THU, FRI, SAT, SUN
-}
-
-val dayAbbreviations = mapOf(
-    "Mo" to Day.MON, "Tu" to Day.TUE, "We" to Day.WED, "Th" to Day.THU,
-    "Fr" to Day.FRI, "Sa" to Day.SAT, "Su" to Day.SUN
-)
-enum class CourseComponent {
-    LEC, TUT, LAB
-}
-
-data class Section(
-    val classNumber: Int,
-    val component: String,
-    val sectionNumber: Int,
-    val campus: String,
-    val room: String,
-    val instructor: String,
-    val startTime: LocalTime,
-    val endTime: LocalTime,
-    val days: Set<Day>
-)
-
 fun main() {
     parser("C:\\Users\\YZM\\Desktop\\courses\\")
 }
