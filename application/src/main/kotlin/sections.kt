@@ -40,8 +40,8 @@ data class Section(
     fun toSectionUnit(): List<SectionUnit> {
         return this.days.map {
             SectionUnit(it.ordinal,
-                startTime.hour + (startTime.minute / MINUTESPERHOUR).toFloat(),
-                endTime.hour + (endTime.minute / MINUTESPERHOUR).toFloat(),
+                startTime.hour + (startTime.minute.toFloat() / MINUTESPERHOUR),
+                endTime.hour + (endTime.minute.toFloat() / MINUTESPERHOUR),
                 courseName, room, instructor)
         }
     }
