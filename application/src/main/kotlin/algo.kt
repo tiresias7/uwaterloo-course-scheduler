@@ -79,9 +79,7 @@ fun algorithm(sectionsList: List<List<Section>>, preferences: List<Preference>, 
 //            break;
 //        }
     }
-    return topTenSections.map { it.first }
-        .sortedBy { sections -> sections.maxByOrNull { it.endTime }?.endTime }
-        .take(totalSchedules)
+    return topTenSections.take(totalSchedules).sortedBy { it.second }.reversed().map { it.first }
 }
 
 fun testAlgo(selectSections: List<SelectedCourse>): List<SectionUnit> {
