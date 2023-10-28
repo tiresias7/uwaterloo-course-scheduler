@@ -92,7 +92,7 @@ fun schedulePageContent(
                 },
                 modifier = Modifier
                     .size(width = 180.dp, height = 56.dp)
-                    .align(Alignment.CenterHorizontally)
+                    .align(CenterHorizontally)
             ) {
                 Text("Generate Schedule")
             }

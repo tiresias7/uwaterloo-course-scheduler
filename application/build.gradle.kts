@@ -41,10 +41,8 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
 //    implementation ("com.fasterxml.jackson.module:jackson-module-kotlin:2.15.0")
     implementation ("com.squareup.okhttp3:okhttp:4.9.1")
-    implementation ("org.seleniumhq.selenium:selenium-java:4.0.0")
     implementation ("org.seleniumhq.selenium:selenium-api:4.0.0")
     implementation ("org.seleniumhq.selenium:selenium-chrome-driver:4.0.0")
-    implementation ("ch.qos.logback:logback-classic:1.2.6")
     implementation("org.burnoutcrew.composereorderable:reorderable:0.9.6")
     implementation ("ch.qos.logback:logback-classic:1.2.9")
 }
