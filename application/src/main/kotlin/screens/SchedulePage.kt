@@ -30,76 +30,6 @@ import queryAllClasses
 import testAlgo
 
 val allCourses = queryAllClasses(createDataSource())
-val sections_string = """
-    [
-  {
-    "day": 0,
-    "startTime": 9,
-    "finishTime": 11,
-    "courseName": "CS341",
-    "profName": "banana",
-    "location": "HH"
-  },
-  {
-    "day": 0,
-    "startTime": 15,
-    "finishTime": 16.5,
-    "courseName": "CS342",
-    "profName": "canana",
-    "location": "FF"
-  },
-  {
-    "day": 0,
-    "startTime": 18,
-    "finishTime": 20,
-    "courseName": "CS343",
-    "profName": "danana",
-    "location": "DD"
-  },
-  {
-    "day": 0,
-    "startTime": 20,
-    "finishTime": 22,
-    "courseName": "CS343",
-    "profName": "danana",
-    "location": "DD"
-  },
-  {
-    "day": 1,
-    "startTime": 14.5,
-    "finishTime": 15.8,
-    "courseName": "CS343",
-    "profName": "danana",
-    "location": "DD"
-  },
-  {
-    "day": 2,
-    "startTime": 14.5,
-    "finishTime": 15.8,
-    "courseName": "CS343",
-    "profName": "danana",
-    "location": "DD"
-  },
-  {
-    "day": 3,
-    "startTime": 14.5,
-    "finishTime": 15.8,
-    "courseName": "CS343",
-    "profName": "danana",
-    "location": "DD"
-  },
-  {
-    "day": 4,
-    "startTime": 14.5,
-    "finishTime": 15.8,
-    "courseName": "CS343",
-    "profName": "danana",
-    "location": "DD"
-  }
-]
-""".trimIndent()
-
-val sections = Json.decodeFromString<List<SectionUnit>>(sections_string)
 
 @Composable
 fun schedulePage(
@@ -148,11 +78,8 @@ fun schedulePageContent(
                 selectedCourses.removeAt(index)
             },
             generateCallBack = {
-                println(111111111)
                 returnedSections.clear()
                 returnedSections.addAll(testAlgo(selectedCourses).toMutableStateList())
-                //returnedSections.add(SectionUnit(0,9f,11f,"cs","jkjkj","HHH"))
-                println(returnedSections.toList())
             })
         scheduleSection(clicked, returnedSections)
     }
