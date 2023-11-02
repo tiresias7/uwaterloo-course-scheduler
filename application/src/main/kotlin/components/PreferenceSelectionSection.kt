@@ -11,10 +11,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import data.SelectedCourse
 import org.burnoutcrew.reorderable.*
 
@@ -62,3 +66,108 @@ fun preferenceSelectionSection(
         }
     }
 }
+@Composable
+fun preferenceDialog(
+    showAddPreference : MutableState<Boolean>
+) {
+    val preferenceDialogSection = listOf("Time", "Courses", "Instructors", "Friends")
+    if(showAddPreference.value) {
+        Dialog(
+            onDismissRequest = { showAddPreference.value = false },
+            properties = DialogProperties(dismissOnClickOutside = true)
+        ) {
+            Card(
+                modifier = Modifier
+                    .size(600.dp, 800.dp)
+                    .padding(16.dp),
+                shape = RoundedCornerShape(16.dp),
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        . padding(20.dp),
+                    verticalArrangement = Arrangement.Top,
+                    horizontalAlignment = Alignment.Start,
+                ) {
+                    for(sectionName in preferenceDialogSection) {
+                        Text(sectionName,
+                            fontSize = 30.sp,
+                            modifier = Modifier
+                                .padding(top = 20.dp)
+                        )
+                        Divider(thickness = 2.dp)
+                        if (sectionName == "Time") {
+                            ElevatedCard(
+                                elevation = CardDefaults.cardElevation(
+                                    defaultElevation = 6.dp
+                                ),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(40.dp)
+                            ) {
+                                Text("Prefer classes after 10am",
+                                        modifier = Modifier
+                                        .padding(start = 20.dp, top = 5.dp)
+                                )
+                            }
+                        }
+                        else if (sectionName == "Courses") {
+                            ElevatedCard(
+                                elevation = CardDefaults.cardElevation(
+                                    defaultElevation = 6.dp
+                                ),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(40.dp)
+                            ) {
+                                Text("Prefer classes after 10am",
+                                    modifier = Modifier
+                                        .padding(start = 20.dp, top = 5.dp)
+                                )
+                            }
+                        }
+                        else if (sectionName == "Instructors") {
+                            ElevatedCard(
+                                elevation = CardDefaults.cardElevation(
+                                    defaultElevation = 6.dp
+                                ),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(40.dp)
+                            ) {
+                                Text("Prefer classes after 10am",
+                                    modifier = Modifier
+                                        .padding(start = 20.dp, top = 5.dp)
+                                )
+                            }
+                        }
+                        else if (sectionName == "Friends") {
+                            ElevatedCard(
+                                elevation = CardDefaults.cardElevation(
+                                    defaultElevation = 6.dp
+                                ),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(40.dp)
+                            ) {
+                                Text("Prefer classes after 10am",
+                                    modifier = Modifier
+                                        .padding(start = 20.dp, top = 5.dp)
+                                )
+                            }
+                        }
+                    }
+                    TextButton(
+                        onClick = { showAddPreference.value = false },
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .align(Alignment.CenterHorizontally)
+                    ) {
+                        Text("Save")
+                    }
+                }
+            }
+        }
+    }
+}
+

@@ -12,10 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import components.courseSelectionSection
-import components.navDrawer
-import components.preferenceSelectionSection
-import components.scheduleSection
+import components.*
 import createDataSource
 import data.SectionUnit
 import data.SelectedCourse
@@ -99,34 +96,7 @@ fun schedulePageContent(
         }
         scheduleSection(clicked, returnedSections)
     }
-
-    if (showAddPreference.value) {
-        Dialog(
-            onDismissRequest = { showAddPreference.value = false },
-            properties = DialogProperties(dismissOnClickOutside = true)
-        ) {
-            Card(
-                modifier = Modifier
-                    .size(600.dp, 800.dp)
-                    .padding(16.dp),
-                shape = RoundedCornerShape(16.dp),
-            ) {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = CenterHorizontally,
-                ) {
-                    Text("Add preferences")
-                    TextButton(
-                        onClick = { showAddPreference.value = false },
-                        modifier = Modifier.padding(8.dp),
-                    ) {
-                        Text("Close")
-                    }
-                }
-            }
-        }
-    }
+    preferenceDialog(showAddPreference)
 }
 
 @Composable
