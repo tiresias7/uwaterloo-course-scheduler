@@ -37,6 +37,8 @@ Welcome to the Waterloo Course Scheduler applicataion made by TEAM PP-Legend. Th
 
 #### List of Changes
 
+* Developed a webpage for user authentication.
+
 * Ability to dynamically display Schedule UI, and align courses with the time table.
 
 * Create a page resembling a form where users can input their course schedule preferences using checkboxes, text fields, and other interactive elements.
