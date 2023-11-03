@@ -8,12 +8,13 @@ import navcontroller.NavController
 import navcontroller.NavigationHost
 import navcontroller.composable
 import navcontroller.rememberNavController
+import screens.loginPage
 import screens.schedulePage
 import screens.welcomePage
 import style.AppTheme
 
 fun main() = application {
-    val windowState = rememberWindowState(placement = WindowPlacement.Maximized)
+    val windowState = rememberWindowState(placement = WindowPlacement.Fullscreen)
     Window(
         state = windowState,
         title = "UW Course Scheduler",
@@ -25,7 +26,7 @@ fun main() = application {
 
 @Composable
 fun App(){
-    val navController by rememberNavController(Screen.WelcomePage.name)
+    val navController by rememberNavController(Screen.LoginPage.name)
     CustomNavigationHost(navController = navController)
 }
 
@@ -35,7 +36,8 @@ fun App(){
 enum class Screen(
 ) {
     WelcomePage,
-    SchedulePage
+    SchedulePage,
+    LoginPage
 }
 
 
@@ -51,6 +53,10 @@ fun CustomNavigationHost(
 
         composable(Screen.SchedulePage.name) {
             schedulePage(navController)
+        }
+
+        composable(Screen.LoginPage.name) {
+            loginPage(navController)
         }
 
     }.build()

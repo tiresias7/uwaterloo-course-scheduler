@@ -1,34 +1,38 @@
 package components
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material3.ListItem
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import components.courseSelectionSection
-import components.navDrawer
-import components.scheduleSection
-import data.SectionUnit
-import kotlinx.serialization.json.*
-import navcontroller.NavController
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
+import data.SelectedCourse
+import org.burnoutcrew.reorderable.*
 
 @Composable
 fun preferenceSelectionSection(
-    preferences : List<String>
+    preferences: MutableList<String>,
+    showCallBack: () -> Unit,
+    changeCallBack: (from : Int , to : Int) -> Unit,
 ) {
+    val state = rememberReorderableLazyListState(onMove = { from, to ->
+        changeCallBack(from.index, to.index)
+    })
     ExtendedFloatingActionButton(
-        onClick = {},
+        onClick = { showCallBack() },
         icon = { Icon(Icons.Filled.Add, "Add Preferences") },
         text = { Text(text = "Add Preferences") },
         modifier = Modifier
@@ -41,21 +45,129 @@ fun preferenceSelectionSection(
         modifier = Modifier.size(width = 446.dp, height = 400.dp),
         shape = RoundedCornerShape(0.dp)
     ) {
-        LazyColumn() {
-            items(preferences) { preference ->
-                FloatingActionButton(
-                    onClick = {},
-                    modifier = Modifier.fillMaxSize(),
-                    shape = RoundedCornerShape(0.dp),
-                ) {
-
-                    Text(
-                        text = preference,
-                        textAlign = TextAlign.Start
+        LazyColumn(
+            state = state.listState,
+            modifier = Modifier
+            .reorderable(state)
+            .detectReorder(state)
+        ) {
+            items(preferences, { it }) { preference ->
+                ReorderableItem(state, key = preference) { isDragging ->
+                    val elevation = animateDpAsState(if (isDragging) 16.dp else 0.dp)
+                    ListItem(
+                        modifier = Modifier
+                            .shadow(elevation.value)
+                            .size(width = 446.dp, height = 50.dp),
+                        headlineContent = {Text(preference)}
                     )
+                    Divider()
                 }
-                Divider()
             }
         }
     }
 }
+@Composable
+fun preferenceDialog(
+    showAddPreference : MutableState<Boolean>
+) {
+    val preferenceDialogSection = listOf("Time", "Courses", "Instructors", "Friends")
+    if(showAddPreference.value) {
+        Dialog(
+            onDismissRequest = { showAddPreference.value = false },
+            properties = DialogProperties(dismissOnClickOutside = true)
+        ) {
+            Card(
+                modifier = Modifier
+                    .size(600.dp, 800.dp)
+                    .padding(16.dp),
+                shape = RoundedCornerShape(16.dp),
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        . padding(20.dp),
+                    verticalArrangement = Arrangement.Top,
+                    horizontalAlignment = Alignment.Start,
+                ) {
+                    for(sectionName in preferenceDialogSection) {
+                        Text(sectionName,
+                            fontSize = 30.sp,
+                            modifier = Modifier
+                                .padding(top = 20.dp)
+                        )
+                        Divider(thickness = 2.dp)
+                        if (sectionName == "Time") {
+                            ElevatedCard(
+                                elevation = CardDefaults.cardElevation(
+                                    defaultElevation = 6.dp
+                                ),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(40.dp)
+                            ) {
+                                Text("Prefer classes after 10am",
+                                        modifier = Modifier
+                                        .padding(start = 20.dp, top = 5.dp)
+                                )
+                            }
+                        }
+                        else if (sectionName == "Courses") {
+                            ElevatedCard(
+                                elevation = CardDefaults.cardElevation(
+                                    defaultElevation = 6.dp
+                                ),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(40.dp)
+                            ) {
+                                Text("Prefer classes after 10am",
+                                    modifier = Modifier
+                                        .padding(start = 20.dp, top = 5.dp)
+                                )
+                            }
+                        }
+                        else if (sectionName == "Instructors") {
+                            ElevatedCard(
+                                elevation = CardDefaults.cardElevation(
+                                    defaultElevation = 6.dp
+                                ),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(40.dp)
+                            ) {
+                                Text("Prefer classes after 10am",
+                                    modifier = Modifier
+                                        .padding(start = 20.dp, top = 5.dp)
+                                )
+                            }
+                        }
+                        else if (sectionName == "Friends") {
+                            ElevatedCard(
+                                elevation = CardDefaults.cardElevation(
+                                    defaultElevation = 6.dp
+                                ),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(40.dp)
+                            ) {
+                                Text("Prefer classes after 10am",
+                                    modifier = Modifier
+                                        .padding(start = 20.dp, top = 5.dp)
+                                )
+                            }
+                        }
+                    }
+                    TextButton(
+                        onClick = { showAddPreference.value = false },
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .align(Alignment.CenterHorizontally)
+                    ) {
+                        Text("Save")
+                    }
+                }
+            }
+        }
+    }
+}
+
