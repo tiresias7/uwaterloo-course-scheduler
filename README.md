@@ -28,12 +28,31 @@ Welcome to the Waterloo Course Scheduler applicataion made by TEAM PP-Legend. Th
 
 #### Installers
 
-- [Windows Installer](https://git.uwaterloo.ca/q258wu/pplegend-project/-/raw/74a52838d704b9d7bf0ee870276ea028007eb902/releases/0.1.0/course-scheduler-0.1.0.msi)
+- [Windows Installer](https://git.uwaterloo.ca/q258wu/pplegend-project/-/raw/main/releases/0.1.0/course-scheduler-0.1.0.msi)
 - [MacOS Installer](https://git.uwaterloo.ca/q258wu/pplegend-project/-/raw/main/releases/0.1.0/course-scheduler-0.1.0.msi?ref_type=heads)
 
 **Note:** Make sure to choose the installer corresponding to your platform.
 
-### Release 0.2.0 (Coming Soon)
+### Release 0.2.0 (Nov 03, 2023)
+
+**Release Date:** November 03, 2023
+**Version:** 0.2.0
+
+#### List of Changes
+
+* Ability to dynamically display Schedule UI, and align courses with the time table.
+* Create a page resembling a form where users can input their course schedule preferences using checkboxes, text fields, and other interactive elements.
+* Decide the content for storage in the database and proceed to store the information.
+* Establishing a connection to the database.
+* Develop methods that enable the frontend to access data by utilizing API routes for querying information from the database.
+* Establish the foundational structure for the preference algorithm aimed at selecting the highest-rated schedule. The current focus involves handling time conflict preferences.
+
+#### Installers
+
+- [Windows Installer](https://git.uwaterloo.ca/q258wu/pplegend-project/-/raw/main/releases/0.2.0/course-scheduler-0.2.0.msi)
+- [MacOS Installer](https://git.uwaterloo.ca/q258wu/pplegend-project/-/raw/main/releases/0.2.0/course-scheduler-0.2.0.msi?ref_type=heads)
+
+### Release 0.3.0 (Coming Soon)
 
 Stay tuned for our next release, which will include exciting new features and improvements.
 
