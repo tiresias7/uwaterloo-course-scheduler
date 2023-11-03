@@ -13,16 +13,13 @@ Welcome to the Waterloo Course Scheduler applicataion made by TEAM PP-Legend. Th
 
 * Added a welcome page to the UI.
 
-
 * Added a course scheduling page to the UI.
 
 * Added data classes for business logic, including sections and preference filters.
 
 * Added basic course scheduling logic in the business layer for conflict resolution.
 
-
 * Retrieved basic course infomation from UW Open API.
-
 
 * Retrieved and parsed course location and professor infomation from Quest.
 
@@ -41,10 +38,15 @@ Welcome to the Waterloo Course Scheduler applicataion made by TEAM PP-Legend. Th
 #### List of Changes
 
 * Ability to dynamically display Schedule UI, and align courses with the time table.
+
 * Create a page resembling a form where users can input their course schedule preferences using checkboxes, text fields, and other interactive elements.
+
 * Decide the content for storage in the database and proceed to store the information.
+
 * Establishing a connection to the database.
+
 * Develop methods that enable the frontend to access data by utilizing API routes for querying information from the database.
+
 * Establish the foundational structure for the preference algorithm aimed at selecting the highest-rated schedule. The current focus involves handling time conflict preferences.
 
 #### Installers
