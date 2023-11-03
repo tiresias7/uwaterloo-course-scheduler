@@ -55,6 +55,10 @@ compose.desktop {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "cs346-project"
             packageVersion = "1.0.0"
+            includeAllModules = true
+            macOS{
+                ///
+            }
         }
     }
 }
