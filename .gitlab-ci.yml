@@ -12,6 +12,7 @@
 image: gradle:alpine
 
 before_script:
+  - rm -rf .gradle/caches || true
   - GRADLE_USER_HOME="$(pwd)/.gradle"
   - export GRADLE_USER_HOME
 
