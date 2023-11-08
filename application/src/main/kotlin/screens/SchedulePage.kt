@@ -13,12 +13,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import components.*
-import createDataSource
 import data.SectionUnit
 import data.SelectedCourse
+import database.course.createDataSource
 import navcontroller.NavController
-import queryAllClasses
-import testAlgo
+import database.course.queryAllClasses
+import logic.schedulealgo.testAlgo
 
 val allCourses = queryAllClasses(createDataSource())
 

@@ -45,6 +45,7 @@ dependencies {
     implementation ("org.seleniumhq.selenium:selenium-chrome-driver:4.0.0")
     implementation("org.burnoutcrew.composereorderable:reorderable:0.9.6")
     implementation ("ch.qos.logback:logback-classic:1.2.9")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
 }
 
 compose.desktop {
