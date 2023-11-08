@@ -1,6 +1,10 @@
+package database.course
+
+import logic.Section
 import java.io.File
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
+import java.time.DayOfWeek
 
 fun createDataSource(url: String = "jdbc:mysql://34.130.134.71:3306/courses", dbUser:String = "root", dbPass: String = "PPLegend"): HikariDataSource {
     val config = HikariConfig()
@@ -107,8 +111,8 @@ fun querySectionsByFacultyId(faculty: String, courseID: String, db: HikariDataSo
             stmt.executeQuery().use { result ->
                 while (result.next()) {
                     // Here should be a warning where TBA / ONLINE classes will have no days, specially for TBA classes
-                    val days: Set<Day> = if (result.getString("days") == "") emptySet()
-                        else result.getString("days").split(",").map { Day.valueOf(it) }.toSet()
+                    val days: Set<DayOfWeek> = if (result.getString("days") == "") emptySet()
+                        else result.getString("days").split(",").map { DayOfWeek.valueOf(it) }.toSet()
                     sections.add(
                         Section(
                             result.getInt("classNumber"),
@@ -194,7 +198,7 @@ fun deleteRowsByHours(hours: Int, db: HikariDataSource) {
 }
 // example usage, make modification in the future
 fun main() {
-    val directoryPath = "C:\\Users\\YZM\\Desktop\\courses"
+    val directoryPath = "D:\\Projects\\questscrap\\ver0.3\\courses"
 
     // Connect to the MySQL database
     val database = createDataSource()
@@ -203,7 +207,7 @@ fun main() {
     createTableIfNotExists(database)
 
     // Parse HTML files in the directory and insert data into the database
-//    parseAndInsert(directoryPath, database)
+    parseAndInsert(directoryPath, database)
 
     // Test out old data cleanup
 //    deleteRowsByHours(0, database)

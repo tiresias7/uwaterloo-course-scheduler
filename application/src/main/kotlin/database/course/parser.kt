@@ -1,16 +1,24 @@
+package database.course
+
+import logic.Section
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import java.io.File
+import java.time.DayOfWeek
 import java.time.LocalTime
 import java.util.Locale
 import java.util.EnumSet
 import java.time.format.DateTimeFormatter
 
-fun parseDayInfo(input: String): Triple<LocalTime, LocalTime, Set<Day>> {
+fun parseDayInfo(input: String): Triple<LocalTime, LocalTime, Set<DayOfWeek>> {
     if (input.isEmpty()) {
         return Triple(LocalTime.parse("00:00"), LocalTime.parse("00:00"), emptySet())
     }
 
+    val dayAbbreviations = mapOf(
+        "Mo" to DayOfWeek.MONDAY, "Tu" to DayOfWeek.TUESDAY, "We" to DayOfWeek.WEDNESDAY, "Th" to DayOfWeek.THURSDAY,
+        "Fr" to DayOfWeek.FRIDAY, "Sa" to DayOfWeek.SATURDAY, "Su" to DayOfWeek.SUNDAY
+    )
     val regex = Regex("([A-Za-z]+)\\s+(\\d{1,2}:\\d{2}(?:AM|PM)?)\\s+-\\s+(\\d{1,2}:\\d{2}(?:AM|PM)?)")
     val matchResult = regex.find(input)
     if (matchResult != null) {
@@ -70,8 +78,10 @@ fun parser(filepath: String): ArrayList<Section> {
                 .flatten().filter { it.isNotBlank() }.distinct().joinToString(", ")
 
             // Create a ClassInfo object and add it to the list
-            val classInfo = Section(classNbr, sectionComponent.first, sectionComponent.second, campus,
-                room, instructor, dayTimeInfo.first, dayTimeInfo.second, dayTimeInfo.third)
+            val classInfo = Section(
+                classNbr, sectionComponent.first, sectionComponent.second, campus,
+                room, instructor, dayTimeInfo.first, dayTimeInfo.second, dayTimeInfo.third
+            )
             classInfoList.add(classInfo)
         }
     } else {
