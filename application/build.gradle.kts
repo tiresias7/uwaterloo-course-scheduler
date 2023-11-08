@@ -61,9 +61,6 @@ compose.desktop {
             packageName = "cs346-project"
             packageVersion = "1.0.0"
             includeAllModules = true
-            macOS{
-                ///
-            }
         }
     }
 }
