@@ -45,6 +45,10 @@ dependencies {
     implementation ("org.seleniumhq.selenium:selenium-chrome-driver:4.0.0")
     implementation("org.burnoutcrew.composereorderable:reorderable:0.9.6")
     implementation ("ch.qos.logback:logback-classic:1.2.9")
+    implementation("org.jetbrains.exposed", "exposed-core", "0.40.1")
+    implementation("org.jetbrains.exposed", "exposed-dao", "0.40.1")
+    implementation("org.jetbrains.exposed", "exposed-jdbc", "0.40.1")
+    implementation("org.jetbrains.exposed", "exposed-java-time", "0.40.1")
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
 }
 
