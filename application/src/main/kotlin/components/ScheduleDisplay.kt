@@ -60,31 +60,7 @@ fun scheduleSection(
                 )
                 Box() {
                     for (section in sections) {
-                        Card(
-                            elevation = CardDefaults.cardElevation(
-                                defaultElevation = 0.dp
-                            ),
-                            border = BorderStroke(0.1.dp, Color.Gray),
-                            shape = RoundedCornerShape(0.dp),
-                            modifier = Modifier
-                                .size(
-                                    width = img_width * section.getWidth() / BASE_IMAGE_WIDTH,
-                                    height = img_width * section.getHeight() / BASE_IMAGE_WIDTH
-                                )
-                                .offset(
-                                    x = img_width * section.getXOffset() / BASE_IMAGE_WIDTH,
-                                    y = img_width * section.getYOffset() / BASE_IMAGE_WIDTH
-                                ),
-                        ) {
-                            Text(
-                                text = (section.courseName + "\n"
-                                        + section.location + "\n"
-                                        + section.profName),
-                                modifier = Modifier
-                                    .padding(5.dp),
-                                textAlign = TextAlign.Start,
-                            )
-                        }
+                        sectionBlock(section, img_width)
                     }
                 }
             }

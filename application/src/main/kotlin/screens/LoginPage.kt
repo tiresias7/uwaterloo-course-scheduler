@@ -22,15 +22,9 @@ import style.welcomeFontFamily
 
 val userName = mutableStateOf(TextFieldValue())
 val password = mutableStateOf(TextFieldValue())
-@Composable
-fun loginPage(
-    navController: NavController
-) {
-    navDrawer(navController, content = { loginPageContent(navController) })
-}
 
 @Composable
-fun loginPageContent(
+fun loginPage(
     navController: NavController
 ){
     Column(

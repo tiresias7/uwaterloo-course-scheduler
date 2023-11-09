@@ -21,7 +21,9 @@ class SectionUnit(
     val finishTime: Float,
     val courseName: String,
     val profName: String,
-    val location: String
+    val location: String,
+    val component: String = "LEC",  // eg. LEC, TUT
+    val sectionNum: Int = 1,    // eg. 1, 2
 ){
     fun getWidth(): Float{
         return BLOCK_WIDTH
