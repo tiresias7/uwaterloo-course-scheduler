@@ -14,6 +14,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.AlignmentLine
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -37,28 +39,22 @@ fun sectionBlock(section: SectionUnit, baseWidth: Dp) {
     }
 
     RichTooltipBox(
+        action = { Text(section.location, color = Color.Black, fontWeight = FontWeight.Normal) },
         title = {
-            Box(){
-                Text(section.courseName)
+            Box() {
+                Text(section.courseName, fontWeight = FontWeight.Normal)
             }
         },
         text = {
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ){
-                Text(section.profName)
-                Text(section.location)
-            }
+            Text(section.profName)
         },
         modifier = Modifier
             .offset(
                 x = baseWidth * section.getXOffset() / BASE_IMAGE_WIDTH - BLOCK_WIDTH.dp,
                 y = baseWidth * section.getYOffset() / BASE_IMAGE_WIDTH
             )
-            .height(100.dp),
+            .heightIn(0.dp, 400.dp).widthIn(0.dp, 150.dp),
         tooltipState = tooltipState,
-        action = {},
     ) {
         Card(
             elevation = CardDefaults.cardElevation(
