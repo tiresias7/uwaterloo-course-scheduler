@@ -36,6 +36,7 @@ fun schedulePageContent(
     val clicked = remember { mutableStateOf(false) }
     val interactionSource = remember { MutableInteractionSource() }
     var selectedCourses = remember { mutableStateListOf<SelectedCourse>() }  // state hoisting
+    var requiredNumberOfCourses = remember { mutableStateOf(5)} // If no input then select 5 courses as default
     var returnedSections = remember { mutableStateListOf<SectionUnit>() }
     var showAddPreference = remember { mutableStateOf(false) }
 
@@ -57,7 +58,7 @@ fun schedulePageContent(
             verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.Start
         ) {
-            courseSelectionWrapper(clicked, selectedCourses,
+            courseSelectionWrapper(clicked, selectedCourses, requiredNumberOfCourses,
                 addCallBack = { courseName: String ->
                     var alreadyAdded = false
                     for (course in selectedCourses) {
@@ -103,13 +104,14 @@ fun schedulePageContent(
 fun courseSelectionWrapper(
     clicked: MutableState<Boolean>,
     selectedCourses: MutableList<SelectedCourse>,
+    requiredNumberOfCourses: MutableState<Int>,
     addCallBack: (courseName: String) -> Unit,
     toggleCallBack: (index: Int) -> Unit,
     deleteCallBack: (index: Int) -> Unit,
 ) {
     //Course Selection Section
     courseSelectionSection(
-        allCourses, selectedCourses,
+        allCourses, selectedCourses, requiredNumberOfCourses,
         addCallBack,
         toggleCallBack,
         deleteCallBack

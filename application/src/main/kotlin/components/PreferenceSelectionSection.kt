@@ -14,6 +14,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -31,36 +32,45 @@ fun preferenceSelectionSection(
     val state = rememberReorderableLazyListState(onMove = { from, to ->
         changeCallBack(from.index, to.index)
     })
-    ExtendedFloatingActionButton(
-        onClick = { showCallBack() },
-        icon = { Icon(Icons.Filled.Add, "Add Preferences") },
-        text = { Text(text = "Add Preferences") },
-        modifier = Modifier
-            .size(width = 200.dp, height = 56.dp)
-    )
-    Card(
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 6.dp
-        ),
-        modifier = Modifier.size(width = 446.dp, height = 400.dp),
-        shape = RoundedCornerShape(0.dp)
+    Column(
+        verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        LazyColumn(
-            state = state.listState,
+        ExtendedFloatingActionButton(
+            onClick = { showCallBack() },
+            icon = { Icon(Icons.Filled.Add, "Add Preferences") },
+            text = { Text(text = "Add Preferences") },
             modifier = Modifier
-            .reorderable(state)
-            .detectReorder(state)
+                .size(width = 200.dp, height = 56.dp)
+        )
+        Text(
+            text = "Drag and drop a selected preference to modify its weighting:",
+            fontSize = 12.sp,
+            fontStyle = FontStyle.Italic
+        )
+        Card(
+            elevation = CardDefaults.cardElevation(
+                defaultElevation = 6.dp
+            ),
+            modifier = Modifier.size(width = 446.dp, height = 450.dp),
+            shape = RoundedCornerShape(0.dp)
         ) {
-            items(preferences, { it }) { preference ->
-                ReorderableItem(state, key = preference) { isDragging ->
-                    val elevation = animateDpAsState(if (isDragging) 16.dp else 0.dp)
-                    ListItem(
-                        modifier = Modifier
-                            .shadow(elevation.value)
-                            .size(width = 446.dp, height = 50.dp),
-                        headlineContent = {Text(preference)}
-                    )
-                    Divider()
+            LazyColumn(
+                state = state.listState,
+                modifier = Modifier
+                    .reorderable(state)
+                    .detectReorder(state)
+            ) {
+                items(preferences, { it }) { preference ->
+                    ReorderableItem(state, key = preference) { isDragging ->
+                        val elevation = animateDpAsState(if (isDragging) 16.dp else 0.dp)
+                        ListItem(
+                            modifier = Modifier
+                                .shadow(elevation.value)
+                                .size(width = 446.dp, height = 50.dp),
+                            headlineContent = { Text(preference) }
+                        )
+                        Divider()
+                    }
                 }
             }
         }
