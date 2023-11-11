@@ -1,4 +1,4 @@
-package database.course
+package database.sections
 
 import logic.Section
 import org.jsoup.Jsoup

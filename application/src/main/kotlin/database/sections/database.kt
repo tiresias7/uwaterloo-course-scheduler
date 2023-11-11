@@ -1,20 +1,11 @@
-package database.course
+package database.sections
 
 import logic.Section
 import java.io.File
-import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import java.time.DayOfWeek
 
-fun createDataSource(url: String = "jdbc:mysql://34.130.134.71:3306/courses", dbUser:String = "root", dbPass: String = "PPLegend"): HikariDataSource {
-    val config = HikariConfig()
-    config.jdbcUrl = url
-    config.username = dbUser
-    config.password = dbPass
-    return HikariDataSource(config)
-}
-
-fun createTableIfNotExists(db: HikariDataSource) {
+fun createSectionsTableIfNotExists(db: HikariDataSource) {
     db.connection.use { conn ->
         val createTableSQL = """
             CREATE TABLE IF NOT EXISTS sections (
@@ -24,7 +15,7 @@ fun createTableIfNotExists(db: HikariDataSource) {
                 component VARCHAR(10),
                 sectionNumber INT,
                 campus VARCHAR(10),
-                room VARCHAR(255),
+                room VARCHAR(64),
                 instructor VARCHAR(255),
                 startTime TIME,
                 endTime TIME,
@@ -184,34 +175,18 @@ fun queryAllClasses(db: HikariDataSource): List<String> {
     }.flatten().sorted()
 }
 
-fun deleteRowsByHours(hours: Int, db: HikariDataSource) {
-    db.connection.use { conn ->
-        val deleteSQL = """
-            DELETE FROM sections
-            WHERE TIMESTAMPDIFF(HOUR, timestamp, NOW()) >= ${hours};
-        """.trimIndent()
-
-        conn.createStatement().use { stmt ->
-            stmt.executeUpdate(deleteSQL)
-        }
-    }
-}
 // example usage, make modification in the future
 fun main() {
-    val directoryPath = "D:\\Projects\\questscrap\\ver0.3\\courses"
+    val directoryPath = "C:\\Users\\YZM\\Desktop\\courses"
 
     // Connect to the MySQL database
-    val database = createDataSource()
+    val database = database.common.createDataSource()
 
     // Create a table (if it doesn't exist)
-    createTableIfNotExists(database)
+    createSectionsTableIfNotExists(database)
 
     // Parse HTML files in the directory and insert data into the database
     parseAndInsert(directoryPath, database)
-
-    // Test out old data cleanup
-//    deleteRowsByHours(0, database)
-
 
     // Test out section queries
     val section = querySectionsByFacultyId("CS", "137", database)

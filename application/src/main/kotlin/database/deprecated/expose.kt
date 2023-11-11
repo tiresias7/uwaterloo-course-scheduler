@@ -1,4 +1,6 @@
-import database.course.parser
+package database.deprecated
+
+import database.sections.parser
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.javatime.*
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -7,8 +9,6 @@ import logic.Section
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.lessEq
 import java.time.LocalDateTime
 import java.time.DayOfWeek
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 
 object SectionsTable : Table() {
     val faculty = varchar("faculty", 10)
