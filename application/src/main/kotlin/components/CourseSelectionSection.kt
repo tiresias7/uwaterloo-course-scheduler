@@ -60,7 +60,7 @@ fun courseSelectionSection(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text ="Number of courses you want to take:  ",
+                text ="Maximum number of courses you want to take:  ",
                 fontSize = 15.sp,
             )
             numberOfCoursesSelectionField(requiredNumberOfCourses)
@@ -68,7 +68,6 @@ fun courseSelectionSection(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun courseGrid(
     selectedCourses: MutableList<SelectedCourse>,

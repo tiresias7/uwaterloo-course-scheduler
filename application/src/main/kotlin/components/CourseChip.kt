@@ -68,7 +68,7 @@ fun courseChip(
                     toggleCallBack(index)
                 }
             ) {
-                Text(text = if (course.required) "Set to low priority " else "Set to high priority")
+                Text(text = if (course.required) "Set to Optional" else "Set to Required")
             }
             DropdownMenuItem(
                 onClick = {

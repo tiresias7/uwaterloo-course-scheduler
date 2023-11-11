@@ -14,6 +14,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -40,6 +41,11 @@ fun preferenceSelectionSection(
             text = { Text(text = "Add Preferences") },
             modifier = Modifier
                 .size(width = 200.dp, height = 56.dp)
+        )
+        Text(
+            text = "Drag and drop a selected preference to modify its weighting:",
+            fontSize = 12.sp,
+            fontStyle = FontStyle.Italic
         )
         Card(
             elevation = CardDefaults.cardElevation(
