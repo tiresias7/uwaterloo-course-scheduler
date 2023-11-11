@@ -1,13 +1,12 @@
 package logictest
 
-import database.course.createDataSource
 import data.SelectedCourse
 import logic.preference.NoCollisionPreference
 import logic.schedulealgo.OptimizedScheduleAlgorithm
 import logic.Section
 import org.junit.jupiter.api.Test
 
-import database.course.querySectionsByFacultyId
+import database.sections.querySectionsByFacultyId
 
 class OptimizedScheduleAlgorithmTest {
 
@@ -26,7 +25,7 @@ class OptimizedScheduleAlgorithmTest {
         ).map { it ->
             val faculty = it.courseName.takeWhile { it.isLetter() }
             val courseId = it.courseName.dropWhile { it.isLetter() }
-            createDataSource().use{ querySectionsByFacultyId(faculty, courseId, it) }
+            database.common.createDataSource().use{ querySectionsByFacultyId(faculty, courseId, it) }
         }.flatten()
             .map { it.map { Section(it.classNumber, it.component, it.sectionNumber, it.campus, it.room, it.instructor, it.startTime, it.endTime,
                 it.days, it.courseName) } }

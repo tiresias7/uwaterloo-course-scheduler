@@ -40,11 +40,13 @@ dependencies {
     implementation("org.jetbrains.compose.material3:material3:$material3_version")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
 //    implementation ("com.fasterxml.jackson.module:jackson-module-kotlin:2.15.0")
-    implementation ("com.squareup.okhttp3:okhttp:4.9.1")
-    implementation ("org.seleniumhq.selenium:selenium-api:4.0.0")
-    implementation ("org.seleniumhq.selenium:selenium-chrome-driver:4.0.0")
+    implementation("com.squareup.okhttp3:okhttp:4.9.1")
+    implementation("org.seleniumhq.selenium:selenium-api:4.0.0")
+    implementation("org.seleniumhq.selenium:selenium-chrome-driver:4.0.0")
     implementation("org.burnoutcrew.composereorderable:reorderable:0.9.6")
-    implementation ("ch.qos.logback:logback-classic:1.2.9")
+//    implementation("ch.qos.logback:logback-classic:1.2.9")
+    implementation("org.slf4j:slf4j-simple:2.0.7")
+    implementation("org.mindrot:jbcrypt:0.4")
     implementation("org.jetbrains.exposed", "exposed-core", "0.40.1")
     implementation("org.jetbrains.exposed", "exposed-dao", "0.40.1")
     implementation("org.jetbrains.exposed", "exposed-jdbc", "0.40.1")
@@ -62,5 +64,7 @@ compose.desktop {
             packageVersion = "1.0.0"
             includeAllModules = true
         }
+
+
     }
 }
