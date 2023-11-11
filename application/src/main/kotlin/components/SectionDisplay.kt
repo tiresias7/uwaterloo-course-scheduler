@@ -23,6 +23,9 @@ import data.BASE_IMAGE_WIDTH
 import data.BLOCK_WIDTH
 import data.SectionUnit
 import kotlinx.coroutines.launch
+import androidx.compose.material3.CardColors
+import style.*
+import style.md_theme_light_inversePrimary
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -58,10 +61,11 @@ fun sectionBlock(section: SectionUnit, baseWidth: Dp) {
     ) {
         Card(
             elevation = CardDefaults.cardElevation(
-                defaultElevation = 0.dp
+                defaultElevation = 6.dp
             ),
-            border = BorderStroke(0.1.dp, Color.Gray),
-            shape = RoundedCornerShape(0.dp),
+            colors = CardDefaults.cardColors(containerColor = md_theme_light_primaryContainer),
+            shape = RoundedCornerShape(3.dp),
+            border = BorderStroke(0.1.dp, color = Color.Gray),
             modifier = Modifier
                 .size(
                     width = baseWidth * section.getWidth() / BASE_IMAGE_WIDTH,
