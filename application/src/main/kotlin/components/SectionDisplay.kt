@@ -65,7 +65,7 @@ fun sectionBlock(section: SectionUnit, baseWidth: Dp) {
             ),
             colors = CardDefaults.cardColors(containerColor = md_theme_light_primaryContainer),
             shape = RoundedCornerShape(3.dp),
-            border = BorderStroke(0.1.dp, color = Color.Gray),
+            border = BorderStroke(0.1.dp, color = md_theme_dark_primary),
             modifier = Modifier
                 .size(
                     width = baseWidth * section.getWidth() / BASE_IMAGE_WIDTH,
