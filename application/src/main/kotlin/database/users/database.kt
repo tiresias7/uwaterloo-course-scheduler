@@ -7,9 +7,9 @@ fun createUsersTableIfNotExists(db: HikariDataSource) {
     db.connection.use { conn ->
         val createTableSQL = """
             CREATE TABLE IF NOT EXISTS users (
-                id INT AUTO_INCREMENT UNIQUE PRIMARY KEY,
+                id INT UNIQUE PRIMARY KEY,
                 email VARCHAR(20),
-                username VARCHAR(20) UNIQUE,
+                username VARCHAR(20),
                 password VARCHAR(64)
             )
         """.trimIndent()
@@ -50,7 +50,8 @@ fun queryHashedPasswordByUID(id: Int, db: HikariDataSource): String {
     }
 }
 
-fun queryUIDByUsername(userName: String, db: HikariDataSource): Int {
+
+fun queryUIDByUsername(userName: String, db: HikariDataSource): Int {   // probably not. We'll always use uid to query things
     val querySQL = """
        SELECT id FROM users 
        WHERE username = ?
@@ -66,19 +67,11 @@ fun queryUIDByUsername(userName: String, db: HikariDataSource): Int {
     }
 }
 
-fun insertOrUpdatePasswordRaw(userName: String, password: String, db: HikariDataSource, email: String = "") {
-    val hashedPassword = hashPassword(password)
-    insertOrUpdatePassword(userName, hashedPassword, db, email)
-}
-
-fun insertOrUpdatePassword(userName: String, hashedPassword: String, db: HikariDataSource, email: String = "") {
+fun createUser(userName: String, hashedPassword: String, email: String, db: HikariDataSource){
     val insertSQL = """
-       INSERT INTO users 
-       (email, username, password)
-       VALUES (?, ?, ?)
-       ON DUPLICATE KEY UPDATE 
-           email = VALUES(email),
-           password = VALUES(password)
+        INSERT INTO users (
+        SELECT max(id)+1, ?, ?, ?
+        FROM users)
     """.trimIndent()
 
     db.connection.prepareStatement(insertSQL).use { stmt ->
@@ -89,14 +82,45 @@ fun insertOrUpdatePassword(userName: String, hashedPassword: String, db: HikariD
     }
 }
 
+fun createUserRaw(userName: String, password: String, email: String, db: HikariDataSource){
+    val hashedPassword = hashPassword(password)
+    createUser(userName, hashedPassword, email, db)
+}
+
+fun updatePasswordByUID(id: Int, hashedPassword: String, db: HikariDataSource){
+    val updateSQL = """
+        UPDATE users
+        SET password = ?
+        WHERE id in (
+        SELECT id
+        FROM users
+        WHERE id = ?)
+    """.trimIndent()
+
+    db.connection.prepareStatement(updateSQL).use { stmt ->
+        stmt.setString(1, hashedPassword)
+        stmt.setString(2, id.toString())
+        stmt.execute()
+    }
+}
+
+fun updatePasswordByUIDRaw(id: Int, password: String, db: HikariDataSource){
+    val hashedPassword = hashPassword(password)
+    updatePasswordByUID(id, hashedPassword, db)
+}
+
+fun getAllUser(db: HikariDataSource){
+
+}
+
 fun main() {
     database.common.createDataSource().use {
         createUsersTableIfNotExists(it)
-        insertOrUpdatePasswordRaw("xiaoye", "password", it)
+        createUser("xiaoye", "password", "aaa@gmail.com", it)
         val uid = queryUIDByUsername("xiaoye", it)
-        insertOrUpdatePasswordRaw("alex", "password", it)
-        insertOrUpdatePasswordRaw("eddy", "password", it)
-        insertOrUpdatePasswordRaw("ryan", "password", it)
-        insertOrUpdatePasswordRaw("hello", "password", it)
+        createUserRaw("eddy", "password", "ccc@gmail.com", it)
+        createUserRaw("alex", "password", "bbb@gmail.com", it)
+        createUserRaw("ryan", "password", "ddd@gmail.com", it)
+        createUserRaw("hello", "password", "eee@gmail.com", it)
     }
 }
