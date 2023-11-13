@@ -2,8 +2,8 @@ package logic.schedulealgo
 
 import data.SectionUnit
 import data.SelectedCourse
-import database.course.createDataSource
-import database.course.querySectionsByFacultyId
+import database.common.createDataSource
+import database.sections.querySectionsByFacultyId
 import logic.preference.NoCollisionPreference
 import logic.sectionListToUnits
 
