@@ -175,6 +175,19 @@ fun queryAllClasses(db: HikariDataSource): List<String> {
     }.flatten().sorted()
 }
 
+fun deleteRowsByHours(hours: Int, db: HikariDataSource) {
+    db.connection.use { conn ->
+        val deleteSQL = """
+            DELETE FROM sections
+            WHERE TIMESTAMPDIFF(HOUR, timestamp, NOW()) >= ${hours};
+        """.trimIndent()
+
+        conn.createStatement().use { stmt ->
+            stmt.executeUpdate(deleteSQL)
+        }
+    }
+}
+
 // example usage, make modification in the future
 fun main() {
     val directoryPath = "C:\\Users\\YZM\\Desktop\\courses"

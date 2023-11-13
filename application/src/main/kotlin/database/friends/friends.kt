@@ -3,21 +3,7 @@ package database.friends
 import com.zaxxer.hikari.HikariDataSource
 
 fun createFriendsTableIfNotExists(db: HikariDataSource) {
-    db.connection.use { conn ->
-        val createTableSQL = """
-            CREATE TABLE IF NOT EXISTS friends (
-                user1 INT,
-                user2 INT,
-                PRIMARY KEY (user1, user2),
-                FOREIGN KEY (user1) REFERENCES users(id),
-                FOREIGN KEY (user2) REFERENCES users(id)
-            )
-        """.trimIndent()
-
-        conn.createStatement().use{ stmt ->
-            stmt.execute(createTableSQL)
-        }
-    }
+    createFriendsCommonTableIfNotExists("friends", db)
 }
 
 fun insertNewFriendRelation(id1: Int, id2: Int, db: HikariDataSource) {
@@ -37,7 +23,7 @@ fun queryAllFriendsRelationByUID(id: Int, db: HikariDataSource): Set<Int> {
     val querySQL = """
         SELECT *
         FROM friends
-        WHERE user1 = ${id} OR user2 = ${id}
+        WHERE user1 = $id OR user2 = $id
     """.trimIndent()
     val ids = mutableSetOf<Int>()
 

@@ -30,9 +30,13 @@ private fun checkPassword(plainText: String, hashed: String): Boolean {
     return BCrypt.checkpw(plainText, hashed)
 }
 
+fun verifyPasswordByUIDRaw(id: Int, password: String, db: HikariDataSource): Boolean {
+    return checkPassword(password, queryHashedPasswordByUID(id, db))
+}
+
 fun queryHashedPasswordByUID(id: Int, db: HikariDataSource): String {
     val querySQL = """
-        SELECT * FROM users
+        SELECT password FROM users
         WHERE id = ?
     """.trimIndent()
     db.connection.use { conn ->
@@ -48,7 +52,7 @@ fun queryHashedPasswordByUID(id: Int, db: HikariDataSource): String {
 
 fun queryUIDByUsername(userName: String, db: HikariDataSource): Int {
     val querySQL = """
-       SELECT * FROM users 
+       SELECT id FROM users 
        WHERE username = ?
     """.trimIndent()
     db.connection.use { conn ->
