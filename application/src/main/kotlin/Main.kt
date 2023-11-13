@@ -8,9 +8,7 @@ import navcontroller.NavController
 import navcontroller.NavigationHost
 import navcontroller.composable
 import navcontroller.rememberNavController
-import screens.loginPage
-import screens.schedulePage
-import screens.welcomePage
+import screens.*
 import style.AppTheme
 
 fun main() = application {
@@ -37,7 +35,9 @@ enum class Screen(
 ) {
     WelcomePage,
     SchedulePage,
-    LoginPage
+    LoginPage,
+    ProfilePage,
+    FriendPage
 }
 
 
@@ -57,6 +57,14 @@ fun CustomNavigationHost(
 
         composable(Screen.LoginPage.name) {
             loginPage(navController)
+        }
+
+        composable(Screen.ProfilePage.name) {
+            profilePage(navController)
+        }
+
+        composable(Screen.FriendPage.name) {
+            friendPage(navController)
         }
 
     }.build()

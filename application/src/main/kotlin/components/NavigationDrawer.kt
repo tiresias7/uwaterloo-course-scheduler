@@ -3,9 +3,7 @@ package components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.AccountCircle
-import androidx.compose.material.icons.outlined.ArrowBack
-import androidx.compose.material.icons.outlined.CheckCircle
+import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -47,7 +45,7 @@ fun navDrawer(
                 }
                 NavigationDrawerItem(
                     modifier = Modifier.padding(10.dp, 0.dp),
-                    icon = { Icon(Icons.Outlined.CheckCircle, "") },
+                    icon = { Icon(Icons.Outlined.Add, "") },
                     label = { Text(text = "New Schedule") },
                     selected = navController.currentScreen.value == Screen.WelcomePage.name,
                     onClick = {
@@ -59,15 +57,28 @@ fun navDrawer(
                 )
                 NavigationDrawerItem(
                     modifier = Modifier.padding(10.dp, 0.dp),
-                    icon = { Icon(Icons.Outlined.CheckCircle, "") },
-                    label = { Text(text = "My Schedule (now goes to generate schedule page)") },
-                    badge = { Text(text = "0") },
-                    selected = navController.currentScreen.value == Screen.SchedulePage.name,
+                    icon = { Icon(Icons.Outlined.Home, "") },
+                    label = { Text(text = "My Profile") },
+                    //badge = { Text(text = "0") },
+                    selected = navController.currentScreen.value == Screen.ProfilePage.name,
                     onClick = {
                         scope.launch {
                             drawerState.apply { close() }
                         }
-                        navController.navigate(Screen.SchedulePage.name)
+                        navController.navigate(Screen.ProfilePage.name)
+                    }
+                )
+                NavigationDrawerItem(
+                    modifier = Modifier.padding(10.dp, 0.dp),
+                    icon = { Icon(Icons.Outlined.Person, "") },
+                    label = { Text(text = "My Friends") },
+                    //badge = { Text(text = "0") },
+                    selected = navController.currentScreen.value == Screen.FriendPage.name,
+                    onClick = {
+                        scope.launch {
+                            drawerState.apply { close() }
+                        }
+                        navController.navigate(Screen.FriendPage.name)
                     }
                 )
             }
