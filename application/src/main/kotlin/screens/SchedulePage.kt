@@ -3,21 +3,18 @@ package screens
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import components.*
 import data.SectionUnit
 import data.SelectedCourse
-import database.course.createDataSource
+import database.common.createDataSource
 import navcontroller.NavController
-import database.course.queryAllClasses
+import database.sections.queryAllClasses
 import logic.schedulealgo.testAlgo
 
 val allCourses = queryAllClasses(createDataSource())
