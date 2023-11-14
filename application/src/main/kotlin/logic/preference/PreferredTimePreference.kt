@@ -3,6 +3,7 @@ package logic.preference
 import logic.Section
 import java.time.DayOfWeek
 import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 class PreferredTimePreference(
@@ -11,7 +12,7 @@ class PreferredTimePreference(
     private val endTime: LocalTime,
     private val days: Set<DayOfWeek> = EnumSet.allOf(DayOfWeek::class.java)
 ) : Preference() {
-    override val weight: Int = if (weight >= HARD_PREFERENCE_WEIGHT) {
+    override var weight: Int = if (weight >= HARD_PREFERENCE_WEIGHT) {
         throw IllegalArgumentException("PreferredTimePreference cannot be a hard preference.")
     } else {
         weight
@@ -31,4 +32,16 @@ class PreferredTimePreference(
         return score
     }
 
+    override fun toString(): String {
+        var outStr = "Preferred time slots on "
+        for (day in days){
+            outStr += day.name.substring(0, 3)
+            outStr += " "
+        }
+        val formatter = DateTimeFormatter.ofPattern("HH:mm")
+        outStr += "from ${startTime.format(formatter)} to ${endTime.format(formatter)}"
+        outStr += ". Weight: ${weight}"
+
+        return outStr
+    }
 }

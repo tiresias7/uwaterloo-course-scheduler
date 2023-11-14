@@ -14,7 +14,7 @@ abstract class Preference {
 //        }
     }
 
-    abstract val weight: Int      // Weight of this preference, higher is more important
+    abstract var weight: Int      // Weight of this preference, higher is more important
                                   // Hard preferences should have a weight of 10000
                                   // Soft preferences should smaller weights, starting from 1
     abstract val tag: String      // Category of this preference

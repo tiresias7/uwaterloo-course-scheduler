@@ -11,23 +11,16 @@ import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.PointerEventType
-import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import data.BASE_IMAGE_WIDTH
 import data.SectionUnit
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun scheduleSection(
-    clicked: MutableState<Boolean>,
     sections: MutableList<SectionUnit>
 ) {
     Column(

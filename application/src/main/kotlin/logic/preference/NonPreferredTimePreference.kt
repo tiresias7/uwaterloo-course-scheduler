@@ -3,10 +3,11 @@ package logic.preference
 import logic.Section
 import java.time.DayOfWeek
 import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 class NonPreferredTimePreference(
-    override val weight: Int,
+    override var weight: Int,
     private val startTime: LocalTime,
     private val endTime: LocalTime,
     private val days: Set<DayOfWeek> = EnumSet.allOf(DayOfWeek::class.java)
@@ -24,4 +25,16 @@ class NonPreferredTimePreference(
         return 100
     }
 
+    override fun toString(): String {
+        var outStr = "Avoid time slots on "
+        for (day in days){
+            outStr += day.name.substring(0, 3)
+            outStr += " "
+        }
+        val formatter = DateTimeFormatter.ofPattern("HH:mm")
+        outStr += "from ${startTime.format(formatter)} to ${endTime.format(formatter)}"
+        outStr += ". Weight: ${weight}"
+
+        return outStr
+    }
 }

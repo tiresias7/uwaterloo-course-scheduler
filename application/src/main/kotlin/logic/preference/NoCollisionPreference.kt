@@ -4,7 +4,7 @@ import logic.Section
 import java.time.DayOfWeek
 import java.time.LocalTime
 
-class NoCollisionPreference(override val weight: Int) : Preference() {
+class NoCollisionPreference(override var weight: Int) : Preference() {
     override val tag: String = "NoCollision"
 
     override fun getScore(sections: List<Section>): Int {
