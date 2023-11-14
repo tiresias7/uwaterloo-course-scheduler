@@ -62,6 +62,12 @@ fun profilePageContent(
                 modifier = Modifier.padding(top = 20.dp))
             Text("Email: " + userEmail.value, fontSize = 15.sp,
                 modifier = Modifier.padding(top = 10.dp))
+            Spacer(modifier = Modifier.padding(vertical = 20.dp))
+            OutlinedButton(
+                content = {Text("Log out")},
+                onClick = {navController.navigate(Screen.LoginPage.name)},
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
         }
         schedule(savedSections)
     }
