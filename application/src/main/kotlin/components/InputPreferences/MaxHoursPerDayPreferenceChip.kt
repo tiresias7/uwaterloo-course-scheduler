@@ -41,7 +41,7 @@ fun MaxHoursPerDayChip(
                             isError.value = false
                         }
                         else if (it.all { char -> char.isDigit() }) {
-                            if (it.toInt() <= 0 || it.toInt() > 24){
+                            if (it.toInt() <= 0 || it.toInt() > 24 || it.length > 2){
                                 ;
                             }
                             else{
