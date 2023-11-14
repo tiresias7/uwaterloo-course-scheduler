@@ -121,13 +121,14 @@ fun schedulePageContent(
         Column(
             modifier = Modifier
                 .fillMaxHeight(),
-            verticalArrangement = Arrangement.Center,
+            verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = CenterHorizontally
         ) {
-            schedule(returnedSections)
+            schedule(returnedSections, modifier = Modifier.paddingFromBaseline(100.dp, 0.dp).weight(5f))
             Row(
                 horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.Bottom,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.weight(0.8f)
             ) {
                 OutlinedButton(
                     onClick = {

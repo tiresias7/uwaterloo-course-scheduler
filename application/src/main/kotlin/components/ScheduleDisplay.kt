@@ -68,12 +68,14 @@ fun scheduleSection(
 
 @Composable
 fun schedule(
-    sections: MutableList<SectionUnit>
+    sections: MutableList<SectionUnit>,
+    modifier: Modifier = Modifier
 ) {
     var img_width by remember { mutableStateOf(0.dp) }
     var img_height by remember { mutableStateOf(0.dp) }
     val density = LocalDensity.current.density
     Card(
+        modifier = modifier,
         border = BorderStroke(0.1.dp, Color.Black),
         colors = CardDefaults.cardColors(containerColor = Color.White),
         shape = RoundedCornerShape((0.dp)),
