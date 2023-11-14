@@ -45,9 +45,9 @@ fun courseSelectionSection(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Divider(modifier = Modifier.width(190.dp).padding(end = 3.dp))
+            Divider(modifier = Modifier.width(195.dp).padding(end = 3.dp))
             Text("Courses",fontSize = 14.sp,color = Color.Gray)
-            Divider(modifier = Modifier.width(190.dp).padding(start = 3.dp))
+            Divider(modifier = Modifier.width(195.dp).padding(start = 3.dp))
         }
         courseSearchInputField(allCourses, addCallBack)
         Text(
