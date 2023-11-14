@@ -46,7 +46,6 @@ fun welcomePageContent(
             )
         }
     }
-
 }
 
 @Composable
