@@ -11,23 +11,16 @@ import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.PointerEventType
-import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import data.BASE_IMAGE_WIDTH
 import data.SectionUnit
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun scheduleSection(
-    clicked: MutableState<Boolean>,
     sections: MutableList<SectionUnit>
 ) {
     Column(
@@ -75,12 +68,14 @@ fun scheduleSection(
 
 @Composable
 fun schedule(
-    sections: MutableList<SectionUnit>
+    sections: MutableList<SectionUnit>,
+    modifier: Modifier = Modifier
 ) {
     var img_width by remember { mutableStateOf(0.dp) }
     var img_height by remember { mutableStateOf(0.dp) }
     val density = LocalDensity.current.density
     Card(
+        modifier = modifier,
         border = BorderStroke(0.1.dp, Color.Black),
         colors = CardDefaults.cardColors(containerColor = Color.White),
         shape = RoundedCornerShape((0.dp)),

@@ -7,7 +7,7 @@ import java.util.*
 import kotlin.math.min
 
 class MaxHoursPerDayPreference(
-    override val weight: Int,
+    override var weight: Int,
     private val maxHoursPerDay: Int
 ) : Preference() {
     override val tag: String = "MaxHoursPerDay"
@@ -31,5 +31,9 @@ class MaxHoursPerDayPreference(
         val totalViolations = min(hoursPerDay.values.count { it > maxHoursPerDay * 60 }, 5)
 
         return (100 - totalViolations * 20)
+    }
+
+    override fun toString(): String {
+        return "Max Hours of Class Per Day: $maxHoursPerDay. Weight: $weight"
     }
 }

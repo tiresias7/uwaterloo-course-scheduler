@@ -10,7 +10,7 @@ class PreferenceTest {
 
     // A minimal concrete subclass of Preference for testing purposes
     private class TestPreference : Preference() {
-        override val weight: Int = 2
+        override var weight: Int = 2
         override val tag: String = "Test"
 
         override fun getScore(sections: List<Section>): Int = 42

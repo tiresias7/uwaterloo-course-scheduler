@@ -3,21 +3,20 @@ package screens
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import components.*
 import data.SectionUnit
 import data.SelectedCourse
 import database.course.createDataSource
 import navcontroller.NavController
 import database.course.queryAllClasses
+import logic.preference.Preference
+import logic.preference.PreferenceBuilder
 import logic.schedulealgo.testAlgo
 
 val allCourses = queryAllClasses(createDataSource())
@@ -26,19 +25,19 @@ val allCourses = queryAllClasses(createDataSource())
 fun schedulePage(
     navController: NavController
 ) {
-    navDrawer(navController, content = { schedulePageContent(navController) })
+    navDrawer(navController, content = { schedulePageContent() })
 }
 
 @Composable
 fun schedulePageContent(
-    navController: NavController
 ) {
-    val clicked = remember { mutableStateOf(false) }
     val interactionSource = remember { MutableInteractionSource() }
-    var selectedCourses = remember { mutableStateListOf<SelectedCourse>() }  // state hoisting
-    var requiredNumberOfCourses = remember { mutableStateOf(5)} // If no input then select 5 courses as default
-    var returnedSections = remember { mutableStateListOf<SectionUnit>() }
-    var showAddPreference = remember { mutableStateOf(false) }
+    val selectedCourses = remember { mutableStateListOf<SelectedCourse>() }  // state hoisting
+    val requiredNumberOfCourses = remember { mutableStateOf(5) } // If no input then select 5 courses as default
+    val returnedSections = remember { mutableStateListOf<SectionUnit>() }
+    val showAddPreference = remember { mutableStateOf(false) }
+    val selectedPreferences = remember { mutableStateListOf<Preference>() }
+    val preferenceBuilder = PreferenceBuilder()
 
     Row(
         modifier = Modifier
@@ -55,10 +54,10 @@ fun schedulePageContent(
         Column(
             modifier = Modifier
                 .fillMaxHeight(),
-            verticalArrangement = Arrangement.SpaceEvenly,
+            verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.Start
         ) {
-            courseSelectionWrapper(clicked, selectedCourses, requiredNumberOfCourses,
+            courseSelectionWrapper(selectedCourses, requiredNumberOfCourses,
                 addCallBack = { courseName: String ->
                     var alreadyAdded = false
                     for (course in selectedCourses) {
@@ -77,32 +76,89 @@ fun schedulePageContent(
                 deleteCallBack = { index: Int ->
                     selectedCourses.removeAt(index)
                 })
-            preferenceSelectionWrapper(clicked, showCallBack = {
-                showAddPreference.value = true
-            })
-
-            //Generate Button
-            OutlinedButton(
-                onClick = {
-                    clicked.value = true;
-                    returnedSections.clear()
-                    returnedSections.addAll(testAlgo(selectedCourses).toMutableStateList())
+            Spacer(modifier = Modifier.padding(10.dp))
+            preferenceSelectionWrapper(selectedPreferences,
+                showCallBack = {
+                    showAddPreference.value = true
                 },
-                modifier = Modifier
-                    .size(width = 180.dp, height = 56.dp)
-                    .align(CenterHorizontally)
+                changeCallBack = { from: Int, to: Int ->
+                    if (from < to){
+                        for (p in selectedPreferences) {
+                            if (p.weight > (from + 1) && p.weight <= (to + 1)) {
+                                p.weight--
+                            }
+                        }
+                        val removeElement = selectedPreferences.removeAt(from)
+                        removeElement.weight = to + 1
+                        selectedPreferences.add(to, removeElement)
+                    }
+                    else{
+                        for (p in selectedPreferences) {
+                            if (p.weight > to && p.weight <= from) {
+                                p.weight++
+                            }
+                        }
+                        val removeElement = selectedPreferences.removeAt(from)
+                        removeElement.weight = to + 1
+                        selectedPreferences.add(to, removeElement)
+                    }
+                },
+                deleteCallBack = {
+                    preference ->
+                    var remove_flag = 0
+                    for (p in selectedPreferences){
+                        if (p === preference){
+                            remove_flag = 1
+                        }
+                        if (remove_flag == 1){
+                            p.weight--
+                        }
+                    }
+                    selectedPreferences.remove(preference)
+                }
+            )
+        }
+        Column(
+            modifier = Modifier
+                .fillMaxHeight(),
+            verticalArrangement = Arrangement.SpaceEvenly,
+            horizontalAlignment = CenterHorizontally
+        ) {
+            schedule(returnedSections, modifier = Modifier.paddingFromBaseline(100.dp, 0.dp).weight(5f))
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.weight(0.8f)
             ) {
-                Text("Generate Schedule")
+                OutlinedButton(
+                    onClick = {
+                        returnedSections.clear()
+                        returnedSections.addAll(testAlgo(selectedCourses).toMutableStateList())
+                    },
+                    modifier = Modifier
+                        .size(width = 180.dp, height = 56.dp)
+                        .padding(top = 10.dp)
+                ) {
+                    Text("Generate Schedule")
+                }
+                TextButton(
+                    content = {Text("Save")},
+                    onClick = {}
+                )
+                TextButton(
+                    content = {Text("Export")},
+                    onClick = {}
+                )
             }
         }
-        scheduleSection(clicked, returnedSections)
     }
-    preferenceDialog(showAddPreference)
+    preferenceDialog(showAddPreference, addCallBack = { tag: String, inputList: List<String> ->
+        preferenceBuilder.build(selectedPreferences.size+1, tag, inputList)?.let { selectedPreferences.add(it) }
+    })
 }
 
 @Composable
 fun courseSelectionWrapper(
-    clicked: MutableState<Boolean>,
     selectedCourses: MutableList<SelectedCourse>,
     requiredNumberOfCourses: MutableState<Int>,
     addCallBack: (courseName: String) -> Unit,
@@ -120,20 +176,11 @@ fun courseSelectionWrapper(
 
 @Composable
 fun preferenceSelectionWrapper(
-    clicked: MutableState<Boolean>,
-    showCallBack: () -> Unit
+    selectedPreferences: MutableList<Preference>,
+    showCallBack: () -> Unit,
+    changeCallBack: (Int, Int) -> Unit,
+    deleteCallBack: (preference: Preference) -> Unit
 ) {
-    val preferences = remember {
-        mutableStateListOf(
-            "Time for classes", "Time for breaks",
-            "Time of conflicts", "Location", "Instructor",
-        )
-    }
-    //var addedPreferences = remember { mutableStateListOf<Preference>() }  // state hoisting
-    preferenceSelectionSection(preferences, showCallBack,
-        changeCallBack = { from: Int, to: Int ->
-            val removeElement = preferences.removeAt(from)
-            preferences.add(to, removeElement)
-        })
+    preferenceSelectionSection(selectedPreferences, showCallBack, changeCallBack, deleteCallBack)
 }
 
