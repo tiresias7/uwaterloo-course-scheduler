@@ -33,7 +33,7 @@ class PreferredTimePreference(
     }
 
     override fun toString(): String {
-        var outStr = "Preferred time slots on "
+        var outStr = "Prefer time slots on "
         for (day in days){
             outStr += day.name.substring(0, 3)
             outStr += " "

@@ -119,7 +119,7 @@ fun checkHour(str: String, targetStr: MutableState<String>, error: MutableState<
         error.value = false
     }
     else if (str.all { char -> char.isDigit() }) {
-        if (str.toInt() < 0 || str.toInt() > 24){
+        if (str.toInt() < 0 || str.toInt() > 24 || str.length > 2){
             ;
         }
         else{
@@ -135,7 +135,7 @@ fun checkMinute(str: String, targetStr: MutableState<String>, error: MutableStat
         error.value = false
     }
     else if (str.all { char -> char.isDigit() }) {
-        if (str.toInt() < 0 || str.toInt() > 59){
+        if (str.toInt() < 0 || str.toInt() > 59 || str.length > 2){
             ;
         }
         else{
