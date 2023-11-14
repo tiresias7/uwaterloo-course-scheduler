@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -37,14 +38,22 @@ fun preferenceSelectionSection(
         changeCallBack(from.index, to.index)
     })
     Column(
-        verticalArrangement = Arrangement.spacedBy(10.dp)
+        verticalArrangement = Arrangement.spacedBy(5.dp)
     ) {
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Divider(modifier = Modifier.width(180.dp).padding(end = 3.dp))
+            Text("Preferences",fontSize = 14.sp,color = Color.Gray)
+            Divider(modifier = Modifier.width(180.dp).padding(start = 3.dp))
+        }
         ExtendedFloatingActionButton(
             onClick = { showCallBack() },
             icon = { Icon(Icons.Filled.Add, "Add Preferences") },
             text = { Text(text = "Add Preferences") },
             modifier = Modifier
-                .size(width = 200.dp, height = 56.dp)
+                .size(width = 446.dp, height = 35.dp)
         )
         Text(
             text = "Drag and drop a selected preference to modify its weighting:",

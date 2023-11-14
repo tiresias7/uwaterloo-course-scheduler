@@ -54,7 +54,7 @@ fun schedulePageContent(
         Column(
             modifier = Modifier
                 .fillMaxHeight(),
-            verticalArrangement = Arrangement.SpaceEvenly,
+            verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.Start
         ) {
             courseSelectionWrapper(selectedCourses, requiredNumberOfCourses,
@@ -76,6 +76,7 @@ fun schedulePageContent(
                 deleteCallBack = { index: Int ->
                     selectedCourses.removeAt(index)
                 })
+            Spacer(modifier = Modifier.padding(10.dp))
             preferenceSelectionWrapper(selectedPreferences,
                 showCallBack = {
                     showAddPreference.value = true
@@ -116,21 +117,39 @@ fun schedulePageContent(
                     selectedPreferences.remove(preference)
                 }
             )
-
-            //Generate Button
-            OutlinedButton(
-                onClick = {
-                    returnedSections.clear()
-                    returnedSections.addAll(testAlgo(selectedCourses).toMutableStateList())
-                },
-                modifier = Modifier
-                    .size(width = 180.dp, height = 56.dp)
-                    .align(CenterHorizontally)
+        }
+        Column(
+            modifier = Modifier
+                .fillMaxHeight(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = CenterHorizontally
+        ) {
+            schedule(returnedSections)
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.Bottom,
             ) {
-                Text("Generate Schedule")
+                OutlinedButton(
+                    onClick = {
+                        returnedSections.clear()
+                        returnedSections.addAll(testAlgo(selectedCourses).toMutableStateList())
+                    },
+                    modifier = Modifier
+                        .size(width = 180.dp, height = 56.dp)
+                        .padding(top = 10.dp)
+                ) {
+                    Text("Generate Schedule")
+                }
+                TextButton(
+                    content = {Text("Save")},
+                    onClick = {}
+                )
+                TextButton(
+                    content = {Text("Export")},
+                    onClick = {}
+                )
             }
         }
-        scheduleSection(returnedSections)
     }
     preferenceDialog(showAddPreference, addCallBack = { tag: String, inputList: List<String> ->
         preferenceBuilder.build(selectedPreferences.size+1, tag, inputList)?.let { selectedPreferences.add(it) }

@@ -39,8 +39,16 @@ fun courseSelectionSection(
     deleteCallBack: (index: Int) -> Unit
 ) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(10.dp)
+        verticalArrangement = Arrangement.Center
     ) {
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Divider(modifier = Modifier.width(190.dp).padding(end = 3.dp))
+            Text("Courses",fontSize = 14.sp,color = Color.Gray)
+            Divider(modifier = Modifier.width(190.dp).padding(start = 3.dp))
+        }
         courseSearchInputField(allCourses, addCallBack)
         Text(
             text = "Click on a selected course to modify its priority:",
@@ -53,6 +61,7 @@ fun courseSelectionSection(
             ),
             modifier = Modifier
                 .size(width = 446.dp, height = 119.dp)
+                .padding(5.dp),
         ) {
             courseGrid(selectedCourses, toggleCallBack, deleteCallBack)
         }
