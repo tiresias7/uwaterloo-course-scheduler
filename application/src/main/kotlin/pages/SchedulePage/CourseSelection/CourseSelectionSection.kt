@@ -1,9 +1,7 @@
-package components
+package pages.SchedulePage.CourseSelection
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.icons.Icons
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -12,21 +10,15 @@ import courseSearchInputField
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.DropdownMenuItem
-import androidx.compose.material.icons.outlined.Done
-import androidx.compose.material.icons.outlined.Search
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.PopupProperties
+import common.SimpleTextField
 import data.SelectedCourse
-import searchFilter
-import style.*
-import javax.swing.text.Style
 
 
 @Composable
@@ -101,31 +93,37 @@ fun numberOfCoursesSelectionField(
 ) {
     val all = listOf("1", "2", "3", "4", "5", "6", "7")
     var label by remember { mutableStateOf("5") }
+    val focusManager = LocalFocusManager.current
     Row(
         verticalAlignment = Alignment.CenterVertically
     ) {
-        OutlinedButton(
-            modifier = Modifier
-                .size(width = 60.dp, height = 35.dp),
-            onClick = {
-                dropDownExpanded.value = true
-            },
-            shape = RoundedCornerShape(5.dp)
-        ) {
-            Text(label)
-        }
+        SimpleTextField(
+            modifier = Modifier.size(40.dp, 25.dp)
+                .onFocusChanged { focusState ->
+                    if (focusState.isFocused) {
+                        dropDownExpanded.value = true
+                    } else {
+                        dropDownExpanded.value = false
+                    }
+                },
+            shape = RoundedCornerShape(5.dp),
+            readOnly = true,
+            value = label,
+            onValueChange = {}
+        )
         DropdownMenu(
             expanded = dropDownExpanded.value,
             properties = PopupProperties(),
             onDismissRequest = { dropDownExpanded.value = false },
-            modifier = Modifier.width(60.dp).heightIn(max = 450.dp)
+            modifier = Modifier.size(40.dp, 250.dp)
         ) {
             all.forEach { text: String ->
                 DropdownMenuItem(
-                    modifier = Modifier.size(60.dp, 35.dp),
+                    modifier = Modifier.height(35.dp),
                     onClick = {
                         dropDownExpanded.value = false
                         requiredNumberOfCourses.value = text.toInt()
+                        focusManager.clearFocus()
                         label = text
                     }
                 ) {

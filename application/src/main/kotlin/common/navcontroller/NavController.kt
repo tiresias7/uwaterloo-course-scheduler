@@ -1,4 +1,4 @@
-package navcontroller
+package common.navcontroller
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState

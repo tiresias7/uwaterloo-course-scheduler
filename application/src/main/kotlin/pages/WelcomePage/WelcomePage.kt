@@ -1,4 +1,4 @@
-package screens
+package pages.WelcomePage
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -10,8 +10,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import components.navDrawer
-import navcontroller.NavController
+import common.navDrawer
+import common.navcontroller.NavController
 import style.welcomeFontFamily
 
 

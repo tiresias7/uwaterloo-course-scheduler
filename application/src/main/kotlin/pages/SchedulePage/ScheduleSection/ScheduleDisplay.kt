@@ -1,4 +1,4 @@
-package components
+package pages.SchedulePage.ScheduleSection
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -18,53 +18,6 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import data.SectionUnit
-
-@Composable
-fun scheduleSection(
-    sections: MutableList<SectionUnit>
-) {
-    Column(
-        horizontalAlignment = Alignment.End
-    ) {
-        schedule(sections)
-        Row(
-            modifier = Modifier.requiredHeight(60.dp)
-        ) {
-            FloatingActionButton(
-                onClick = {},
-                modifier = Modifier
-                    .size(width = 40.dp, height = 40.dp)
-            ) {
-                Icon(
-                    Icons.Outlined.Star,
-                    "Save to my schedule"
-                )
-            }
-            Spacer(modifier = Modifier.width(30.dp))
-            FloatingActionButton(
-                onClick = {},
-                modifier = Modifier
-                    .size(width = 40.dp, height = 40.dp)
-            ) {
-                Icon(
-                    Icons.Outlined.Person,
-                    "Share to friends"
-                )
-            }
-            Spacer(modifier = Modifier.width(30.dp))
-            FloatingActionButton(
-                onClick = {},
-                modifier = Modifier
-                    .size(width = 40.dp, height = 40.dp)
-            ) {
-                Icon(
-                    Icons.Outlined.Share,
-                    "Export"
-                )
-            }
-        }
-    }
-}
 
 @Composable
 fun schedule(

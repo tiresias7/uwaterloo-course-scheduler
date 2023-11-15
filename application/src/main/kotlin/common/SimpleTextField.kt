@@ -1,4 +1,4 @@
-package components
+package common
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -11,7 +11,6 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,7 +22,6 @@ import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import style.md_theme_light_primary
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -47,7 +45,7 @@ fun SimpleTextField(
     cursorBrush: Brush = SolidColor(Color.Black),
     colors: TextFieldColors = TextFieldDefaults.textFieldColors(),
     shape: Shape = RoundedCornerShape(8.dp),
-    isError: MutableState<Boolean>
+    isError: MutableState<Boolean> = mutableStateOf(false)
 ) {
     val color = mutableStateOf(Color.Black)
     if (isError.value) {color.value = Color.Red}

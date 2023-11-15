@@ -1,14 +1,17 @@
+import pages.FriendPage.friendPage
+import pages.ProfilePage.profilePage
+import pages.SchedulePage.schedulePage
+import pages.WelcomePage.welcomePage
 import androidx.compose.runtime.*
-import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
-import navcontroller.NavController
-import navcontroller.NavigationHost
-import navcontroller.composable
-import navcontroller.rememberNavController
-import screens.*
+import common.navcontroller.NavController
+import common.navcontroller.NavigationHost
+import common.navcontroller.composable
+import common.navcontroller.rememberNavController
+import pages.LoginPage.loginPage
 import style.AppTheme
 
 fun main() = application {

@@ -1,5 +1,9 @@
-package screens
+package pages.SchedulePage
 
+import pages.SchedulePage.CourseSelection.courseSelectionSection
+import pages.SchedulePage.PreferenceSelection.preferenceDialog
+import pages.SchedulePage.PreferenceSelection.preferenceSelectionSection
+import pages.SchedulePage.ScheduleSection.schedule
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -9,11 +13,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import components.*
+import common.*
 import data.SectionUnit
 import data.SelectedCourse
 import database.course.createDataSource
-import navcontroller.NavController
+import common.navcontroller.NavController
 import database.course.queryAllClasses
 import logic.preference.Preference
 import logic.preference.PreferenceBuilder
@@ -145,10 +149,10 @@ fun schedulePageContent(
                     content = {Text("Save")},
                     onClick = {}
                 )
-                TextButton(
+                /*TextButton(
                     content = {Text("Export")},
                     onClick = {}
-                )
+                )*/
             }
         }
     }
