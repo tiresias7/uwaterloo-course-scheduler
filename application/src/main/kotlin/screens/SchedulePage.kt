@@ -124,11 +124,11 @@ fun schedulePageContent(
             verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = CenterHorizontally
         ) {
-            schedule(returnedSections, modifier = Modifier.paddingFromBaseline(100.dp, 0.dp).weight(5f))
+            schedule(returnedSections, modifier = Modifier.weight(5f,  fill = false))
             Row(
                 horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.weight(0.8f)
+                verticalAlignment = Alignment.Bottom,
+                modifier = Modifier.weight(0.8f,  fill = false)
             ) {
                 OutlinedButton(
                     onClick = {
