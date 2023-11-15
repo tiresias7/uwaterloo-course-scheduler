@@ -24,7 +24,7 @@ fun courseSearchInputField(
     all: List<String>,
     addCallBack: (courseName: String) -> Unit
 ) {
-    var label by remember { mutableStateOf("Start from adding your courses here") }
+    var label by remember { mutableStateOf("Add as many courses as you want") }
     val ifFocused = mutableStateOf(true)
     val focusManager = LocalFocusManager.current
     Box() {

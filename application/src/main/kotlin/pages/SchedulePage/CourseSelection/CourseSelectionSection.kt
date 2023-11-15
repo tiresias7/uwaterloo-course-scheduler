@@ -61,7 +61,7 @@ fun courseSelectionSection(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text ="Maximum number of courses you want to take:  ",
+                text = "Number of courses you want to take:  ",
                 fontSize = 15.sp,
             )
             numberOfCoursesSelectionField(requiredNumberOfCourses)
