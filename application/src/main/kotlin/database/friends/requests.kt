@@ -21,14 +21,30 @@ fun insertNewFriendRequest(id1: Int, id2: Int, db: HikariDataSource) {
     }
 }
 
-fun queryAllFriendRequestsByUID(id: Int, db: HikariDataSource): Set<Pair<Int, String>> {
+fun verifyFriendRequest(id1: Int, id2: Int, db: HikariDataSource): Boolean {
+    val querySQL = """
+       SELECT * 
+       FROM requests
+       WHERE user1 = $id1 AND user2 = $id2
+    """.trimIndent()
+
+    db.connection.use { conn ->
+        conn.prepareStatement(querySQL).use { stmt ->
+            stmt.executeQuery().use { result ->
+                return result.next()
+            }
+        }
+    }
+}
+
+fun queryAllFriendRequestsByUID(id: Int, db: HikariDataSource): List<Pair<Int, String>> {
     val querySQL = """
         SELECT DISTINCT requests.user1, users.username
         FROM requests
         JOIN users ON requests.user1 = users.id
         WHERE requests.user2 = $id
     """.trimIndent()
-    val friendData = mutableSetOf<Pair<Int, String>>()
+    val friendData = mutableListOf<Pair<Int, String>>()
 
     db.connection.use { conn ->
         conn.prepareStatement(querySQL).use { stmt ->
@@ -55,5 +71,12 @@ fun deleteFriendRequestsByUID(id1: Int, id2: Int, db: HikariDataSource) {
         conn.createStatement().use { stmt ->
             stmt.executeUpdate(deleteSQl)
         }
+    }
+}
+
+fun main() {
+    database.common.createDataSource().use {
+        createRequestsTableIfNotExists(it)
+        println(verifyFriendRequest(1, 2, it))
     }
 }

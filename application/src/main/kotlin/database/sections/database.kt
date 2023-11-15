@@ -103,7 +103,7 @@ fun querySectionsByFacultyId(faculty: String, courseID: String, db: HikariDataSo
                 while (result.next()) {
                     // Here should be a warning where TBA / ONLINE classes will have no days, specially for TBA classes
                     val days: Set<DayOfWeek> = if (result.getString("days") == "") emptySet()
-                        else result.getString("days").split(",").map { DayOfWeek.valueOf(it) }.toSet()
+                    else result.getString("days").split(",").map { DayOfWeek.valueOf(it) }.toSet()
                     sections.add(
                         Section(
                             result.getInt("classNumber"),
@@ -122,8 +122,9 @@ fun querySectionsByFacultyId(faculty: String, courseID: String, db: HikariDataSo
             }
         }
     }
-   // return return sections.groupBy { it.component }.values.toList()
-   return sections.groupBy { it.component }.values.toList().filter { it.isNotEmpty() && !it.first().component.contains("TST") }
+    // return return sections.groupBy { it.component }.values.toList()
+    return sections.groupBy { it.component }.values.toList()
+        .filter { it.isNotEmpty() && !it.first().component.contains("TST") }
 }
 
 fun queryCoursesByFaculty(faculty: String, db: HikariDataSource): List<String> {
@@ -205,8 +206,8 @@ fun main() {
     val section = querySectionsByFacultyId("CS", "137", database)
     section.forEach { list ->
         println("newlist")
-        list.forEach{
-            sec -> println(sec)
+        list.forEach { sec ->
+            println(sec)
         }
     }
 
