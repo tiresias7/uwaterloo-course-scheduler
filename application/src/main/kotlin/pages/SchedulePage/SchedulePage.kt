@@ -19,9 +19,11 @@ import data.SelectedCourse
 import database.course.createDataSource
 import common.navcontroller.NavController
 import database.course.queryAllClasses
+import logic.getSchedule
 import logic.preference.Preference
 import logic.preference.PreferenceBuilder
 import logic.schedulealgo.testAlgo
+import logic.sectionListToUnits
 
 val allCourses = queryAllClasses(createDataSource())
 
@@ -137,7 +139,7 @@ fun schedulePageContent(
                 OutlinedButton(
                     onClick = {
                         returnedSections.clear()
-                        returnedSections.addAll(testAlgo(selectedCourses).toMutableStateList())
+                        returnedSections.addAll(getScheduleService(selectedCourses, requiredNumberOfCourses,selectedPreferences))
                     },
                     modifier = Modifier
                         .size(width = 180.dp, height = 56.dp)
@@ -186,5 +188,34 @@ fun preferenceSelectionWrapper(
     deleteCallBack: (preference: Preference) -> Unit
 ) {
     preferenceSelectionSection(selectedPreferences, showCallBack, changeCallBack, deleteCallBack)
+}
+
+fun getScheduleService(selectedCourses: MutableList<SelectedCourse>,
+                       requiredNumberOfCourses: MutableState<Int>,
+                       selectedPreferences: MutableList<Preference>): List<SectionUnit> {
+    val hardCourses : MutableList<String> = mutableListOf()
+    val softCourses : MutableList<String> = mutableListOf()
+    val hardPreference : MutableList<Preference> = mutableListOf()
+    val softPreference : MutableList<Preference> = mutableListOf()
+    for(course in selectedCourses) {
+        if (course.required) {
+            hardCourses.add(course.courseName)
+        }
+        else {
+            softCourses.add(course.courseName)
+        }
+    }
+    for(preference in selectedPreferences) {
+        hardPreference.add(preference)
+    }
+    println(hardCourses)
+    println(softCourses)
+    println(hardPreference)
+    println(softPreference)
+    println(requiredNumberOfCourses.value)
+    val result : List<SectionUnit> = sectionListToUnits(getSchedule(hardCourses.toList(), softCourses.toList(), requiredNumberOfCourses.value,
+        hardPreference.toList(), softPreference.toList())[0])
+    println(result)
+    return result
 }
 
