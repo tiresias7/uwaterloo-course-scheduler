@@ -1,6 +1,7 @@
 package components
 
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -26,6 +27,10 @@ import components.InputPreferences.NonPreferredTimeChip
 import components.InputPreferences.PreferredTimeChip
 import logic.preference.Preference
 import org.burnoutcrew.reorderable.*
+import style.md_theme_light_inversePrimary
+import androidx.compose.material3.ListItemColors
+import style.md_theme_light_primaryContainer
+import style.md_theme_light_surface
 
 @Composable
 fun preferenceSelectionSection(
@@ -60,12 +65,11 @@ fun preferenceSelectionSection(
             fontSize = 12.sp,
             fontStyle = FontStyle.Italic
         )
-        Card(
+        ElevatedCard(
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 6.dp
             ),
             modifier = Modifier.size(width = 446.dp, height = 450.dp).padding(bottom = 10.dp),
-            shape = RoundedCornerShape(0.dp)
         ) {
             LazyColumn(
                 state = state.listState,
@@ -80,16 +84,17 @@ fun preferenceSelectionSection(
                             modifier = Modifier
                                 .shadow(elevation.value)
                                 .size(width = 446.dp, height = 70.dp)
-                                .clip(shape = RoundedCornerShape(30.dp)),
+                                .clip(shape = RoundedCornerShape(0.dp)),
                             headlineContent = { Text(preference.toString()) },
                             trailingContent = { TextButton(
                                 onClick = {deleteCallBack(preference)}
                             ){
                                 Icon(Icons.Outlined.Close, "")
                             } },
-                            tonalElevation = 30.dp
+                            tonalElevation = 30.dp,
+                            colors = ListItemDefaults.colors(containerColor = md_theme_light_primaryContainer)
                         )
-                        Divider()
+                        Divider(thickness = 1.dp, color = md_theme_light_inversePrimary)
                     }
                 }
             }
@@ -101,7 +106,7 @@ fun preferenceDialog(
     showAddPreference : MutableState<Boolean>,
     addCallBack: (String, List<String>) -> Unit
 ) {
-    val preferenceDialogSection = listOf("Time", "Courses", "Instructors", "Friends")
+    val preferenceDialogSection = listOf("Class Time Preference", "Course Preference", "Instructor Preference", "Friend Preference")
     if(showAddPreference.value) {
         Dialog(
             onDismissRequest = { showAddPreference.value = false },
@@ -126,21 +131,21 @@ fun preferenceDialog(
                             modifier = Modifier
                                 .padding(top = 20.dp)
                         )
-                        Divider(thickness = 2.dp)
-                        if (sectionName == "Time") {
+                        if (sectionName == "Class Time Preference") {
+                            Spacer(modifier = Modifier.height(5.dp))
                             MaxHoursPerDayChip(addCallBack)
-                            Spacer(modifier = Modifier.height(10.dp))
+                            Spacer(modifier = Modifier.height(5.dp))
                             PreferredTimeChip(addCallBack)
-                            Spacer(modifier = Modifier.height(10.dp))
+                            Spacer(modifier = Modifier.height(5.dp))
                             NonPreferredTimeChip(addCallBack)
                         }
-                        else if (sectionName == "Courses") {
+                        else if (sectionName == "Course Preference") {
                             ////////FILLMEIN////////
                         }
-                        else if (sectionName == "Instructors") {
+                        else if (sectionName == "Instructor Preference") {
                             ////////FILLMEIN////////
                         }
-                        else if (sectionName == "Friends") {
+                        else if (sectionName == "Friend Preference") {
                             ////////FILLMEIN////////
                         }
                     }

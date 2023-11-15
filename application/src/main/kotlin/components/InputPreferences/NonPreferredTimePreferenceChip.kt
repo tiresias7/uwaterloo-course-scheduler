@@ -8,6 +8,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import components.SimpleTextField
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
@@ -40,41 +41,41 @@ fun NonPreferredTimeChip(
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Text("Avoid Time Slot from  ")
-                OutlinedTextField(
+                Text("Avoid time from  ")
+                SimpleTextField(
                     value = duration1.value,
                     onValueChange = {
                         checkHour(it, duration1, isError1)
                     },
-                    isError = isError1.value,
-                    modifier = Modifier.width(60.dp),
+                    isError = isError1,
+                    modifier = Modifier.size(50.dp, 30.dp),
                 )
-                Text("  :  ")
-                OutlinedTextField(
+                Text(" : ")
+                SimpleTextField(
                     value = duration2.value,
                     onValueChange = {
                         checkMinute(it, duration2, isError2)
                     },
-                    isError = isError2.value,
-                    modifier = Modifier.width(60.dp),
+                    isError = isError2,
+                    modifier = Modifier.size(50.dp, 30.dp),
                 )
                 Text("  to  ")
-                OutlinedTextField(
+                SimpleTextField(
                     value = duration3.value,
                     onValueChange = {
                         checkHour(it, duration3, isError3)
                     },
-                    isError = isError3.value,
-                    modifier = Modifier.width(60.dp),
+                    isError = isError3,
+                    modifier = Modifier.size(50.dp, 30.dp),
                 )
-                Text("  :  ")
-                OutlinedTextField(
+                Text(" : ")
+                SimpleTextField(
                     value = duration4.value,
                     onValueChange = {
                         checkMinute(it, duration4, isError4)
                     },
-                    isError = isError4.value,
-                    modifier = Modifier.width(60.dp),
+                    isError = isError4,
+                    modifier = Modifier.size(50.dp, 30.dp),
                 )
             }
             FilledTonalButton(

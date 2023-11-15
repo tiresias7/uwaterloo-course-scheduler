@@ -1,13 +1,17 @@
 package components.InputPreferences
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import components.SimpleTextField
 
 @Composable
 fun MaxHoursPerDayChip(
@@ -32,8 +36,8 @@ fun MaxHoursPerDayChip(
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Text("Max Hours of Class Per Day: ")
-                OutlinedTextField(
+                Text("Maximum total hours of classes per day: ")
+                SimpleTextField(
                     value = duration.value,
                     onValueChange = {
                         if (it == ""){
@@ -50,8 +54,8 @@ fun MaxHoursPerDayChip(
                             }
                         }
                     },
-                    isError = isError.value,
-                    modifier = Modifier.width(60.dp),
+                    isError = isError,
+                    modifier = Modifier.size(50.dp, 30.dp),
                 )
             }
             FilledTonalButton(
