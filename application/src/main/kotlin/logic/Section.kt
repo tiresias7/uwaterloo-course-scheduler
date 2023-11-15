@@ -28,6 +28,8 @@ data class Section(
     }
 }
 
+typealias Schedule = List<Section>
+
 fun sectionListToUnits(sections: List<Section>): List<SectionUnit> {
     return sections.map { it.toSectionUnit() }.flatten()
 }

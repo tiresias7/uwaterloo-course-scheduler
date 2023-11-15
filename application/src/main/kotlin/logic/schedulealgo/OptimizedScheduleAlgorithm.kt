@@ -31,6 +31,7 @@ class OptimizedScheduleAlgorithm : ScheduleAlgorithm() {
                 if (topSchedules.size > totalSchedules) {
                     topSchedules.poll()
                 }
+                return
             }
 
             val nextSections = heuristicOrderedSections[index]
