@@ -1,4 +1,4 @@
-package components
+package pages.SchedulePage.ScheduleSection
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.hoverable
@@ -11,10 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.AlignmentLine
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
@@ -23,9 +21,7 @@ import data.BASE_IMAGE_WIDTH
 import data.BLOCK_WIDTH
 import data.SectionUnit
 import kotlinx.coroutines.launch
-import androidx.compose.material3.CardColors
 import style.*
-import style.md_theme_light_inversePrimary
 
 
 @OptIn(ExperimentalMaterial3Api::class)

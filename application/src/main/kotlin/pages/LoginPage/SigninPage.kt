@@ -1,24 +1,18 @@
-package screens
+package pages.LoginPage
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import components.navDrawer
-import navcontroller.NavController
-import style.welcomeFontFamily
+import common.navcontroller.NavController
 
 @Composable
 fun loginPage(
@@ -94,7 +88,7 @@ fun loginPage(
                 Spacer(modifier = Modifier.padding(vertical = 15.dp))
                 Button(
                     onClick = { navController.navigate(Screen.WelcomePage.name) },
-                    content = { Text(text = "Log in") },
+                    content = { Text(text = "Sign in") },
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)
                         .size(400.dp, 50.dp)

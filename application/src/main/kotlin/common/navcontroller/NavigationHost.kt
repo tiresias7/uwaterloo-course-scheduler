@@ -1,4 +1,4 @@
-package navcontroller
+package common.navcontroller
 
 import androidx.compose.runtime.Composable
 

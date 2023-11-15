@@ -1,20 +1,19 @@
-package components.InputPreferences
+package pages.SchedulePage.PreferenceSelection.InputPreferences
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import components.SimpleTextField
+import common.SimpleTextField
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun PreferredTimeChip(
+fun NonPreferredTimeChip(
     addCallBack: (String, List<String>) -> Unit
 ) {
     val duration1 = remember { mutableStateOf("") }
@@ -42,7 +41,7 @@ fun PreferredTimeChip(
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Text("Prefer time from  ")
+                Text("Avoid time from  ")
                 SimpleTextField(
                     value = duration1.value,
                     onValueChange = {
@@ -96,7 +95,7 @@ fun PreferredTimeChip(
                         val startTime = LocalTime.parse("${d1}:${d2}", formatter)
                         val endTime = LocalTime.parse("${d3}:${d4}", formatter)
                         if (startTime < endTime){
-                            addCallBack("PreferredTime", listOf(startTime.format(formatter), endTime.format(formatter)))
+                            addCallBack("NonPreferredTime", listOf(startTime.format(formatter), endTime.format(formatter)))
                             //TODO("add days as a set. Currently everyday")
                         }
                         else{
@@ -110,38 +109,6 @@ fun PreferredTimeChip(
             ){
                 Text("Add")
             }
-        }
-    }
-}
-
-fun checkHour(str: String, targetStr: MutableState<String>, error: MutableState<Boolean>){
-    if (str == ""){
-        targetStr.value = str
-        error.value = false
-    }
-    else if (str.all { char -> char.isDigit() }) {
-        if (str.toInt() < 0 || str.toInt() > 24 || str.length > 2){
-            ;
-        }
-        else{
-            targetStr.value = str
-            error.value = false
-        }
-    }
-}
-
-fun checkMinute(str: String, targetStr: MutableState<String>, error: MutableState<Boolean>){
-    if (str == ""){
-        targetStr.value = str
-        error.value = false
-    }
-    else if (str.all { char -> char.isDigit() }) {
-        if (str.toInt() < 0 || str.toInt() > 59 || str.length > 2){
-            ;
-        }
-        else{
-            targetStr.value = str
-            error.value = false
         }
     }
 }

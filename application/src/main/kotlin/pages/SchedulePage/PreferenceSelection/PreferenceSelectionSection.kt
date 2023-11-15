@@ -1,7 +1,6 @@
-package components
+package pages.SchedulePage.PreferenceSelection
 
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -22,15 +21,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import components.InputPreferences.MaxHoursPerDayChip
-import components.InputPreferences.NonPreferredTimeChip
-import components.InputPreferences.PreferredTimeChip
 import logic.preference.Preference
 import org.burnoutcrew.reorderable.*
+import pages.SchedulePage.PreferenceSelection.InputPreferences.NonPreferredTimeChip
+import pages.SchedulePage.PreferenceSelection.InputPreferences.PreferredTimeChip
+import pages.SchedulePage.PreferenceSelection.InputPreferences.MaxHoursPerDayChip
 import style.md_theme_light_inversePrimary
-import androidx.compose.material3.ListItemColors
 import style.md_theme_light_primaryContainer
-import style.md_theme_light_surface
 
 @Composable
 fun preferenceSelectionSection(

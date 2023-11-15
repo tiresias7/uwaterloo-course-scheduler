@@ -1,4 +1,4 @@
-package components
+package common
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -11,7 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
-import navcontroller.NavController
+import common.navcontroller.NavController
 import style.*
 
 @Composable
@@ -46,7 +46,7 @@ fun navDrawer(
                 NavigationDrawerItem(
                     modifier = Modifier.padding(10.dp, 0.dp),
                     icon = { Icon(Icons.Outlined.Add, "") },
-                    label = { Text(text = "New Schedule") },
+                    label = { Text(text = "Scheduler") },
                     selected = navController.currentScreen.value == Screen.WelcomePage.name,
                     onClick = {
                         navController.navigate(Screen.WelcomePage.name)

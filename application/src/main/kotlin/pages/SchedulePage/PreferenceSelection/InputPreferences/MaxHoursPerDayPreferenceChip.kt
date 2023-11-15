@@ -1,17 +1,14 @@
-package components.InputPreferences
+package pages.SchedulePage.PreferenceSelection.InputPreferences
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import components.SimpleTextField
+import common.SimpleTextField
 
 @Composable
 fun MaxHoursPerDayChip(

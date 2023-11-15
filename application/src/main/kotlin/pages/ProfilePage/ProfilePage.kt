@@ -1,4 +1,4 @@
-package screens
+package pages.ProfilePage
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -11,14 +11,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import components.navDrawer
-import components.preferenceDialog
-import components.schedule
-import components.scheduleSection
+import common.navDrawer
+import pages.SchedulePage.ScheduleSection.schedule
 import data.SectionUnit
-import data.SelectedCourse
-import logic.schedulealgo.testAlgo
-import navcontroller.NavController
+import common.navcontroller.NavController
 @Composable
 fun profilePage(
     navController: NavController
