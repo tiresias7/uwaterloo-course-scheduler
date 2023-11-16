@@ -191,7 +191,7 @@ fun deleteRowsByHours(hours: Int, db: HikariDataSource) {
 
 // example usage, make modification in the future
 fun main() {
-    val directoryPath = "C:\\Users\\YZM\\Desktop\\courses"
+    val directoryPath = "C:\\Users\\YZM\\Desktop\\chromedriver-win64\\course"
 
     // Connect to the MySQL database
     val database = database.common.createDataSource()
@@ -200,10 +200,10 @@ fun main() {
     createSectionsTableIfNotExists(database)
 
     // Parse HTML files in the directory and insert data into the database
-    parseAndInsert(directoryPath, database)
+//    parseAndInsert(directoryPath, database)
 
     // Test out section queries
-    val section = querySectionsByFacultyId("CS", "137", database)
+    val section = querySectionsByFacultyId("MATH", "135", database)
     section.forEach { list ->
         println("newlist")
         list.forEach { sec ->

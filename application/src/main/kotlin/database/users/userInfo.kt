@@ -92,10 +92,7 @@ private fun updatePasswordByUID(id: Int, hashedPassword: String, db: HikariDataS
     val updateSQL = """
         UPDATE users
         SET password = ?
-        WHERE id in (
-        SELECT id
-        FROM users
-        WHERE id = ?)
+        WHERE id  = ?
     """.trimIndent()
 
     db.connection.prepareStatement(updateSQL).use { stmt ->
@@ -115,7 +112,7 @@ fun main() {
         createUsersTableIfNotExists(it)
         createUser("xiaoye", "password", "aaa@gmail.com", it)
         val uid = queryUIDByEmail("aaa@gmail.com", it)
-        println(uid)
+        updatePasswordByUIDRaw(uid, "password", it)
         createUserRaw("eddy", "password", "ccc@gmail.com", it)
         createUserRaw("alex", "password", "bbb@gmail.com", it)
         createUserRaw("ryan", "password", "ddd@gmail.com", it)
