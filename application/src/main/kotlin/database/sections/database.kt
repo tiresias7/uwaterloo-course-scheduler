@@ -11,7 +11,7 @@ fun createSectionsTableIfNotExists(db: HikariDataSource) {
             CREATE TABLE IF NOT EXISTS sections (
                 faculty VARCHAR(10),
                 courseID VARCHAR(10),
-                classNumber INT,
+                classNumber INT PRIMARY KEY UNIQUE,
                 component VARCHAR(10),
                 sectionNumber INT,
                 campus VARCHAR(10),
@@ -20,8 +20,7 @@ fun createSectionsTableIfNotExists(db: HikariDataSource) {
                 startTime TIME,
                 endTime TIME,
                 days VARCHAR(255),
-                timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                PRIMARY KEY (faculty, courseID, classNumber, component, sectionNumber)
+                timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
             )
         """.trimIndent()
 
@@ -40,6 +39,10 @@ fun insertSectionsIntoDatabase(sections: List<Section>, filename: String, db: Hi
             (faculty, courseID, classNumber, component, sectionNumber, campus, room, instructor, startTime, endTime, days)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ON DUPLICATE KEY UPDATE
+                faculty = VALUES(faculty),
+                courseID = VALUES(courseID),
+                component = VALUES(component),
+                sectionNumber = VALUES(sectionNumber),
                 campus = VALUES(campus),
                 room = VALUES(room),
                 instructor = VALUES(instructor),
@@ -200,7 +203,7 @@ fun main() {
     createSectionsTableIfNotExists(database)
 
     // Parse HTML files in the directory and insert data into the database
-//    parseAndInsert(directoryPath, database)
+    parseAndInsert(directoryPath, database)
 
     // Test out section queries
     val section = querySectionsByFacultyId("MATH", "135", database)
