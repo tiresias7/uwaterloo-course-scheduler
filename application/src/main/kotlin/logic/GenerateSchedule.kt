@@ -1,7 +1,7 @@
 package logic
 
-import database.course.createDataSource
-import database.course.querySectionsByFacultyId
+import database.common.createDataSource
+import database.sections.querySectionsByFacultyId
 import logic.preference.Preference
 import logic.schedulealgo.OptimizedScheduleAlgorithm
 import java.util.*

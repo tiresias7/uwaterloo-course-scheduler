@@ -16,13 +16,12 @@ import androidx.compose.ui.unit.dp
 import common.*
 import data.SectionUnit
 import data.SelectedCourse
-import database.course.createDataSource
+import database.common.createDataSource
 import common.navcontroller.NavController
-import database.course.queryAllClasses
+import database.sections.queryAllClasses
 import logic.getSchedule
 import logic.preference.Preference
 import logic.preference.PreferenceBuilder
-import logic.schedulealgo.testAlgo
 import logic.sectionListToUnits
 
 val allCourses = queryAllClasses(createDataSource())
