@@ -7,16 +7,16 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 
 class PreferredTimePreference(
-    weight: Int,
+    override var weight: Int,
     private val startTime: LocalTime,
     private val endTime: LocalTime,
     private val days: Set<DayOfWeek> = EnumSet.allOf(DayOfWeek::class.java)
 ) : Preference() {
-    override var weight: Int = if (weight >= HARD_PREFERENCE_WEIGHT) {
-        throw IllegalArgumentException("PreferredTimePreference cannot be a hard preference.")
-    } else {
-        weight
-    }
+//    override var weight: Int = if (weight >= HARD_PREFERENCE_WEIGHT) {
+//        throw IllegalArgumentException("PreferredTimePreference cannot be a hard preference.")
+//    } else {
+//        weight
+//    }
     override val tag: String = "PreferredTime"
 
     override fun getScore(sections: List<Section>): Int {
