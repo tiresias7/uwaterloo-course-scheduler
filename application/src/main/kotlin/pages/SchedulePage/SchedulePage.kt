@@ -238,6 +238,7 @@ fun getScheduleService(selectedCourses: MutableList<SelectedCourse>,
     }
     hardPreference.add(NoCollisionPreference(10000))
     for(preference in selectedPreferences) {
+        preference.weight = selectedPreferences.size - preference.weight + 1
         softPreference.add(preference)
     }
     println(hardCourses)
