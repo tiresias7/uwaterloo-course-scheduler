@@ -2,6 +2,7 @@ package pages.LoginPage
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
@@ -10,16 +11,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.compose.material3.IconButtonColors
 import common.SimpleTextField
 import common.navcontroller.NavController
 import logic.SignStatus
 import logic.signing.signInExistingUsersByEmail
 import logic.signing.signUpNewUsers
+import style.md_theme_dark_primary
+import style.md_theme_light_inversePrimary
 
 @Composable
 fun loginPage(
@@ -29,7 +36,7 @@ fun loginPage(
     var emailLabel by remember { mutableStateOf("Enter Email") }
     var password by remember { mutableStateOf(TextFieldValue()) }
     var passwordLabel by remember { mutableStateOf("Enter Password") }
-    var secretPassword by remember { mutableStateOf(TextFieldValue()) }
+    var passwordVisible by remember { mutableStateOf(false) }
     var isError by remember{ mutableStateOf(false)}
     val ifShowSignup = remember { mutableStateOf(false) }
     Column(
@@ -88,15 +95,29 @@ fun loginPage(
                     singleLine = true,
                     value = password,
                     onValueChange = { newValue: TextFieldValue ->
-                        //println(newValue.text)
                         password = newValue
                         passwordLabel = "Enter Password"
-                        //secretPassword = TextFieldValue(password.text.map{'*'}.joinToString(separator = ""))
                         isError = false
                     },
                     label = { Text(passwordLabel, fontStyle = FontStyle.Italic) },
                     leadingIcon = {
                         Icon(Icons.Outlined.Lock, "Password")
+                    },
+                    visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                    trailingIcon = {
+                        IconButton(
+                            onClick = {passwordVisible = !passwordVisible},
+                            modifier = Modifier.width(50.dp).padding(end = 10.dp),
+                            colors = IconButtonDefaults.iconButtonColors(contentColor = Color.Black)
+                        ){
+                            if (passwordVisible) {
+                                Text("Hide", fontSize = 14.sp)
+                            }
+                            else {
+                                Text("Show", fontSize = 14.sp)
+                            }
+                        }
                     },
                     isError = isError,
                     modifier = Modifier.width(400.dp)
@@ -180,6 +201,7 @@ fun signupDialog (ifShowSignup : MutableState<Boolean>) {
     var password2 by remember { mutableStateOf(TextFieldValue()) }
     var iconPassword by remember { mutableStateOf(Icons.Outlined.Lock) }
     var ifEmailAlreadyExists by remember { mutableStateOf(false) }
+    var passwordVisible by remember { mutableStateOf(false) }
     val ifNameInvalid = remember {mutableStateOf(false)}
     val ifEmailInvalid = remember {mutableStateOf(false)}
     val ifPasswordInvalid = remember {mutableStateOf(false)}
@@ -251,9 +273,12 @@ fun signupDialog (ifShowSignup : MutableState<Boolean>) {
                         value = email.text,
                         onValueChange = { newValue: String ->
                             email = TextFieldValue(newValue)
-                            ifEmailInvalid.value = false
                             ifEmailAlreadyExists = false
-                            //Check if email is valid or not
+                            if (newValue.matches(Regex("[a-zA-Z0-9@.]*")) && newValue.length <= 50 &&
+                                newValue.length >= 1 ) {
+                                ifEmailInvalid.value = false
+                            }
+                            else { ifEmailInvalid.value = true }
                         },
                         leadingIcon = {
                             Icon(Icons.Outlined.Email, "Email")
@@ -271,7 +296,6 @@ fun signupDialog (ifShowSignup : MutableState<Boolean>) {
                     Text("Create Password (5-20 characters)",fontSize = 12.sp,)
                     SimpleTextField(
                         singleLine = true,
-                        //value = password1.text.map{'*'}.joinToString(separator = ""),
                         value = password1.text,
                         onValueChange = { newValue: String ->
                             password1 = TextFieldValue(newValue)
@@ -283,6 +307,22 @@ fun signupDialog (ifShowSignup : MutableState<Boolean>) {
                         },
                         leadingIcon = {
                             Icon(Icons.Outlined.Lock, "Password")
+                        },
+                        visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                        trailingIcon = {
+                            IconButton(
+                                onClick = {passwordVisible = !passwordVisible},
+                                modifier = Modifier.width(50.dp).padding(end = 10.dp),
+                                colors = IconButtonDefaults.iconButtonColors(contentColor = Color.Black)
+                            ){
+                                if (passwordVisible) {
+                                    Text("Hide", fontSize = 14.sp)
+                                }
+                                else {
+                                    Text("Show", fontSize = 14.sp)
+                                }
+                            }
                         },
                         isError = ifPasswordInvalid,
                         modifier = Modifier.size(500.dp, 50.dp)
@@ -308,6 +348,22 @@ fun signupDialog (ifShowSignup : MutableState<Boolean>) {
                                 iconPassword = Icons.Outlined.Close
                             }
                             if (password2.text == "") {iconPassword = Icons.Outlined.Lock}
+                        },
+                        visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                        trailingIcon = {
+                            IconButton(
+                                onClick = {passwordVisible = !passwordVisible},
+                                modifier = Modifier.width(50.dp).padding(end = 10.dp),
+                                colors = IconButtonDefaults.iconButtonColors(contentColor = Color.Black)
+                            ){
+                                if (passwordVisible) {
+                                    Text("Hide", fontSize = 14.sp)
+                                }
+                                else {
+                                    Text("Show", fontSize = 14.sp)
+                                }
+                            }
                         },
                         leadingIcon = {
                             Icon(iconPassword, "Password")
