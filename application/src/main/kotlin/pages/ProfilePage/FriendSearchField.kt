@@ -1,4 +1,5 @@
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Search
@@ -25,9 +26,11 @@ fun friendSearchInputField(
     var label by remember { mutableStateOf("Search Username or UID to add friends") }
     val ifFocused = mutableStateOf(true)
     val focusManager = LocalFocusManager.current
-    Box() {
-        Row(
-            verticalAlignment = Alignment.CenterVertically
+    Box(
+        modifier = Modifier.height(600.dp).fillMaxWidth(),
+    ) {
+        Column(
+            verticalArrangement = Arrangement.Top
         ) {
             OutlinedTextField(
                 modifier = Modifier.height(60.dp).fillMaxWidth()
