@@ -314,7 +314,7 @@ fun errorDialog(ifErrorDialog : MutableState<Boolean>, errorCauses : MutableList
                     }
                     else if (errorCauses.contains("no schedule returned")) {
                         Text(
-                            "It's impossible to generate a schedule including all courses you selects without time conflict",
+                            "It's impossible to generate a schedule including all courses you selects without time conflicts",
                             fontSize = 15.sp,
                             modifier = Modifier.padding(start = 30.dp, end = 30.dp)
                         )
