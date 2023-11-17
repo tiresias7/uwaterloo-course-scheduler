@@ -149,9 +149,12 @@ fun loginPage(
                             if (status == SignStatus.SIGN_IN_INVALID) {
                                 isError = true
                                 emailLabel = "Email Not Found"
+                                email = TextFieldValue("")
+                                password = TextFieldValue("")
                             } else if (status == SignStatus.SIGN_IN_FAILED) {
                                 isError = true
                                 passwordLabel = "Incorrect Password"
+                                password = TextFieldValue("")
                             } else {
                                 USER_EMAIL = email.text
                                 USER_ID = response.second.first
