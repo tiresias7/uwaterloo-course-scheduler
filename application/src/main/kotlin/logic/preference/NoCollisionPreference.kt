@@ -24,6 +24,11 @@ class NoCollisionPreference(override var weight: Int) : Preference() {
         var currentOverlap = 0
 
         // Check each day for overlaps
+        // check for online course, return No Collision
+        if (events.isEmpty()){
+            return 100
+        }
+
         var currentDay = events.first().day
         for (event in events) {
             // Reset the counter if it's a new day
