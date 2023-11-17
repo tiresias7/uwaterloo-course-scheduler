@@ -9,10 +9,11 @@ fun signUpNewUsers(name: String, password: String, email: String): Triple<SignSt
     var cookie = ""
 
     createDataSource().use { db ->
-        val userInfo = queryUserInfoByEmail(email, db)
+        var userInfo = queryUserInfoByEmail(email, db)
         val status = if (userInfo.first == 0) SignStatus.SIGN_UP_CREATE else SignStatus.SIGN_UP_FAILED
         if (status == SignStatus.SIGN_UP_CREATE) {
             createUserRaw(name, password, email, db)
+            userInfo = queryUserInfoByEmail(email, db)
             cookie = "good"
         }
         return Triple(status, userInfo, cookie)
