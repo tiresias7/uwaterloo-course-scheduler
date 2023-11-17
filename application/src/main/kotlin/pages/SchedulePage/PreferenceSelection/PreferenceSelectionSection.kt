@@ -80,7 +80,7 @@ fun preferenceSelectionSection(
                         ListItem(
                             modifier = Modifier
                                 .shadow(elevation.value)
-                                .size(width = 446.dp, height = 70.dp)
+                                .size(width = 446.dp, height = 50.dp)
                                 .clip(shape = RoundedCornerShape(0.dp)),
                             headlineContent = { Text(preference.toString()) },
                             trailingContent = { TextButton(

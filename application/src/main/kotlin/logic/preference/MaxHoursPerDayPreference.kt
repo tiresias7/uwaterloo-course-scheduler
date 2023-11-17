@@ -34,6 +34,6 @@ class MaxHoursPerDayPreference(
     }
 
     override fun toString(): String {
-        return "Max Hours of Class Per Day: $maxHoursPerDay. Weight: $weight"
+        return "Maximum hours of classes per day: $maxHoursPerDay"
     }
 }

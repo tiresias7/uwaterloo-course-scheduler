@@ -2,12 +2,13 @@ package pages.SchedulePage.PreferenceSelection.InputPreferences
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.PopupProperties
 import common.SimpleTextField
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -21,6 +22,11 @@ fun NonPreferredTimeChip(
     val duration3 = remember { mutableStateOf("") }
     val duration4 = remember { mutableStateOf("") }
     val isError = remember { mutableStateOf(false) }
+    val dropDownExpanded = remember {mutableStateOf(false)}
+    var days by remember { mutableStateOf("") }
+    var daysSelected = remember { mutableListOf<Int>()}
+    val weekDays = listOf("Add All Weekdays", "Add Monday", "Add Tuesday", "Add Wednesday", "Add Thursday", "Add Friday", "Clear")
+    val focusManager = LocalFocusManager.current
     ElevatedCard(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 6.dp
@@ -38,7 +44,7 @@ fun NonPreferredTimeChip(
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Text("Avoid time from  ")
+                Text("Avoid time slot ")
                 SimpleTextField(
                     value = duration1.value,
                     onValueChange = {
@@ -56,7 +62,7 @@ fun NonPreferredTimeChip(
                     isError = isError,
                     modifier = Modifier.size(50.dp, 30.dp),
                 )
-                Text("  to  ")
+                Text(" to ")
                 SimpleTextField(
                     value = duration3.value,
                     onValueChange = {
@@ -74,6 +80,46 @@ fun NonPreferredTimeChip(
                     isError = isError,
                     modifier = Modifier.size(50.dp, 30.dp),
                 )
+                Text(" on ")
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    SimpleTextField(
+                        modifier = Modifier.size(100.dp, 30.dp)
+                            .onFocusChanged { focusState ->
+                                if (focusState.isFocused) {
+                                    dropDownExpanded.value = true
+                                } else {
+                                    dropDownExpanded.value = false
+                                }
+                            },
+                        readOnly = true,
+                        value = days,
+                        onValueChange = {},
+                        isError = isError
+                    )
+                    DropdownMenu(
+                        expanded = dropDownExpanded.value,
+                        properties = PopupProperties(),
+                        onDismissRequest = { dropDownExpanded.value = false },
+                        modifier = Modifier.size(200.dp, 270.dp)
+                    ) {
+                        weekDays.forEach { text: String ->
+                            androidx.compose.material.DropdownMenuItem(
+                                modifier = Modifier.height(35.dp),
+                                onClick = {
+                                    dropDownExpanded.value = false
+                                    days = addedDays(text, daysSelected)
+                                    isError.value = false
+                                    focusManager.clearFocus()
+                                }
+                            ) {
+                                Text(text = text)
+                            }
+                            Divider()
+                        }
+                    }
+                }
             }
             FilledTonalButton(
                 onClick = {
@@ -85,12 +131,12 @@ fun NonPreferredTimeChip(
                         val d2 = duration2.value.padStart(2, '0')
                         val d3 = duration3.value.padStart(2, '0')
                         val d4 = duration4.value.padStart(2, '0')
+                        val dayOfWeek = days
                         val formatter = DateTimeFormatter.ofPattern("HH:mm")
                         val startTime = LocalTime.parse("${d1}:${d2}", formatter)
                         val endTime = LocalTime.parse("${d3}:${d4}", formatter)
-                        if (startTime < endTime){
-                            addCallBack("NonPreferredTime", listOf(startTime.format(formatter), endTime.format(formatter)))
-                            //TODO("add days as a set. Currently everyday")
+                        if (startTime < endTime && !days.isEmpty()){
+                            addCallBack("NonPreferredTime", listOf(startTime.format(formatter), endTime.format(formatter), dayOfWeek))
                         }
                         else{
                             isError.value = true
@@ -103,3 +149,5 @@ fun NonPreferredTimeChip(
         }
     }
 }
+
+

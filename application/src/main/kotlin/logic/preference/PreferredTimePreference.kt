@@ -33,15 +33,11 @@ class PreferredTimePreference(
     }
 
     override fun toString(): String {
-        var outStr = "Prefer time slots on "
-        for (day in days){
-            outStr += day.name.substring(0, 3)
-            outStr += " "
-        }
         val formatter = DateTimeFormatter.ofPattern("HH:mm")
-        outStr += "from ${startTime.format(formatter)} to ${endTime.format(formatter)}"
-        outStr += ". Weight: ${weight}"
-
+        var outStr = "Prefer "
+        outStr += "${startTime.format(formatter)} to ${endTime.format(formatter)} on "
+        outStr += convertfromDayOfWeek(days)
+        //outStr += ". Weight: ${weight}"
         return outStr
     }
 }
