@@ -8,7 +8,7 @@ fun createUsersTableIfNotExists(db: HikariDataSource) {
         val createTableSQL = """
             CREATE TABLE IF NOT EXISTS users (
                 id INT UNIQUE PRIMARY KEY,
-                email VARCHAR(20) unique,
+                email VARCHAR(50) unique,
                 username VARCHAR(20),
                 password VARCHAR(64)
             )
