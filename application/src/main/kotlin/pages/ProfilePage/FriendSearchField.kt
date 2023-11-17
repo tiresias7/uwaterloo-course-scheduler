@@ -56,46 +56,46 @@ fun friendSearchInputField(
                     Icon(Icons.Outlined.Search, "Search User")
                 }
             )
-        }
-        DropdownMenu(
-            expanded = dropDownExpanded.value,
-            properties = PopupProperties(),
-            onDismissRequest = { dropDownExpanded.value = false },
-            modifier = Modifier.width(446.dp).heightIn(max = 500.dp)
-        ) {
-            if (userList.value.isNotEmpty()) {
-                userList.value.take(50).forEach { text: String ->
-                    DropdownMenuItem(
-                        modifier = Modifier.height(45.dp).fillMaxWidth(),
-                        onClick = {
-                            dropDownExpanded.value = false
-                            inputValue.value = TextFieldValue("")
-                            focusManager.clearFocus()
-                            label = text + " Added ✓"
-                            //addCallBack(text)
-                        }
-                    ) {
-                        Row(
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.fillMaxWidth().padding(start = 10.dp, end = 10.dp)
+            DropdownMenu(
+                expanded = dropDownExpanded.value,
+                properties = PopupProperties(),
+                onDismissRequest = { dropDownExpanded.value = false },
+                modifier = Modifier.width(446.dp).heightIn(max = 500.dp)
+            ) {
+                if (userList.value.isNotEmpty()) {
+                    userList.value.take(50).forEach { text: String ->
+                        DropdownMenuItem(
+                            modifier = Modifier.height(45.dp).fillMaxWidth(),
+                            onClick = {
+                                dropDownExpanded.value = false
+                                inputValue.value = TextFieldValue("")
+                                focusManager.clearFocus()
+                                label = text + " Added ✓"
+                                //addCallBack(text)
+                            }
                         ) {
-                            Text(text = text)
-                            FilledTonalButton(
-                                onClick = {},
-                                modifier = Modifier.padding(5.dp)
-                            ){
-                                Text("Invite")
+                            Row(
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier.fillMaxWidth().padding(start = 10.dp, end = 10.dp)
+                            ) {
+                                Text(text = text)
+                                FilledTonalButton(
+                                    onClick = {},
+                                    modifier = Modifier.padding(5.dp)
+                                ){
+                                    Text("Invite")
+                                }
                             }
                         }
                     }
-                }
-            } else {
-                DropdownMenuItem(
-                    modifier = Modifier.size(446.dp, 35.dp),
-                    onClick = {}
-                ) {
-                    Text(text = "No Matching User")
+                } else {
+                    DropdownMenuItem(
+                        modifier = Modifier.size(446.dp, 35.dp),
+                        onClick = {}
+                    ) {
+                        Text(text = "No Matching User")
+                    }
                 }
             }
         }
