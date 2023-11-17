@@ -246,10 +246,12 @@ fun getScheduleService(selectedCourses: MutableList<SelectedCourse>,
     println(hardPreference)
     println(softPreference)
     println(requiredNumberOfCourses.value)
-    val result : List<SectionUnit> = sectionListToUnits(getSchedule(hardCourses.toList(), softCourses.toList(), requiredNumberOfCourses.value,
-        hardPreference.toList(), softPreference.toList())[0])
-    println(result)
-    return result
+    val tempResult = getSchedule(hardCourses.toList(), softCourses.toList(), requiredNumberOfCourses.value,
+        hardPreference.toList(), softPreference.toList())
+    if (tempResult.isEmpty()){
+        return listOf()
+    }
+    return sectionListToUnits(tempResult[0])
 }
 
 fun numOfHard(selectedCourses: MutableList<SelectedCourse>) : Int {
