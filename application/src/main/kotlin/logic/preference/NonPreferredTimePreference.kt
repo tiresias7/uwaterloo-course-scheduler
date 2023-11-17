@@ -5,6 +5,7 @@ import java.time.DayOfWeek
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.*
+import kotlin.math.max
 
 class NonPreferredTimePreference(
     override var weight: Int,
@@ -16,13 +17,15 @@ class NonPreferredTimePreference(
 
     override fun getScore(sections: List<Section>): Int {
         // We want the course to have entirely no overlap with the non-preferred time
+        var score = 100
+
         for (section in sections) {
             if (section.days.intersect(days).isNotEmpty() &&
                 section.startTime.isBefore(endTime) && section.endTime.isAfter(startTime)) {
-                return 0
+                score -= 10
             }
         }
-        return 100
+        return max(score, 0)
     }
 
     override fun toString(): String {
