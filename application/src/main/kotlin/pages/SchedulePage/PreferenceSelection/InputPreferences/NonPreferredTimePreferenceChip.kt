@@ -20,10 +20,7 @@ fun NonPreferredTimeChip(
     val duration2 = remember { mutableStateOf("") }
     val duration3 = remember { mutableStateOf("") }
     val duration4 = remember { mutableStateOf("") }
-    val isError1 = remember { mutableStateOf(false) }
-    val isError2 = remember { mutableStateOf(false) }
-    val isError3 = remember { mutableStateOf(false) }
-    val isError4 = remember { mutableStateOf(false) }
+    val isError = remember { mutableStateOf(false) }
     ElevatedCard(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 6.dp
@@ -45,46 +42,43 @@ fun NonPreferredTimeChip(
                 SimpleTextField(
                     value = duration1.value,
                     onValueChange = {
-                        checkHour(it, duration1, isError1)
+                        checkHour(it, duration1, isError)
                     },
-                    isError = isError1,
+                    isError = isError,
                     modifier = Modifier.size(50.dp, 30.dp),
                 )
                 Text(" : ")
                 SimpleTextField(
                     value = duration2.value,
                     onValueChange = {
-                        checkMinute(it, duration2, isError2)
+                        checkMinute(it, duration2, isError)
                     },
-                    isError = isError2,
+                    isError = isError,
                     modifier = Modifier.size(50.dp, 30.dp),
                 )
                 Text("  to  ")
                 SimpleTextField(
                     value = duration3.value,
                     onValueChange = {
-                        checkHour(it, duration3, isError3)
+                        checkHour(it, duration3, isError)
                     },
-                    isError = isError3,
+                    isError = isError,
                     modifier = Modifier.size(50.dp, 30.dp),
                 )
                 Text(" : ")
                 SimpleTextField(
                     value = duration4.value,
                     onValueChange = {
-                        checkMinute(it, duration4, isError4)
+                        checkMinute(it, duration4, isError)
                     },
-                    isError = isError4,
+                    isError = isError,
                     modifier = Modifier.size(50.dp, 30.dp),
                 )
             }
             FilledTonalButton(
                 onClick = {
                     if (duration1.value == "" || duration2.value == "" || duration3.value == "" || duration4.value == ""){
-                        isError1.value = true
-                        isError2.value = true
-                        isError3.value = true
-                        isError4.value = true
+                        isError.value = true
                     }
                     else {
                         val d1 = duration1.value.padStart(2, '0')
@@ -99,10 +93,7 @@ fun NonPreferredTimeChip(
                             //TODO("add days as a set. Currently everyday")
                         }
                         else{
-                            isError1.value = true
-                            isError2.value = true
-                            isError3.value = true
-                            isError4.value = true
+                            isError.value = true
                         }
                     }
                 }

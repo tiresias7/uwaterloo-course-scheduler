@@ -17,14 +17,21 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import common.SimpleTextField
 import common.navcontroller.NavController
+import logic.SignStatus
+import logic.signing.signInExistingUsersByEmail
+import logic.signing.signUpNewUsers
 
 @Composable
 fun loginPage(
     navController: NavController
 ){
-    var userName by remember { mutableStateOf(TextFieldValue()) }
+    var email by remember { mutableStateOf(TextFieldValue()) }
+    var emailLabel by remember { mutableStateOf("Enter Email") }
     var password by remember { mutableStateOf(TextFieldValue()) }
-    var ifShowSignup = remember { mutableStateOf(false) }
+    var passwordLabel by remember { mutableStateOf("Enter Password") }
+    var secretPassword by remember { mutableStateOf(TextFieldValue()) }
+    var isError by remember{ mutableStateOf(false)}
+    val ifShowSignup = remember { mutableStateOf(false) }
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.SpaceBetween,
@@ -63,14 +70,17 @@ fun loginPage(
                 Spacer(modifier = Modifier.padding(vertical = 10.dp))
                 OutlinedTextField(
                     singleLine = true,
-                    value = userName,
+                    value = email,
                     onValueChange = { newValue: TextFieldValue ->
-                        userName = newValue
+                        email = newValue
+                        emailLabel = "Enter Email"
+                        isError = false
                     },
-                    label = { Text("Enter Username", fontStyle = FontStyle.Italic) },
+                    label = { Text(emailLabel, fontStyle = FontStyle.Italic) },
                     leadingIcon = {
-                        Icon(Icons.Outlined.Person, "Search Course")
+                        Icon(Icons.Outlined.Person, "Email")
                     },
+                    isError = isError,
                     modifier = Modifier.width(400.dp)
                 )
                 Spacer(modifier = Modifier.padding(vertical = 10.dp))
@@ -78,12 +88,17 @@ fun loginPage(
                     singleLine = true,
                     value = password,
                     onValueChange = { newValue: TextFieldValue ->
+                        //println(newValue.text)
                         password = newValue
+                        passwordLabel = "Enter Password"
+                        //secretPassword = TextFieldValue(password.text.map{'*'}.joinToString(separator = ""))
+                        isError = false
                     },
-                    label = { Text("Enter Password", fontStyle = FontStyle.Italic) },
+                    label = { Text(passwordLabel, fontStyle = FontStyle.Italic) },
                     leadingIcon = {
-                        Icon(Icons.Outlined.Lock, "Search Course")
+                        Icon(Icons.Outlined.Lock, "Password")
                     },
+                    isError = isError,
                     modifier = Modifier.width(400.dp)
                 )
                 TextButton(
@@ -92,7 +107,34 @@ fun loginPage(
                 )
                 Spacer(modifier = Modifier.padding(vertical = 15.dp))
                 Button(
-                    onClick = { navController.navigate(Screen.WelcomePage.name) },
+                    onClick = {
+                        if (email.text == "" || password.text == "") {
+                            isError = true
+                            if (email.text == "") {
+                                emailLabel = "Please enter email"
+                            }
+                            if (password.text == "") {
+                                passwordLabel = "Please enter password"
+                            }
+                        }
+                        else {
+                            val status = signInExistingUsersByEmail(email.text, password.text).first
+                            if (status == SignStatus.SIGN_IN_INVALID) {
+                                isError = true
+                                emailLabel = "Email Not Found"
+                            } else if (status == SignStatus.SIGN_IN_FAILED) {
+                                isError = true
+                                passwordLabel = "Incorrect Password"
+                            } else {
+                                email = TextFieldValue("")
+                                password = TextFieldValue("")
+                                isError = false
+                                emailLabel = "Enter Email"
+                                passwordLabel = "Enter Password"
+                                navController.navigate(Screen.WelcomePage.name)
+                            }
+                        }
+                    },
                     content = { Text(text = "Sign in") },
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)
@@ -101,8 +143,11 @@ fun loginPage(
                 TextButton(
                     content = {Text("New to ω? Join now", fontSize = 15.sp)},
                     onClick = {
-                        userName = TextFieldValue("")
+                        email = TextFieldValue("")
                         password = TextFieldValue("")
+                        isError = false
+                        emailLabel = "Enter Email"
+                        passwordLabel = "Enter Password"
                         ifShowSignup.value = true
                     },
                     modifier = Modifier
@@ -134,6 +179,7 @@ fun signupDialog (ifShowSignup : MutableState<Boolean>) {
     var password1 by remember { mutableStateOf(TextFieldValue()) }
     var password2 by remember { mutableStateOf(TextFieldValue()) }
     var iconPassword by remember { mutableStateOf(Icons.Outlined.Lock) }
+    var ifEmailAlreadyExists by remember { mutableStateOf(false) }
     val ifNameInvalid = remember {mutableStateOf(false)}
     val ifEmailInvalid = remember {mutableStateOf(false)}
     val ifPasswordInvalid = remember {mutableStateOf(false)}
@@ -158,20 +204,32 @@ fun signupDialog (ifShowSignup : MutableState<Boolean>) {
                         .padding(20.dp)
                         .fillMaxSize()
                 ) {
-                    Text("Sign up",
-                        fontSize = 40.sp,
-                    )
-                    Text("Begin scheduling",
-                        fontSize = 15.sp,
-                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            "Sign up",
+                            fontSize = 40.sp,
+                        )
+                        TextButton(
+                            content = {Text("Quit")},
+                            onClick = {
+                                ifShowSignup.value = false
+                            },
+                            modifier = Modifier.size(60.dp, 50.dp)
+                        )
+                    }
                     Spacer(modifier = Modifier.padding(vertical = 10.dp))
-                    Text("Create Username (5-10 characters)",fontSize = 12.sp,)
+                    Text("Create Username (1-20 characters)",fontSize = 12.sp,)
                     SimpleTextField(
                         singleLine = true,
                         value = userName.text,
                         onValueChange = { newValue: String ->
                             userName = TextFieldValue(newValue)
-                            if (newValue.matches(Regex("[a-zA-Z0-9]*"))) {
+                            if (newValue.matches(Regex("[a-zA-Z0-9]*")) && newValue.length <= 20 &&
+                                newValue.length >= 1 ) {
                                 ifNameInvalid.value = false
                             }
                             else { ifNameInvalid.value = true }
@@ -187,13 +245,14 @@ fun signupDialog (ifShowSignup : MutableState<Boolean>) {
                         color = Color.Gray
                     )
                     Spacer(modifier = Modifier.padding(vertical = 5.dp))
-                    Text("Enter your E-mail",fontSize = 12.sp,)
+                    Text("Enter your Email",fontSize = 12.sp,)
                     SimpleTextField(
                         singleLine = true,
                         value = email.text,
                         onValueChange = { newValue: String ->
                             email = TextFieldValue(newValue)
                             ifEmailInvalid.value = false
+                            ifEmailAlreadyExists = false
                             //Check if email is valid or not
                         },
                         leadingIcon = {
@@ -202,15 +261,22 @@ fun signupDialog (ifShowSignup : MutableState<Boolean>) {
                         isError = ifEmailInvalid,
                         modifier = Modifier.size(500.dp, 50.dp)
                     )
-                    Spacer(modifier = Modifier.padding(vertical = 10.dp))
-                    Text("Create Password (5-10 characters)",fontSize = 12.sp,)
+                    if (ifEmailAlreadyExists) {
+                        Text("Email Already Exists",fontSize = 12.sp, color = Color.Red)
+                        Spacer(modifier = Modifier.padding(vertical = 5.dp))
+                    }
+                    else {
+                        Spacer(modifier = Modifier.padding(vertical = 10.dp))
+                    }
+                    Text("Create Password (5-20 characters)",fontSize = 12.sp,)
                     SimpleTextField(
                         singleLine = true,
                         //value = password1.text.map{'*'}.joinToString(separator = ""),
                         value = password1.text,
                         onValueChange = { newValue: String ->
                             password1 = TextFieldValue(newValue)
-                            if (newValue.matches(Regex("[a-zA-Z0-9]*"))) {
+                            if (newValue.matches(Regex("[a-zA-Z0-9]*")) && newValue.length <= 20 &&
+                                newValue.length >= 5) {
                                 ifPasswordInvalid.value = false
                             }
                             else { ifPasswordInvalid.value = true }
@@ -254,10 +320,22 @@ fun signupDialog (ifShowSignup : MutableState<Boolean>) {
                         onClick = {
                             if (userName.text == "") ifNameInvalid.value = true
                             if (email.text == "") ifEmailInvalid.value = true
-                            if (password1.text == "") ifPasswordInvalid.value = true
-                            if (password1.text == "") ifNotSame.value = true
+                            if (password1.text == "") {
+                                ifPasswordInvalid.value = true
+                                ifNotSame.value = true
+                            }
                             if (!ifNotSame.value && userName.text != "" && email.text != "" && password1.text != "") {
-                                ifShowSignup.value = false
+                                val status = signUpNewUsers(userName.text, password1.text, email.text).first
+                                if (status == SignStatus.SIGN_UP_FAILED) {
+                                    ifEmailAlreadyExists = true
+                                }
+                                else {
+                                    userName = TextFieldValue("")
+                                    email = TextFieldValue("")
+                                    password1 = TextFieldValue("")
+                                    password2 = TextFieldValue("")
+                                    ifShowSignup.value = false
+                                }
                             }
                         },
                         content = { Text(text = "Sign up") },
