@@ -161,6 +161,7 @@ fun schedulePageContent(
                                 requiredNumberOfCourses,
                                 selectedPreferences
                             )
+                            println(tempSections)
                             if (tempSections.isNotEmpty()) {
                                 returnedSections.addAll(tempSections)
                             }
@@ -241,11 +242,6 @@ fun getScheduleService(selectedCourses: MutableList<SelectedCourse>,
         preference.weight = selectedPreferences.size - preference.weight + 1
         softPreference.add(preference)
     }
-    println(hardCourses)
-    println(softCourses)
-    println(hardPreference)
-    println(softPreference)
-    println(requiredNumberOfCourses.value)
     val tempResult = getSchedule(hardCourses.toList(), softCourses.toList(), requiredNumberOfCourses.value,
         hardPreference.toList(), softPreference.toList())
     if (tempResult.isEmpty()){
@@ -318,7 +314,7 @@ fun errorDialog(ifErrorDialog : MutableState<Boolean>, errorCauses : MutableList
                     }
                     else if (errorCauses.contains("no schedule returned")) {
                         Text(
-                            "It's impossible to generate a schedule without time conflict, including all courses you selected",
+                            "It's impossible to generate a schedule including all courses you selects without time conflict",
                             fontSize = 15.sp,
                             modifier = Modifier.padding(start = 30.dp, end = 30.dp)
                         )
