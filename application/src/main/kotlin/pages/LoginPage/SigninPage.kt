@@ -222,13 +222,14 @@ fun signupDialog (ifShowSignup : MutableState<Boolean>) {
                         )
                     }
                     Spacer(modifier = Modifier.padding(vertical = 10.dp))
-                    Text("Create Username (5-10 characters)",fontSize = 12.sp,)
+                    Text("Create Username (1-20 characters)",fontSize = 12.sp,)
                     SimpleTextField(
                         singleLine = true,
                         value = userName.text,
                         onValueChange = { newValue: String ->
                             userName = TextFieldValue(newValue)
-                            if (newValue.matches(Regex("[a-zA-Z0-9]*"))) {
+                            if (newValue.matches(Regex("[a-zA-Z0-9]*")) && newValue.length <= 20 &&
+                                newValue.length >= 1 ) {
                                 ifNameInvalid.value = false
                             }
                             else { ifNameInvalid.value = true }
@@ -267,14 +268,15 @@ fun signupDialog (ifShowSignup : MutableState<Boolean>) {
                     else {
                         Spacer(modifier = Modifier.padding(vertical = 10.dp))
                     }
-                    Text("Create Password (5-10 characters)",fontSize = 12.sp,)
+                    Text("Create Password (5-20 characters)",fontSize = 12.sp,)
                     SimpleTextField(
                         singleLine = true,
                         //value = password1.text.map{'*'}.joinToString(separator = ""),
                         value = password1.text,
                         onValueChange = { newValue: String ->
                             password1 = TextFieldValue(newValue)
-                            if (newValue.matches(Regex("[a-zA-Z0-9]*"))) {
+                            if (newValue.matches(Regex("[a-zA-Z0-9]*")) && newValue.length <= 20 &&
+                                newValue.length >= 5) {
                                 ifPasswordInvalid.value = false
                             }
                             else { ifPasswordInvalid.value = true }
