@@ -1,21 +1,21 @@
 package logic.signing
 
 import database.common.createDataSource
-import database.users.queryUIDByEmail
+import database.users.queryUserInfoByEmail
 import database.users.verifyPasswordByUIDRaw
 import logic.SignStatus
 
-fun signInExistingUsersByEmail(email: String, password: String): Triple<SignStatus, Int, String> {
+fun signInExistingUsersByEmail(email: String, password: String): Triple<SignStatus, Pair<Int, String>, String> {
     // cookie need to implemented
     var cookie = ""
 
     createDataSource().use { db ->
-        val uid = queryUIDByEmail(email, db)
-        if (uid == 0) return Triple(SignStatus.SIGN_IN_INVALID, uid, cookie)
-        if (!verifyPasswordByUIDRaw(uid, password, db)) {
-            return Triple(SignStatus.SIGN_IN_FAILED, uid, cookie)
+        val userInfo = queryUserInfoByEmail(email, db)
+        if (userInfo.first == 0) return Triple(SignStatus.SIGN_IN_INVALID, userInfo, cookie)
+        if (!verifyPasswordByUIDRaw(userInfo.first, password, db)) {
+            return Triple(SignStatus.SIGN_IN_FAILED, userInfo, cookie)
         }
         cookie = "good"
-        return Triple(SignStatus.SIGN_IN_SUCCESS, uid, cookie)
+        return Triple(SignStatus.SIGN_IN_SUCCESS, userInfo, cookie)
     }
 }

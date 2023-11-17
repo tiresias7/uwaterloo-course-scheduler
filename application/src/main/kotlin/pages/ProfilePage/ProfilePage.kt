@@ -15,6 +15,10 @@ import common.navDrawer
 import pages.SchedulePage.ScheduleSection.schedule
 import data.SectionUnit
 import common.navcontroller.NavController
+import pages.LoginPage.USER_EMAIL
+import pages.LoginPage.USER_ID
+import pages.LoginPage.USER_NAME
+
 @Composable
 fun profilePage(
     navController: NavController
@@ -27,9 +31,6 @@ fun profilePageContent(
     navController: NavController
 ) {
     val interactionSource = remember { MutableInteractionSource() }
-    var userFirstLastName = remember { mutableStateOf("Pilly Pishop")}
-    var userName = remember { mutableStateOf("PPLegend")}
-    var userEmail = remember { mutableStateOf("pplegend@pp.com")}
     var savedSections = remember { mutableStateListOf<SectionUnit>() }
     Row(
         modifier = Modifier
@@ -51,20 +52,39 @@ fun profilePageContent(
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.Start,
         ) {
-            Text(text = userFirstLastName.value, fontSize = 45.sp,
+            Text(text = USER_NAME, fontSize = 45.sp,
                 modifier = Modifier.padding(top = 30.dp))
             Divider()
-            Text("Username: " + userName.value, fontSize = 15.sp,
+            Text("UID: " + USER_ID, fontSize = 15.sp,
                 modifier = Modifier.padding(top = 20.dp))
-            Text("Email: " + userEmail.value, fontSize = 15.sp,
+            Text("Email: " + USER_EMAIL, fontSize = 15.sp,
                 modifier = Modifier.padding(top = 10.dp))
             Spacer(modifier = Modifier.padding(vertical = 20.dp))
+
+            ///////// friend ///////////////
+            friendSection()
+            ///////////////////////////////
             OutlinedButton(
                 content = {Text("Log out")},
                 onClick = {navController.navigate(Screen.LoginPage.name)},
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
         }
-        schedule(savedSections)
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Spacer(modifier = Modifier.weight(0.4f))
+            schedule(savedSections, modifier = Modifier.weight(5f))
+            Row(
+                modifier = Modifier.weight(0.6f),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.Top,
+            ) {
+                Text(text = USER_NAME + "'s Schedule", fontSize = 35.sp,
+                    modifier = Modifier.padding(top = 10.dp))
+            }
+
+        }
+
     }
 }

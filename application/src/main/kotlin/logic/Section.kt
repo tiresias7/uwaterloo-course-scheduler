@@ -23,7 +23,7 @@ data class Section(
             SectionUnit(it.ordinal,
                 startTime.hour + (startTime.minute.toFloat() / MINUTESPERHOUR),
                 endTime.hour + (endTime.minute.toFloat() / MINUTESPERHOUR),
-                courseName, instructor, room)
+                courseName, instructor, room, component, sectionNumber)
         }
     }
 }

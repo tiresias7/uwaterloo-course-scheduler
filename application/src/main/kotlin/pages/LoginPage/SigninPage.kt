@@ -28,6 +28,10 @@ import logic.signing.signUpNewUsers
 import style.md_theme_dark_primary
 import style.md_theme_light_inversePrimary
 
+var USER_ID = 0
+var USER_NAME = ""
+var USER_EMAIL = ""
+
 @Composable
 fun loginPage(
     navController: NavController
@@ -139,7 +143,8 @@ fun loginPage(
                             }
                         }
                         else {
-                            val status = signInExistingUsersByEmail(email.text, password.text).first
+                            val response = signInExistingUsersByEmail(email.text, password.text)
+                            val status = response.first
                             if (status == SignStatus.SIGN_IN_INVALID) {
                                 isError = true
                                 emailLabel = "Email Not Found"
@@ -147,6 +152,9 @@ fun loginPage(
                                 isError = true
                                 passwordLabel = "Incorrect Password"
                             } else {
+                                USER_EMAIL = email.text
+                                USER_ID = response.second.first
+                                USER_NAME = response.second.second
                                 email = TextFieldValue("")
                                 password = TextFieldValue("")
                                 isError = false

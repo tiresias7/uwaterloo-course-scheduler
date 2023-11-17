@@ -20,6 +20,7 @@ import database.common.createDataSource
 import common.navcontroller.NavController
 import database.sections.queryAllClasses
 import logic.getSchedule
+import logic.preference.NoCollisionPreference
 import logic.preference.Preference
 import logic.preference.PreferenceBuilder
 import logic.sectionListToUnits
@@ -129,11 +130,12 @@ fun schedulePageContent(
             verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = CenterHorizontally
         ) {
-            schedule(returnedSections, modifier = Modifier.weight(5f,  fill = false))
+            Spacer(modifier = Modifier.weight(0.4f))
+            schedule(returnedSections, modifier = Modifier.weight(5f))
             Row(
                 horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.Bottom,
-                modifier = Modifier.weight(0.8f,  fill = false)
+                verticalAlignment = Alignment.Top,
+                modifier = Modifier.weight(0.6f)
             ) {
                 OutlinedButton(
                     onClick = {
@@ -148,7 +150,8 @@ fun schedulePageContent(
                 }
                 TextButton(
                     content = {Text("Save")},
-                    onClick = {}
+                    onClick = {},
+                    modifier = Modifier.padding(top = 10.dp)
                 )
                 /*TextButton(
                     content = {Text("Export")},
@@ -204,8 +207,9 @@ fun getScheduleService(selectedCourses: MutableList<SelectedCourse>,
             softCourses.add(course.courseName)
         }
     }
+    hardPreference.add(NoCollisionPreference(10000))
     for(preference in selectedPreferences) {
-        hardPreference.add(preference)
+        softPreference.add(preference)
     }
     println(hardCourses)
     println(softCourses)
