@@ -1,7 +1,6 @@
 package logic
 
-import database.common.createDataSource
-import database.sections.querySectionsByFacultyId
+import cache.CourseCache
 import logic.preference.Preference
 import logic.schedulealgo.OptimizedScheduleAlgorithm
 import java.util.*
@@ -18,14 +17,10 @@ fun getSchedule(
     assert(hardCourses.size + softCourses.size >= numOfCourses)
 
     val hardCourseAllSections : List<List<Section>> = hardCourses.map { it ->
-        val faculty = it.takeWhile { it.isLetter() }
-        val courseId = it.dropWhile { it.isLetter() }
-        createDataSource().use{ querySectionsByFacultyId(faculty, courseId, it) }
+        CourseCache.getCourse(it)
     }.flatten()
     val softCourseSections : List<List<List<Section>>> = softCourses.map { it ->
-        val faculty = it.takeWhile { it.isLetter() }
-        val courseId = it.dropWhile { it.isLetter() }
-        createDataSource().use{ querySectionsByFacultyId(faculty, courseId, it) }
+        CourseCache.getCourse(it)
     }
     println(softCourseSections)
 

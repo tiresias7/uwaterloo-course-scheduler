@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontStyle
+import cache.CourseCache
 import data.SelectedCourse
 
 
@@ -72,6 +73,7 @@ fun courseSearchInputField(
                             value.value = TextFieldValue("")
                             focusManager.clearFocus()
                             label = text + " Added ✓"
+                            CourseCache.cacheCourse(text)
                             addCallBack(text)
                         }
                     ) {

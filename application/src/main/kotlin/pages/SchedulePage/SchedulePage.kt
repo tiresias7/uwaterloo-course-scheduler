@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import cache.CourseNameLoader
 import common.*
 import data.SectionUnit
 import data.SelectedCourse
@@ -25,7 +26,7 @@ import logic.preference.Preference
 import logic.preference.PreferenceBuilder
 import logic.sectionListToUnits
 
-val allCourses = queryAllClasses(createDataSource())
+val allCourses = CourseNameLoader.getAllCourseNames()
 
 @Composable
 fun schedulePage(

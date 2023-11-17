@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.material3.IconButtonColors
+import cache.CourseNameLoader
 import common.SimpleTextField
 import common.navcontroller.NavController
 import logic.SignStatus
@@ -160,6 +161,7 @@ fun loginPage(
                                 isError = false
                                 emailLabel = "Enter Email"
                                 passwordLabel = "Enter Password"
+                                CourseNameLoader.cacheAllCourseNames()
                                 navController.navigate(Screen.WelcomePage.name)
                             }
                         }
