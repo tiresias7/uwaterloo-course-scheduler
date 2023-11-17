@@ -27,7 +27,7 @@ fun friendSearchInputField(
     val ifFocused = mutableStateOf(true)
     val focusManager = LocalFocusManager.current
     Box(
-        modifier = Modifier.height(600.dp).fillMaxWidth(),
+        modifier = Modifier.height(650.dp).fillMaxWidth(),
     ) {
         Column(
             verticalArrangement = Arrangement.Top

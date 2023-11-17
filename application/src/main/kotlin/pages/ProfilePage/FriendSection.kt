@@ -132,7 +132,7 @@ fun friendSection() {
             }
         }
         Box(
-            modifier = Modifier.height(600.dp).fillMaxWidth().padding(top = 10.dp),
+            modifier = Modifier.height(650.dp).fillMaxWidth().padding(top = 10.dp),
         ) {
             if (ifFriendList) {
                 ElevatedCard(
@@ -199,61 +199,6 @@ fun friendSection() {
             } else if (ifAddFriends) {
                 friendSearchInputField(allUser, {})
             }
-            /*{
-            // display requests
-            items(1) {
-                Text(
-                    "Pending Invite",
-                    modifier = Modifier.background(color = md_theme_light_primaryContainer).fillMaxWidth()
-                )
-                Divider(thickness = 1.dp, color = md_theme_light_inversePrimary)
-            }
-            items(friendRequestList, { it }) { user ->
-                ListItem(
-                    modifier = Modifier
-                        .height(70.dp).fillMaxWidth(),
-                    headlineContent = { Text(user) },
-                    trailingContent = {
-                        Row(
-
-                        ) {
-                            FilledTonalButton(
-                                onClick = {},
-                                modifier = Modifier.padding(5.dp)
-                            ) {
-                                Text("Accept")
-                            }
-                            FilledTonalButton(
-                                onClick = {},
-                                modifier = Modifier.padding(5.dp)
-                            ) {
-                                Text("Decline")
-                            }
-                        }
-                    },
-                    tonalElevation = 30.dp,
-                    colors = ListItemDefaults.colors(containerColor = md_theme_light_primaryContainer)
-                )
-                Divider(thickness = 1.dp, color = md_theme_light_inversePrimary)
-            }
-
-
-            // display friends
-            items(1) {
-                Text("Friends", modifier = Modifier.background(color = md_theme_light_primaryContainer).fillMaxWidth())
-                Divider(thickness = 1.dp, color = md_theme_light_inversePrimary)
-            }
-            items(friendsList, { it }) { friend ->
-                ListItem(
-                    modifier = Modifier
-                        .height(70.dp).fillMaxWidth(),
-                    headlineContent = { Text(friend) },
-                    tonalElevation = 30.dp,
-                    colors = ListItemDefaults.colors(containerColor = md_theme_light_primaryContainer)
-                )
-                Divider(thickness = 1.dp, color = md_theme_light_inversePrimary)
-            }
-        }*/
         }
     }
 }

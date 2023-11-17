@@ -40,7 +40,7 @@ fun profilePageContent(
     ) {
         Column(
             modifier = Modifier.fillMaxWidth().requiredHeight(120.dp)
-                .padding(start = 100.dp, top = 50.dp)
+                .padding(start = 90.dp, top = 50.dp)
                 .weight(0.4f),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.Start,
@@ -50,12 +50,12 @@ fun profilePageContent(
                 verticalAlignment = Alignment.Bottom
             ) {
                 Row(
-                    //modifier = Modifier.height(140.dp),
+                    modifier = Modifier.padding(start = 10.dp),
                     horizontalArrangement = Arrangement.Start,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = USER_NAME + "'s profile", fontSize = 45.sp, fontStyle = FontStyle.Italic,
+                        text = USER_NAME + "'s profile", fontSize = 45.sp,
                         modifier = Modifier.padding(end = 50.dp)
                     )
                     Text(

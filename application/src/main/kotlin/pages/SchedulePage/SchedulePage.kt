@@ -7,12 +7,17 @@ import pages.SchedulePage.ScheduleSection.schedule
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import cache.CourseNameLoader
 import common.*
 import data.SectionUnit
@@ -38,6 +43,8 @@ fun schedulePage(
 @Composable
 fun schedulePageContent(
 ) {
+    val ifErrorDialog = remember { mutableStateOf(false)}
+    val errorCauses = remember { mutableListOf<String>()}
     val interactionSource = remember { MutableInteractionSource() }
     val selectedCourses = remember { mutableStateListOf<SelectedCourse>() }  // state hoisting
     val requiredNumberOfCourses = remember { mutableStateOf(5) } // If no input then select 5 courses as default
@@ -45,7 +52,6 @@ fun schedulePageContent(
     val showAddPreference = remember { mutableStateOf(false) }
     val selectedPreferences = remember { mutableStateListOf<Preference>() }
     val preferenceBuilder = PreferenceBuilder()
-
     Row(
         modifier = Modifier
             .fillMaxSize()
@@ -140,8 +146,29 @@ fun schedulePageContent(
             ) {
                 OutlinedButton(
                     onClick = {
-                        returnedSections.clear()
-                        returnedSections.addAll(getScheduleService(selectedCourses, requiredNumberOfCourses,selectedPreferences))
+                        if (requiredNumberOfCourses.value < numOfHard(selectedCourses)) {
+                            ifErrorDialog.value = true
+                            errorCauses.add("hard > num")
+                        }
+                        else if(requiredNumberOfCourses.value > selectedCourses.size) {
+                            ifErrorDialog.value = true
+                            errorCauses.add("soft + hard < num")
+                        }
+                        else {
+                            returnedSections.clear()
+                            val tempSections = getScheduleService(
+                                selectedCourses,
+                                requiredNumberOfCourses,
+                                selectedPreferences
+                            )
+                            if (tempSections.isNotEmpty()) {
+                                returnedSections.addAll(tempSections)
+                            }
+                            else {
+                                ifErrorDialog.value = true
+                                errorCauses.add("no schedule returned")
+                            }
+                        }
                     },
                     modifier = Modifier
                         .size(width = 180.dp, height = 56.dp)
@@ -164,6 +191,7 @@ fun schedulePageContent(
     preferenceDialog(showAddPreference, addCallBack = { tag: String, inputList: List<String> ->
         preferenceBuilder.build(selectedPreferences.size+1, tag, inputList)?.let { selectedPreferences.add(it) }
     })
+    errorDialog(ifErrorDialog, errorCauses)
 }
 
 @Composable
@@ -223,3 +251,85 @@ fun getScheduleService(selectedCourses: MutableList<SelectedCourse>,
     return result
 }
 
+fun numOfHard(selectedCourses: MutableList<SelectedCourse>) : Int {
+    var result = 0
+    for (course in selectedCourses) {
+        if (course.required) result++
+    }
+    return result
+}
+
+@Composable
+fun errorDialog(ifErrorDialog : MutableState<Boolean>, errorCauses : MutableList<String>) {
+    if (ifErrorDialog.value) {
+        Dialog(
+            onDismissRequest = { ifErrorDialog.value = false },
+            properties = DialogProperties(dismissOnClickOutside = true, usePlatformDefaultWidth = false)
+        ) {
+            Card(
+                modifier = Modifier
+                    .size(600.dp, 400.dp),
+                shape = RoundedCornerShape(8.dp),
+            ) {
+                Column(
+                    modifier = Modifier
+                        .size(600.dp, 400.dp)
+                        .padding(16.dp),
+                    verticalArrangement = Arrangement.SpaceBetween,
+                    horizontalAlignment = Alignment.Start,
+                ) {
+                    Text("Oops...", fontSize = 30.sp)
+                    if (errorCauses.contains("hard > num")) {
+                        Column(
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.Start,
+                        ) {
+                            Text("Following requirement(s) is not met:",
+                                fontSize = 15.sp,
+                                fontStyle = FontStyle.Italic,
+                                modifier = Modifier.padding(start = 30.dp, end = 30.dp, bottom = 10.dp)
+                            )
+                            Text(
+                                "Number of courses you want to take should not be less than the number of required courses",
+                                fontSize = 15.sp,
+                                modifier = Modifier.padding(start = 30.dp, end = 30.dp)
+                            )
+                        }
+                    }
+                    else if (errorCauses.contains("soft + hard < num")) {
+                        Column(
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.Start,
+                        ) {
+                            Text("Following requirement(s) is not met:",
+                                fontSize = 15.sp,
+                                fontStyle = FontStyle.Italic,
+                                modifier = Modifier.padding(start = 30.dp, end = 30.dp, bottom = 10.dp)
+                            )
+                            Text(
+                                "Number of courses you want to take should not be greater than the number of selected courses",
+                                fontSize = 15.sp,
+                                modifier = Modifier.padding(start = 30.dp, end = 30.dp)
+                            )
+                        }
+                    }
+                    else if (errorCauses.contains("no schedule returned")) {
+                        Text(
+                            "It's impossible to generate a schedule without time conflict, including all courses you selected",
+                            fontSize = 15.sp,
+                            modifier = Modifier.padding(start = 30.dp, end = 30.dp)
+                        )
+                    }
+                    ExtendedFloatingActionButton(
+                        content = {Text("Got it")},
+                        onClick = {
+                            ifErrorDialog.value = false
+                            errorCauses.clear()
+                        },
+                        modifier = Modifier.align(Alignment.CenterHorizontally)
+                    )
+                }
+            }
+        }
+    }
+}

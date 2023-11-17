@@ -49,7 +49,7 @@ fun navDrawer(
                     label = { Text(text = "Scheduler") },
                     selected = navController.currentScreen.value == Screen.WelcomePage.name,
                     onClick = {
-                        navController.navigate(Screen.WelcomePage.name)
+                        navController.navigate(Screen.SchedulePage.name)
                         scope.launch {
                             drawerState.apply { close() }
                         }
@@ -68,7 +68,7 @@ fun navDrawer(
                         navController.navigate(Screen.ProfilePage.name)
                     }
                 )
-                NavigationDrawerItem(
+                /*NavigationDrawerItem(
                     modifier = Modifier.padding(10.dp, 0.dp),
                     icon = { Icon(Icons.Outlined.Person, "") },
                     label = { Text(text = "My Friends") },
@@ -80,7 +80,7 @@ fun navDrawer(
                         }
                         navController.navigate(Screen.FriendPage.name)
                     }
-                )
+                )*/
             }
         },
     ) {

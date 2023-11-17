@@ -113,7 +113,7 @@ fun preferenceDialog(
                 modifier = Modifier
                     .size(700.dp, 1000.dp)
                     .padding(16.dp),
-                shape = RoundedCornerShape(16.dp),
+                shape = RoundedCornerShape(8.dp),
             ) {
                 Column(
                     modifier = Modifier
