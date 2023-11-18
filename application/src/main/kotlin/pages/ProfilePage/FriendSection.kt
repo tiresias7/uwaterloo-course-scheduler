@@ -12,11 +12,12 @@ import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import friendSearchInputField
+import logic.friends.*
 import org.jetbrains.skia.Color
 import style.md_theme_light_inversePrimary
 import style.md_theme_light_primaryContainer
 
-
+/*
 var allUser = listOf(
     "apple",
     "beta",
@@ -35,11 +36,18 @@ var allUser = listOf(
     "opera",
     "pig"
 )
+*/
+
+var allUser : MutableList<Pair<Int, String>> = mutableListOf()
 
 @Composable
-fun friendSection() {
-    val friendRequestList = remember { mutableStateListOf<String>("x-ray", "yellow", "zebra") }
-    val friendsList =
+fun friendSection( USER_ID : Int) {
+    val friendsList = remember { mutableStateOf(fetchFriendList(USER_ID)) }
+    val friendRequestList = remember { mutableStateOf(fetchFriendRequests(USER_ID)) }
+    var ifFriendList by remember { mutableStateOf(true)}
+    var ifMessages by remember { mutableStateOf(false)}
+    var ifAddFriends by remember { mutableStateOf(false)}
+    /*val friendsList =
         remember {
             mutableStateListOf<String>(
                 "queen",
@@ -55,11 +63,7 @@ fun friendSection() {
                 "panana",
                 "ananana"
             )
-        }
-    var ifFriendList by remember { mutableStateOf(true)}
-    var ifMessages by remember { mutableStateOf(false)}
-    var ifAddFriends by remember { mutableStateOf(false)}
-
+        }*/
     Column {
         Text(text = "My Friends", fontSize = 30.sp)
         Row(
@@ -144,11 +148,21 @@ fun friendSection() {
                     LazyColumn(
                         modifier = Modifier,
                     ) {
-                        items(friendsList, { it }) { friend ->
+                        items(friendsList.value, { it }) { friend ->
                             ListItem(
                                 modifier = Modifier
                                     .height(70.dp).fillMaxWidth(),
-                                headlineContent = { Text(friend) },
+                                headlineContent = { Text(friend.second) },
+                                trailingContent = {
+                                     Row() {
+                                         OutlinedButton(
+                                             onClick = { fetchFriendProfile(USER_ID, friend.first) },
+                                             modifier = Modifier.padding(5.dp)
+                                         ) {
+                                             Text("View profile")
+                                         }
+                                     }
+                                },
                                 tonalElevation = 30.dp,
                                 colors = ListItemDefaults.colors(containerColor = md_theme_light_primaryContainer)
                             )
@@ -166,23 +180,23 @@ fun friendSection() {
                     LazyColumn(
                         modifier = Modifier,
                     ) {
-                        items(friendRequestList, { it }) { user ->
+                        items(friendRequestList.value, { it }) { user ->
                             ListItem(
                                 modifier = Modifier
                                     .height(70.dp).fillMaxWidth(),
-                                headlineContent = { Text(user) },
+                                headlineContent = { Text(user.second) },
                                 trailingContent = {
                                     Row(
 
                                     ) {
                                         OutlinedButton(
-                                            onClick = {},
+                                            onClick = { approveFriendRequest(USER_ID, user.first) },
                                             modifier = Modifier.padding(5.dp)
                                         ) {
                                             Text("Accept")
                                         }
                                         OutlinedButton(
-                                            onClick = {},
+                                            onClick = { denyFriendRequest(USER_ID, user.first) },
                                             modifier = Modifier.padding(5.dp),
                                         ) {
                                             Text("Decline")

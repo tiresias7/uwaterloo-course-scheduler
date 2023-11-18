@@ -13,19 +13,30 @@ import androidx.compose.ui.window.PopupProperties
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontStyle
+import logic.friends.sendFriendRequest
+import pages.LoginPage.USER_ID
+import java.util.Dictionary
 
 
 @Composable
 fun friendSearchInputField(
-    all: List<String>,
+    all: MutableList<Pair<Int, String>>,
     addCallBack: (courseName: String) -> Unit
 ) {
-    val userList = remember { mutableStateOf(listOf<String>()) }
+    val userListShown = remember { mutableListOf<String>() }
+    val userNameList = remember { mutableListOf<String>() }
+    val userIDDict = remember { mutableMapOf<String, Int>() }
     val inputValue = remember { mutableStateOf(TextFieldValue()) }
     val dropDownExpanded = remember { mutableStateOf(false) }
     var label by remember { mutableStateOf("Search Username or UID to add friends") }
     val ifFocused = mutableStateOf(true)
     val focusManager = LocalFocusManager.current
+
+    for (user in all) {
+        userNameList.add(user.second)
+        userIDDict[user.second] = user.first
+    }
+
     Box(
         modifier = Modifier.height(650.dp).fillMaxWidth(),
     ) {
@@ -41,7 +52,8 @@ fun friendSearchInputField(
                         } else {
                             label = "Search Username or UID to add friends"
                             dropDownExpanded.value = true
-                            userList.value = all
+                            userListShown.clear()
+                            userListShown.addAll(userNameList)
                         }
                     },
                 singleLine = true,
@@ -49,7 +61,8 @@ fun friendSearchInputField(
                 onValueChange = { newValue: TextFieldValue ->
                     dropDownExpanded.value = true
                     inputValue.value = newValue
-                    userList.value = searchFilter(newValue.text, all)
+                    userListShown.clear()
+                    userListShown.addAll(searchFilter(newValue.text, userNameList))
                 },
                 label = { Text(label, fontStyle = FontStyle.Italic) },
                 leadingIcon = {
@@ -62,8 +75,8 @@ fun friendSearchInputField(
                 onDismissRequest = { dropDownExpanded.value = false },
                 modifier = Modifier.width(446.dp).heightIn(max = 500.dp)
             ) {
-                if (userList.value.isNotEmpty()) {
-                    userList.value.take(50).forEach { text: String ->
+                if (userListShown.isNotEmpty()) {
+                    userListShown.take(50).forEach { text: String ->
                         DropdownMenuItem(
                             modifier = Modifier.height(45.dp).fillMaxWidth(),
                             onClick = {
@@ -81,7 +94,7 @@ fun friendSearchInputField(
                             ) {
                                 Text(text = text)
                                 FilledTonalButton(
-                                    onClick = {},
+                                    onClick = {sendFriendRequest(USER_ID, userIDDict[text]!!)},
                                     modifier = Modifier.padding(5.dp)
                                 ){
                                     Text("Invite")

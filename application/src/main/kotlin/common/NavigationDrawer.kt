@@ -68,19 +68,6 @@ fun navDrawer(
                         navController.navigate(Screen.ProfilePage.name)
                     }
                 )
-                /*NavigationDrawerItem(
-                    modifier = Modifier.padding(10.dp, 0.dp),
-                    icon = { Icon(Icons.Outlined.Person, "") },
-                    label = { Text(text = "My Friends") },
-                    //badge = { Text(text = "0") },
-                    selected = navController.currentScreen.value == Screen.FriendPage.name,
-                    onClick = {
-                        scope.launch {
-                            drawerState.apply { close() }
-                        }
-                        navController.navigate(Screen.FriendPage.name)
-                    }
-                )*/
             }
         },
     ) {

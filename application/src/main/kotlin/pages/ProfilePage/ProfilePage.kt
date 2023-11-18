@@ -94,7 +94,7 @@ fun profilePageContent(
                 horizontalAlignment = Alignment.Start,
             ) {
                 ///////// friend ///////////////
-                friendSection()
+                friendSection(USER_ID)
                 ///////////////////////////////
             }
             Column(

@@ -1,4 +1,3 @@
-import pages.FriendPage.friendPage
 import pages.ProfilePage.profilePage
 import pages.SchedulePage.schedulePage
 import pages.WelcomePage.welcomePage
@@ -40,7 +39,6 @@ enum class Screen(
     SchedulePage,
     LoginPage,
     ProfilePage,
-    FriendPage
 }
 
 
@@ -64,10 +62,6 @@ fun CustomNavigationHost(
 
         composable(Screen.ProfilePage.name) {
             profilePage(navController)
-        }
-
-        composable(Screen.FriendPage.name) {
-            friendPage(navController)
         }
 
     }.build()
