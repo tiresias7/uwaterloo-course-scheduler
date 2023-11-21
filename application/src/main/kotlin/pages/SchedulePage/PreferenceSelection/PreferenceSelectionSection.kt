@@ -23,9 +23,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import logic.preference.Preference
 import org.burnoutcrew.reorderable.*
-import pages.SchedulePage.PreferenceSelection.InputPreferences.NonPreferredTimeChip
-import pages.SchedulePage.PreferenceSelection.InputPreferences.PreferredTimeChip
-import pages.SchedulePage.PreferenceSelection.InputPreferences.MaxHoursPerDayChip
+import pages.SchedulePage.PreferenceSelection.InputPreferences.*
 import style.md_theme_light_inversePrimary
 import style.md_theme_light_primaryContainer
 
@@ -135,6 +133,10 @@ fun preferenceDialog(
                             PreferredTimeChip(addCallBack)
                             Spacer(modifier = Modifier.height(5.dp))
                             NonPreferredTimeChip(addCallBack)
+                            Spacer(modifier = Modifier.height(5.dp))
+                            LunchBreakPreferenceChip(addCallBack)
+                            Spacer(modifier = Modifier.height(5.dp))
+                            DayOffPreferenceChip(addCallBack)
                         }
                         else if (sectionName == "Course Preference") {
                             ////////FILLMEIN////////

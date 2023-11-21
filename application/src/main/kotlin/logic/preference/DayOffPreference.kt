@@ -28,6 +28,6 @@ class DayOffPreference(
     }
 
     override fun toString(): String {
-        return "Prefer at least one weekday off. Weight: $weight"
+        return "Prefer at least one weekday off"// Weight: $weight
     }
 }

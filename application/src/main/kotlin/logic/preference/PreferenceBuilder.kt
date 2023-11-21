@@ -25,6 +25,16 @@ class PreferenceBuilder() {
             val days = convertToDayOfWeek(inputList[2])
             return NonPreferredTimePreference(weight, startTime, finishTime, days)
         }
+        if (tag == "LunchBreakPreference") {
+            val formatter = DateTimeFormatter.ofPattern("HH:mm")
+            val startTime = LocalTime.parse(inputList[0], formatter)
+            val finishTime = LocalTime.parse(inputList[1], formatter)
+            val length = inputList[2].toInt()
+            return LunchBreakPreference(weight, startTime, finishTime, length)
+        }
+        if (tag == "DayOffPreference") {
+            return DayOffPreference(weight)
+        }
         return null
     }
 }

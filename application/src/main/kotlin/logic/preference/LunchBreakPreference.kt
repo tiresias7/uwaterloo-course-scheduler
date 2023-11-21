@@ -44,10 +44,10 @@ class LunchBreakPreference(
     }
 
     override fun toString(): String {
-        var outStr = "Preserve a lunch break on every day "
+        var outStr = "Lunch break "
         val formatter = DateTimeFormatter.ofPattern("HH:mm")
-        outStr += "from ${startTime.format(formatter)} to ${endTime.format(formatter)} of $lunchBreakLength minutes"
-        outStr += ". Weight: $weight"
+        outStr += "${startTime.format(formatter)} to ${endTime.format(formatter)} for $lunchBreakLength mins"
+        //outStr += ". Weight: $weight"
 
         return outStr
     }
