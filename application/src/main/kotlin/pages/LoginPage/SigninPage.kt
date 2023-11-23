@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.material3.IconButtonColors
+import androidx.compose.ui.input.key.*
 import cache.CourseNameLoader
 import common.SimpleTextField
 import common.navcontroller.NavController
@@ -36,13 +37,13 @@ var USER_EMAIL = ""
 @Composable
 fun loginPage(
     navController: NavController
-){
+) {
     var email by remember { mutableStateOf(TextFieldValue()) }
     var emailLabel by remember { mutableStateOf("Enter Email") }
     var password by remember { mutableStateOf(TextFieldValue()) }
     var passwordLabel by remember { mutableStateOf("Enter Password") }
     var passwordVisible by remember { mutableStateOf(false) }
-    var isError by remember{ mutableStateOf(false)}
+    var isError by remember { mutableStateOf(false) }
     val ifShowSignup = remember { mutableStateOf(false) }
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -73,10 +74,12 @@ fun loginPage(
                     .padding(20.dp)
                     .fillMaxSize()
             ) {
-                Text("Sign in",
+                Text(
+                    "Sign in",
                     fontSize = 40.sp,
                 )
-                Text("Your personal UWaterloo course scheduler",
+                Text(
+                    "Your personal UWaterloo course scheduler",
                     fontSize = 15.sp,
                 )
                 Spacer(modifier = Modifier.padding(vertical = 10.dp))
@@ -112,23 +115,59 @@ fun loginPage(
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                     trailingIcon = {
                         IconButton(
-                            onClick = {passwordVisible = !passwordVisible},
+                            onClick = { passwordVisible = !passwordVisible },
                             modifier = Modifier.width(50.dp).padding(end = 10.dp),
                             colors = IconButtonDefaults.iconButtonColors(contentColor = Color.Black)
-                        ){
+                        ) {
                             if (passwordVisible) {
                                 Text("Hide", fontSize = 14.sp)
-                            }
-                            else {
+                            } else {
                                 Text("Show", fontSize = 14.sp)
                             }
                         }
                     },
                     isError = isError,
-                    modifier = Modifier.width(400.dp)
+                    modifier = Modifier.width(400.dp).onKeyEvent { event ->
+                        if (event.key == Key.Enter && event.type == KeyEventType.KeyUp) {
+                            if (email.text == "" || password.text == "") {
+                                isError = true
+                                if (email.text == "") {
+                                    emailLabel = "Please enter email"
+                                }
+                                if (password.text == "") {
+                                    passwordLabel = "Please enter password"
+                                }
+                            } else {
+                                val response = signInExistingUsersByEmail(email.text, password.text)
+                                val status = response.first
+                                if (status == SignStatus.SIGN_IN_INVALID) {
+                                    isError = true
+                                    emailLabel = "Email Not Found"
+                                    email = TextFieldValue("")
+                                    password = TextFieldValue("")
+                                } else if (status == SignStatus.SIGN_IN_FAILED) {
+                                    isError = true
+                                    passwordLabel = "Incorrect Password"
+                                    password = TextFieldValue("")
+                                } else {
+                                    USER_EMAIL = email.text
+                                    USER_ID = response.second.first
+                                    USER_NAME = response.second.second
+                                    email = TextFieldValue("")
+                                    password = TextFieldValue("")
+                                    isError = false
+                                    emailLabel = "Enter Email"
+                                    passwordLabel = "Enter Password"
+                                    CourseNameLoader.cacheAllCourseNames()
+                                    navController.navigate(Screen.WelcomePage.name)
+                                }
+                            }
+                        }
+                        false
+                    },
                 )
                 TextButton(
-                    content = {Text("Forgot password?", fontSize = 15.sp)},
+                    content = { Text("Forgot password?", fontSize = 15.sp) },
                     onClick = {}
                 )
                 Spacer(modifier = Modifier.padding(vertical = 15.dp))
@@ -142,8 +181,7 @@ fun loginPage(
                             if (password.text == "") {
                                 passwordLabel = "Please enter password"
                             }
-                        }
-                        else {
+                        } else {
                             val response = signInExistingUsersByEmail(email.text, password.text)
                             val status = response.first
                             if (status == SignStatus.SIGN_IN_INVALID) {
@@ -175,7 +213,7 @@ fun loginPage(
                         .size(400.dp, 50.dp)
                 )
                 TextButton(
-                    content = {Text("New to ω? Join now", fontSize = 15.sp)},
+                    content = { Text("New to ω? Join now", fontSize = 15.sp) },
                     onClick = {
                         email = TextFieldValue("")
                         password = TextFieldValue("")
@@ -207,7 +245,7 @@ fun loginPage(
 }
 
 @Composable
-fun signupDialog (ifShowSignup : MutableState<Boolean>) {
+fun signupDialog(ifShowSignup: MutableState<Boolean>) {
     var userName by remember { mutableStateOf(TextFieldValue()) }
     var email by remember { mutableStateOf(TextFieldValue()) }
     var password1 by remember { mutableStateOf(TextFieldValue()) }
@@ -215,10 +253,10 @@ fun signupDialog (ifShowSignup : MutableState<Boolean>) {
     var iconPassword by remember { mutableStateOf(Icons.Outlined.Lock) }
     var ifEmailAlreadyExists by remember { mutableStateOf(false) }
     var passwordVisible by remember { mutableStateOf(false) }
-    val ifNameInvalid = remember {mutableStateOf(false)}
-    val ifEmailInvalid = remember {mutableStateOf(false)}
-    val ifPasswordInvalid = remember {mutableStateOf(false)}
-    val ifNotSame = remember {mutableStateOf(false)}
+    val ifNameInvalid = remember { mutableStateOf(false) }
+    val ifEmailInvalid = remember { mutableStateOf(false) }
+    val ifPasswordInvalid = remember { mutableStateOf(false) }
+    val ifNotSame = remember { mutableStateOf(false) }
     //var secretPassword by remember { mutableStateOf(TextFieldValue()) }
     if (ifShowSignup.value) {
         Dialog(
@@ -249,7 +287,7 @@ fun signupDialog (ifShowSignup : MutableState<Boolean>) {
                             fontSize = 40.sp,
                         )
                         TextButton(
-                            content = {Text("Quit")},
+                            content = { Text("Quit") },
                             onClick = {
                                 ifShowSignup.value = false
                             },
@@ -257,17 +295,19 @@ fun signupDialog (ifShowSignup : MutableState<Boolean>) {
                         )
                     }
                     Spacer(modifier = Modifier.padding(vertical = 10.dp))
-                    Text("Create Username (1-20 characters)",fontSize = 12.sp,)
+                    Text("Create Username (1-20 characters)", fontSize = 12.sp)
                     SimpleTextField(
                         singleLine = true,
                         value = userName.text,
                         onValueChange = { newValue: String ->
                             userName = TextFieldValue(newValue)
                             if (newValue.matches(Regex("[a-zA-Z0-9]*")) && newValue.length <= 20 &&
-                                newValue.length >= 1 ) {
+                                newValue.length >= 1
+                            ) {
                                 ifNameInvalid.value = false
+                            } else {
+                                ifNameInvalid.value = true
                             }
-                            else { ifNameInvalid.value = true }
                         },
                         leadingIcon = {
                             Icon(Icons.Outlined.Person, "Username")
@@ -275,12 +315,13 @@ fun signupDialog (ifShowSignup : MutableState<Boolean>) {
                         isError = ifNameInvalid,
                         modifier = Modifier.size(500.dp, 50.dp)
                     )
-                    Text("Please use numbers and letters only, no whitespace",
+                    Text(
+                        "Please use numbers and letters only, no whitespace",
                         fontSize = 12.sp,
                         color = Color.Gray
                     )
                     Spacer(modifier = Modifier.padding(vertical = 5.dp))
-                    Text("Enter your Email",fontSize = 12.sp,)
+                    Text("Enter your Email", fontSize = 12.sp)
                     SimpleTextField(
                         singleLine = true,
                         value = email.text,
@@ -288,10 +329,12 @@ fun signupDialog (ifShowSignup : MutableState<Boolean>) {
                             email = TextFieldValue(newValue)
                             ifEmailAlreadyExists = false
                             if (newValue.matches(Regex("[a-zA-Z0-9@.]*")) && newValue.length <= 50 &&
-                                newValue.length >= 1 ) {
+                                newValue.length >= 1
+                            ) {
                                 ifEmailInvalid.value = false
+                            } else {
+                                ifEmailInvalid.value = true
                             }
-                            else { ifEmailInvalid.value = true }
                         },
                         leadingIcon = {
                             Icon(Icons.Outlined.Email, "Email")
@@ -300,23 +343,24 @@ fun signupDialog (ifShowSignup : MutableState<Boolean>) {
                         modifier = Modifier.size(500.dp, 50.dp)
                     )
                     if (ifEmailAlreadyExists) {
-                        Text("Email Already Exists",fontSize = 12.sp, color = Color.Red)
+                        Text("Email Already Exists", fontSize = 12.sp, color = Color.Red)
                         Spacer(modifier = Modifier.padding(vertical = 5.dp))
-                    }
-                    else {
+                    } else {
                         Spacer(modifier = Modifier.padding(vertical = 10.dp))
                     }
-                    Text("Create Password (5-20 characters)",fontSize = 12.sp,)
+                    Text("Create Password (5-20 characters)", fontSize = 12.sp)
                     SimpleTextField(
                         singleLine = true,
                         value = password1.text,
                         onValueChange = { newValue: String ->
                             password1 = TextFieldValue(newValue)
                             if (newValue.matches(Regex("[a-zA-Z0-9]*")) && newValue.length <= 20 &&
-                                newValue.length >= 5) {
+                                newValue.length >= 5
+                            ) {
                                 ifPasswordInvalid.value = false
+                            } else {
+                                ifPasswordInvalid.value = true
                             }
-                            else { ifPasswordInvalid.value = true }
                         },
                         leadingIcon = {
                             Icon(Icons.Outlined.Lock, "Password")
@@ -325,14 +369,13 @@ fun signupDialog (ifShowSignup : MutableState<Boolean>) {
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                         trailingIcon = {
                             IconButton(
-                                onClick = {passwordVisible = !passwordVisible},
+                                onClick = { passwordVisible = !passwordVisible },
                                 modifier = Modifier.width(50.dp).padding(end = 10.dp),
                                 colors = IconButtonDefaults.iconButtonColors(contentColor = Color.Black)
-                            ){
+                            ) {
                                 if (passwordVisible) {
                                     Text("Hide", fontSize = 14.sp)
-                                }
-                                else {
+                                } else {
                                     Text("Show", fontSize = 14.sp)
                                 }
                             }
@@ -340,12 +383,13 @@ fun signupDialog (ifShowSignup : MutableState<Boolean>) {
                         isError = ifPasswordInvalid,
                         modifier = Modifier.size(500.dp, 50.dp)
                     )
-                    Text("Please use numbers and letters only, no whitespace",
-                            fontSize = 12.sp,
-                            color = Color.Gray
+                    Text(
+                        "Please use numbers and letters only, no whitespace",
+                        fontSize = 12.sp,
+                        color = Color.Gray
                     )
                     Spacer(modifier = Modifier.padding(vertical = 5.dp))
-                    Text("Confirm Password",fontSize = 12.sp,)
+                    Text("Confirm Password", fontSize = 12.sp)
                     SimpleTextField(
                         singleLine = true,
                         //value = password2.text.map{'*'}.joinToString(separator = ""),
@@ -355,25 +399,25 @@ fun signupDialog (ifShowSignup : MutableState<Boolean>) {
                             if (password2.text == password1.text && !ifPasswordInvalid.value) {
                                 ifNotSame.value = false
                                 iconPassword = Icons.Outlined.Check
-                            }
-                            else {
+                            } else {
                                 ifNotSame.value = true
                                 iconPassword = Icons.Outlined.Close
                             }
-                            if (password2.text == "") {iconPassword = Icons.Outlined.Lock}
+                            if (password2.text == "") {
+                                iconPassword = Icons.Outlined.Lock
+                            }
                         },
                         visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                         trailingIcon = {
                             IconButton(
-                                onClick = {passwordVisible = !passwordVisible},
+                                onClick = { passwordVisible = !passwordVisible },
                                 modifier = Modifier.width(50.dp).padding(end = 10.dp),
                                 colors = IconButtonDefaults.iconButtonColors(contentColor = Color.Black)
-                            ){
+                            ) {
                                 if (passwordVisible) {
                                     Text("Hide", fontSize = 14.sp)
-                                }
-                                else {
+                                } else {
                                     Text("Show", fontSize = 14.sp)
                                 }
                             }
@@ -397,8 +441,7 @@ fun signupDialog (ifShowSignup : MutableState<Boolean>) {
                                 val status = signUpNewUsers(userName.text, password1.text, email.text).first
                                 if (status == SignStatus.SIGN_UP_FAILED) {
                                     ifEmailAlreadyExists = true
-                                }
-                                else {
+                                } else {
                                     userName = TextFieldValue("")
                                     email = TextFieldValue("")
                                     password1 = TextFieldValue("")

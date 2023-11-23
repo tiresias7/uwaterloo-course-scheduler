@@ -64,7 +64,7 @@ fun preferenceSelectionSection(
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 6.dp
             ),
-            modifier = Modifier.width(446.dp).height(300.dp).padding(bottom = 10.dp),
+            modifier = Modifier.width(446.dp).height(450.dp).padding(bottom = 10.dp),
         ) {
             LazyColumn(
                 state = state.listState,
