@@ -43,8 +43,8 @@ fun schedulePage(
 @Composable
 fun schedulePageContent(
 ) {
-    val ifErrorDialog = remember { mutableStateOf(false)}
-    val errorCauses = remember { mutableListOf<String>()}
+    val ifErrorDialog = remember { mutableStateOf(false) }
+    val errorCauses = remember { mutableListOf<String>() }
     val interactionSource = remember { MutableInteractionSource() }
     val selectedCourses = remember { mutableStateListOf<SelectedCourse>() }  // state hoisting
     val requiredNumberOfCourses = remember { mutableStateOf(5) } // If no input then select 5 courses as default
@@ -95,37 +95,38 @@ fun schedulePageContent(
                     showAddPreference.value = true
                 },
                 changeCallBack = { from: Int, to: Int ->
-                    if (from < to){
+                    val fromElement = selectedPreferences.elementAt(from)
+                    val toElement = selectedPreferences.elementAt(to)
+                    if (from < to) {
                         for (p in selectedPreferences) {
-                            if (p.weight > (from + 1) && p.weight <= (to + 1)) {
-                                p.weight--
+                            if (p.weight < fromElement.weight && p.weight >= toElement.weight) {
+                                p.weight ++
                             }
                         }
-                        val removeElement = selectedPreferences.removeAt(from)
-                        removeElement.weight = to + 1
-                        selectedPreferences.add(to, removeElement)
-                    }
-                    else{
+                        selectedPreferences.removeAt(from)
+                        fromElement.weight = toElement.weight - 1
+                        selectedPreferences.add(to, fromElement)
+                    } else {
                         for (p in selectedPreferences) {
-                            if (p.weight > to && p.weight <= from) {
-                                p.weight++
+                            if (p.weight <= toElement.weight && p.weight > fromElement.weight) {
+                                p.weight --
                             }
                         }
-                        val removeElement = selectedPreferences.removeAt(from)
-                        removeElement.weight = to + 1
-                        selectedPreferences.add(to, removeElement)
+                        selectedPreferences.removeAt(from)
+                        fromElement.weight = toElement.weight + 1
+                        selectedPreferences.add(to, fromElement)
                     }
                 },
-                deleteCallBack = {
-                    preference ->
+                deleteCallBack = { preference ->
                     var remove_flag = 0
-                    for (p in selectedPreferences){
-                        if (p === preference){
+                    for (p in selectedPreferences) {
+                        if (p === preference) {
                             remove_flag = 1
                         }
-                        if (remove_flag == 1){
-                            p.weight--
+                        if (remove_flag == 1) {
+                            break
                         }
+                        p.weight --
                     }
                     selectedPreferences.remove(preference)
                 }
@@ -149,12 +150,10 @@ fun schedulePageContent(
                         if (requiredNumberOfCourses.value < numOfHard(selectedCourses)) {
                             ifErrorDialog.value = true
                             errorCauses.add("hard > num")
-                        }
-                        else if(requiredNumberOfCourses.value > selectedCourses.size) {
+                        } else if (requiredNumberOfCourses.value > selectedCourses.size) {
                             ifErrorDialog.value = true
                             errorCauses.add("soft + hard < num")
-                        }
-                        else {
+                        } else {
                             returnedSections.clear()
                             val tempSections = getScheduleService(
                                 selectedCourses,
@@ -164,8 +163,7 @@ fun schedulePageContent(
                             println(tempSections)
                             if (tempSections.isNotEmpty()) {
                                 returnedSections.addAll(tempSections)
-                            }
-                            else {
+                            } else {
                                 ifErrorDialog.value = true
                                 errorCauses.add("no schedule returned")
                             }
@@ -178,7 +176,7 @@ fun schedulePageContent(
                     Text("Generate Schedule")
                 }
                 TextButton(
-                    content = {Text("Save")},
+                    content = { Text("Save") },
                     onClick = {},
                     modifier = Modifier.padding(top = 10.dp)
                 )
@@ -190,7 +188,12 @@ fun schedulePageContent(
         }
     }
     preferenceDialog(showAddPreference, addCallBack = { tag: String, inputList: List<String> ->
-        preferenceBuilder.build(selectedPreferences.size+1, tag, inputList)?.let { selectedPreferences.add(it) }
+        preferenceBuilder.build(1, tag, inputList)?.let {
+            for (preference in selectedPreferences) {
+                preference.weight++
+            }
+            selectedPreferences.add(it)
+        }
     })
     errorDialog(ifErrorDialog, errorCauses)
 }
@@ -222,35 +225,37 @@ fun preferenceSelectionWrapper(
     preferenceSelectionSection(selectedPreferences, showCallBack, changeCallBack, deleteCallBack)
 }
 
-fun getScheduleService(selectedCourses: MutableList<SelectedCourse>,
-                       requiredNumberOfCourses: MutableState<Int>,
-                       selectedPreferences: MutableList<Preference>): List<SectionUnit> {
-    val hardCourses : MutableList<String> = mutableListOf()
-    val softCourses : MutableList<String> = mutableListOf()
-    val hardPreference : MutableList<Preference> = mutableListOf()
-    val softPreference : MutableList<Preference> = mutableListOf()
-    for(course in selectedCourses) {
+fun getScheduleService(
+    selectedCourses: MutableList<SelectedCourse>,
+    requiredNumberOfCourses: MutableState<Int>,
+    selectedPreferences: MutableList<Preference>
+): List<SectionUnit> {
+    val hardCourses: MutableList<String> = mutableListOf()
+    val softCourses: MutableList<String> = mutableListOf()
+    val hardPreference: MutableList<Preference> = mutableListOf()
+    val softPreference: MutableList<Preference> = mutableListOf()
+    for (course in selectedCourses) {
         if (course.required) {
             hardCourses.add(course.courseName)
-        }
-        else {
+        } else {
             softCourses.add(course.courseName)
         }
     }
     hardPreference.add(NoCollisionPreference(10000))
-    for(preference in selectedPreferences) {
-        preference.weight = selectedPreferences.size - preference.weight + 1
+    for (preference in selectedPreferences) {
         softPreference.add(preference)
     }
-    val tempResult = getSchedule(hardCourses.toList(), softCourses.toList(), requiredNumberOfCourses.value,
-        hardPreference.toList(), softPreference.toList())
-    if (tempResult.isEmpty()){
+    val tempResult = getSchedule(
+        hardCourses.toList(), softCourses.toList(), requiredNumberOfCourses.value,
+        hardPreference.toList(), softPreference.toList()
+    )
+    if (tempResult.isEmpty()) {
         return listOf()
     }
     return sectionListToUnits(tempResult[0])
 }
 
-fun numOfHard(selectedCourses: MutableList<SelectedCourse>) : Int {
+fun numOfHard(selectedCourses: MutableList<SelectedCourse>): Int {
     var result = 0
     for (course in selectedCourses) {
         if (course.required) result++
@@ -259,7 +264,7 @@ fun numOfHard(selectedCourses: MutableList<SelectedCourse>) : Int {
 }
 
 @Composable
-fun errorDialog(ifErrorDialog : MutableState<Boolean>, errorCauses : MutableList<String>) {
+fun errorDialog(ifErrorDialog: MutableState<Boolean>, errorCauses: MutableList<String>) {
     if (ifErrorDialog.value) {
         Dialog(
             onDismissRequest = { ifErrorDialog.value = false },
@@ -283,7 +288,8 @@ fun errorDialog(ifErrorDialog : MutableState<Boolean>, errorCauses : MutableList
                             verticalArrangement = Arrangement.Center,
                             horizontalAlignment = Alignment.Start,
                         ) {
-                            Text("Following requirement(s) is not met:",
+                            Text(
+                                "Following requirement(s) is not met:",
                                 fontSize = 15.sp,
                                 fontStyle = FontStyle.Italic,
                                 modifier = Modifier.padding(start = 30.dp, end = 30.dp, bottom = 10.dp)
@@ -294,13 +300,13 @@ fun errorDialog(ifErrorDialog : MutableState<Boolean>, errorCauses : MutableList
                                 modifier = Modifier.padding(start = 30.dp, end = 30.dp)
                             )
                         }
-                    }
-                    else if (errorCauses.contains("soft + hard < num")) {
+                    } else if (errorCauses.contains("soft + hard < num")) {
                         Column(
                             verticalArrangement = Arrangement.Center,
                             horizontalAlignment = Alignment.Start,
                         ) {
-                            Text("Following requirement(s) is not met:",
+                            Text(
+                                "Following requirement(s) is not met:",
                                 fontSize = 15.sp,
                                 fontStyle = FontStyle.Italic,
                                 modifier = Modifier.padding(start = 30.dp, end = 30.dp, bottom = 10.dp)
@@ -311,8 +317,7 @@ fun errorDialog(ifErrorDialog : MutableState<Boolean>, errorCauses : MutableList
                                 modifier = Modifier.padding(start = 30.dp, end = 30.dp)
                             )
                         }
-                    }
-                    else if (errorCauses.contains("no schedule returned")) {
+                    } else if (errorCauses.contains("no schedule returned")) {
                         Text(
                             "It's impossible to generate a schedule including all courses you selects without time conflicts",
                             fontSize = 15.sp,
@@ -320,7 +325,7 @@ fun errorDialog(ifErrorDialog : MutableState<Boolean>, errorCauses : MutableList
                         )
                     }
                     ExtendedFloatingActionButton(
-                        content = {Text("Got it")},
+                        content = { Text("Got it") },
                         onClick = {
                             ifErrorDialog.value = false
                             errorCauses.clear()
