@@ -47,7 +47,7 @@ fun friendSearchInputField(
             verticalAlignment = Alignment.Bottom
         ) {
             OutlinedTextField(
-                modifier = Modifier.size(300.dp, 50.dp)
+                modifier = Modifier.size(300.dp, 60.dp)
                     .onFocusChanged { focusState ->
                         ifFocused.value = focusState.isFocused
                         if (!ifFocused.value) {
@@ -78,17 +78,10 @@ fun friendSearchInputField(
                     if (inputValue.value.text != "") {
                         val status = sendFriendRequest(myID, inputValue.value.text.toInt())
                         if (status != RequestStatus.FRIEND_REQUEST_SUCCESS) {
-                            print(status)
                         }
-                        else {
-                            print(" success ")
-                        }
-                    }
-                    else {
-                        print(" Empty ")
                     }
                 },
-                modifier = Modifier.size(80.dp, 40.dp).padding(start = 10.dp)
+                modifier = Modifier.size(80.dp, 50.dp).padding(start = 10.dp)
             )
         }
     }
