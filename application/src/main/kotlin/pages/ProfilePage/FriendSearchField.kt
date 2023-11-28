@@ -30,7 +30,7 @@ fun friendSearchInputField(
     val userIDDict = remember { mutableMapOf<String, Int>() }
     val inputValue = remember { mutableStateOf(TextFieldValue()) }
     val dropDownExpanded = remember { mutableStateOf(false) }
-    var label by remember { mutableStateOf("Enter Friend's UID To Invite") }
+    var label by remember { mutableStateOf("Enter UID") }
     val ifFocused = mutableStateOf(true)
     val focusManager = LocalFocusManager.current
 
