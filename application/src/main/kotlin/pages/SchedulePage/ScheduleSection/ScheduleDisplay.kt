@@ -27,33 +27,37 @@ fun schedule(
     var img_width by remember { mutableStateOf(0.dp) }
     var img_height by remember { mutableStateOf(0.dp) }
     val density = LocalDensity.current.density
-    Card(
+    Box(
         modifier = modifier,
-        border = BorderStroke(0.1.dp, Color.Black),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        shape = RoundedCornerShape((0.dp)),
+    ) {
+        Card(
+            border = BorderStroke(0.1.dp, Color.Black),
+            colors = CardDefaults.cardColors(containerColor = Color.White),
+            shape = RoundedCornerShape((0.dp)),
 //            modifier = Modifier.onPointerEvent(PointerEventType.Move) {
 //                val position = it.changes.first().position;
 //                println(position)
 //            }
-    ) {
-        Box(
-            contentAlignment = Alignment.TopStart,
         ) {
-            Image(
-                modifier = Modifier.onSizeChanged {
-                    img_width =
-                        (it.width / density).dp     // layoutSize returns the value same as mouse offset
-                    img_height = (it.height / density).dp
-                },
-                painter = painterResource("schedule_bg.svg"),
-                contentDescription = "schedule background"
-            )
-            Box() {
-                for (section in sections) {
-                    sectionBlock(section, img_width)
+            Box(
+                contentAlignment = Alignment.TopStart,
+            ) {
+                Image(
+                    modifier = Modifier.onSizeChanged {
+                        img_width =
+                            (it.width / density).dp     // layoutSize returns the value same as mouse offset
+                        img_height = (it.height / density).dp
+                    },
+                    painter = painterResource("schedule_bg.svg"),
+                    contentDescription = "schedule background"
+                )
+                Box() {
+                    for (section in sections) {
+                        sectionBlock(section, img_width)
+                    }
                 }
             }
         }
     }
+
 }
