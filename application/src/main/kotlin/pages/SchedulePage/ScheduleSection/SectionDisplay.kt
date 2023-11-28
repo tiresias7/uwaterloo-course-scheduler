@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import data.BASE_IMAGE_WIDTH
 import data.BLOCK_WIDTH
 import data.SectionUnit
@@ -38,7 +39,8 @@ fun sectionBlock(section: SectionUnit, baseWidth: Dp) {
                     y = baseWidth * section.getYOffset() / BASE_IMAGE_WIDTH + section.getHeight().dp
                 )
                 .heightIn(0.dp, 400.dp).widthIn(0.dp, 150.dp)
-                .hoverable(interactionSource),
+                .hoverable(interactionSource)
+                .zIndex(1f),
         ) {
             Column(
                 modifier = Modifier.padding(10.dp),
