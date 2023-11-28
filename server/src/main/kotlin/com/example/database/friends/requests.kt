@@ -51,7 +51,7 @@ fun queryAllFriendRequestsByUID(id: Int, db: HikariDataSource): List<Pair<Int, S
             stmt.executeQuery().use { result ->
                 while (result.next()) {
                     val friendId = result.getInt("user1")
-                    val friendName = result.getString("name")
+                    val friendName = result.getString("username")
                     if (friendId != id) friendData.add(Pair(friendId, friendName))
                 }
             }

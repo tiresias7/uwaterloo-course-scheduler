@@ -1,6 +1,7 @@
 package database.users
 
 import com.zaxxer.hikari.HikariDataSource
+import utility.checkPassword
 import utility.hashPassword
 
 fun createUsersTableIfNotExists(db: HikariDataSource) {
@@ -20,8 +21,8 @@ fun createUsersTableIfNotExists(db: HikariDataSource) {
     }
 }
 
-fun verifyPasswordByUID(id: Int, passwordHashed: String, db: HikariDataSource): Boolean {
-    return passwordHashed == queryHashedPasswordByUID(id, db)
+fun verifyPasswordByUID(id: Int, password: String, db: HikariDataSource): Boolean {
+    return checkPassword(password, queryHashedPasswordByUID(id, db))
 }
 
 private fun queryHashedPasswordByUID(id: Int, db: HikariDataSource): String {

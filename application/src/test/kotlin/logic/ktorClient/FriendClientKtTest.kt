@@ -1,6 +1,5 @@
 package logic.ktorClient
 
-import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -17,10 +16,6 @@ class FriendClientKtTest {
 
     @Test
     fun fetchFriendList() {
-        runBlocking {
-            val temp = signInExistingUsersByEmail("email.com", "password")
-            println(temp)
-        }
     }
 
     @Test

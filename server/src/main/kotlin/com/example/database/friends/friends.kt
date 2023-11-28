@@ -37,10 +37,13 @@ fun verifyFriendRelation(id1: Int, id2: Int, db: HikariDataSource): Boolean {
 
 fun queryAllFriendsRelationByUID(id: Int, db: HikariDataSource): List<Pair<Int, String>> {
     val querySQL = """
-        SELECT friends.*, users.username
-        FROM friends
-        JOIN users ON (friends.user1 = users.id OR friends.user2 = users.id)
-        WHERE friends.user1 = $id OR friends.user2 = $id
+        SELECT user2 AS id, username
+        FROM friends JOIN users
+            ON (friends.user2 = users.id) WHERE user1 = $id
+        UNION
+        SELECT user1 AS id, username
+        FROM friends JOIN users
+            ON (friends.user1 = users.id) WHERE user2 = $id
     """.trimIndent()
     val friendData = mutableListOf<Pair<Int, String>>()
 
@@ -48,16 +51,14 @@ fun queryAllFriendsRelationByUID(id: Int, db: HikariDataSource): List<Pair<Int, 
         conn.prepareStatement(querySQL).use { stmt ->
             stmt.executeQuery().use { result ->
                 while (result.next()) {
-                    val user1 = result.getInt("user1")
-                    val user2 = result.getInt("user2")
+                    val userId = result.getInt("id")
                     val username = result.getString("username")
-                    if (user1 == id) friendData.add(Pair(user2, username))
-                    else friendData.add(Pair(user1, username))
+                    friendData.add(Pair(userId, username))
                 }
             }
         }
     }
-    return friendData
+    return friendData.sortedBy { it.first }
 }
 
 fun main() {

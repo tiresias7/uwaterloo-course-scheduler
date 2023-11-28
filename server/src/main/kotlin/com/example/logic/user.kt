@@ -17,11 +17,11 @@ fun signUpNewUsers(name: String, passwordHashed: String, email: String): Pair<Si
     }
 }
 
-fun signInExistingUsersByEmail(email: String, passwordHashed: String): Pair<SignStatus, Int> {
+fun signInExistingUsersByEmail(email: String, password: String): Pair<SignStatus, Int> {
     createDataSource().use { db ->
         val uid = queryUIDByEmail(email, db)
         if (uid == 0) return Pair(SignStatus.SIGN_IN_INVALID, uid)
-        if (!verifyPasswordByUID(uid, passwordHashed, db)) {
+        if (!verifyPasswordByUID(uid, password, db)) {
             return Pair(SignStatus.SIGN_IN_FAILED, uid)
         }
         return Pair(SignStatus.SIGN_IN_SUCCESS, uid)

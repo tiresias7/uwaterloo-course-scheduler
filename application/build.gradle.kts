@@ -36,6 +36,7 @@ dependencies {
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
     implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
     implementation(project(path =":models", configuration = "default"))
+    implementation("io.ktor:ktor-serialization-jackson:2.3.5")
     testImplementation(kotlin("test"))
     implementation(group = "org.json", name = "json", version = "20231013")
     implementation("org.jetbrains.compose.material3:material3:$material3_version")

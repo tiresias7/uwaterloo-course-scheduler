@@ -3,6 +3,7 @@ package com.example.plugins
 import SectionUnit
 import com.example.logic.*
 import database.common.createDataSource
+import database.friends.queryAllFriendRequestsByUID
 import database.friends.queryAllFriendsRelationByUID
 import database.friends.verifyFriendRelation
 import database.users.queryExisingUserProfileByUID
@@ -18,20 +19,20 @@ import request.SignStatus
 fun Application.configureRouting() {
 
     routing {
-//        get("/") {
-//            call.respondText("Hello World!")
-//        }
+        get("/") {
+            call.respondText("Hello World!")
+        }
 
         route("/friend") {
             get("/list") {
                 val input = call.receive<ID>()
 
                 val friendList = createDataSource().use { queryAllFriendsRelationByUID(input.id, it) }
-                call.respondText(friendList.toString(), ContentType.Application.Json, HttpStatusCode.OK)
+                call.respond(HttpStatusCode.OK, friendList)
             }
 
             route("/profile") {
-                get("/") {
+                get("") {
                     val input = call.receive<PairID>()
 
                     var profile = mutableListOf<SectionUnit>()
@@ -39,18 +40,18 @@ fun Application.configureRouting() {
                         if (verifyFriendRelation(input.senderId, input.receiverId, it)) profile = queryExisingUserProfileByUID(input.receiverId, it)
                         else call.respondText("Friend Relation doesn't exist", ContentType.Text.Plain, HttpStatusCode.BadRequest)
                     }
-                    call.respondText(profile.toString(), ContentType.Application.Json, HttpStatusCode.OK)
+                    call.respond(HttpStatusCode.OK, profile)
                 }
             }
             route("/request") {
-                get("/") {
+                get("") {
                     val input = call.receive<ID>()
 
-                    val requestList = createDataSource().use { queryAllFriendsRelationByUID(input.id, it) }
-                    call.respondText(requestList.toString(), ContentType.Application.Json, HttpStatusCode.OK)
+                    val requestList = createDataSource().use { queryAllFriendRequestsByUID(input.id, it) }
+                    call.respond(HttpStatusCode.OK, requestList)
                 }
 
-                post("/") {
+                post("") {
                     val input = call.receive<PairID>()
                     val requestStatus = sendFriendRequest(input.senderId, input.receiverId)
 
@@ -78,7 +79,7 @@ fun Application.configureRouting() {
 
                 put("denial") {
                     val input = call.receive<PairID>()
-                    val requestStatus = approveFriendRequest(input.senderId, input.receiverId)
+                    val requestStatus = denyFriendRequest(input.senderId, input.receiverId)
 
                     when (requestStatus) {
                         RequestStatus.FRIEND_REQUEST_SELF -> call.respond(HttpStatusCode.BadRequest, "Cannot deny own friend request.")
@@ -94,7 +95,7 @@ fun Application.configureRouting() {
         route("/user") {
             post("/sign-in") {
                 val request = call.receive<SignInRequest>()
-                val result = signInExistingUsersByEmail(request.email, request.passwordHashed)
+                val result = signInExistingUsersByEmail(request.email, request.password)
 
                 when (result.first) {
                     SignStatus.SIGN_IN_INVALID -> call.respond(HttpStatusCode.NotFound, "User not found.")

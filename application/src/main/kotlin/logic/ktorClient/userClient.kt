@@ -3,15 +3,16 @@ package logic.ktorClient
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
+import ktor.SignInRequest
 import ktor.SignResponse
+import ktor.SignUpRequest
 import request.SignStatus
 import utility.hashPassword
 
 suspend fun signUpNewUsers(name: String, password: String, email: String): Triple<SignStatus, Int, String> {
     val respond = httpClient.post("$baseUrl/user/sign-up") {
-        parameter("name", name)
-        parameter("passwordHashed", hashPassword(password))
-        parameter("email", email)
+        contentType(ContentType.Application.Json)
+        setBody(SignUpRequest(name, hashPassword(password), email))
     }
     val statusCode = respond.status
     return when (statusCode) {
@@ -23,10 +24,11 @@ suspend fun signUpNewUsers(name: String, password: String, email: String): Tripl
     }
 }
 
+// The password hashing over internet might need to be resolved
 suspend fun signInExistingUsersByEmail(email: String, password: String): Triple<SignStatus, Int, String> {
     val respond = httpClient.post("$baseUrl/user/sign-in") {
-        parameter("passwordHashed", hashPassword(password))
-        parameter("email", email)
+        contentType(ContentType.Application.Json)
+        setBody(SignInRequest(email, password))
     }
     val statusCode = respond.status
     return when (statusCode) {
@@ -37,4 +39,14 @@ suspend fun signInExistingUsersByEmail(email: String, password: String): Triple<
             Triple(SignStatus.SIGN_IN_SUCCESS, message.uid, message.cookie)
         }
     }
+}
+
+suspend fun main() {
+    println(signInExistingUsersByEmail("aaa@gmail.com", "password"))
+    println(signInExistingUsersByEmail("aaa@gmail.com", "passd"))
+    println(signInExistingUsersByEmail("pp@gmail.com", "password"))
+    println("....................")
+    println(signUpNewUsers("hello", "password","aaa@gmail.com"))
+    println(signUpNewUsers("xiaoye", "password","pp@good.com"))
+    println(signInExistingUsersByEmail("pp@good.com", "password"))
 }
