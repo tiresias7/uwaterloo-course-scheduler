@@ -13,7 +13,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -52,6 +56,9 @@ fun schedulePageContent(
     val showAddPreference = remember { mutableStateOf(false) }
     val selectedPreferences = remember { mutableStateListOf<Preference>() }
     val preferenceBuilder = PreferenceBuilder()
+    val localDensity = LocalDensity.current
+    var column1HeightDp by remember { mutableStateOf(0.dp) }
+    var column2HeightDp by remember { mutableStateOf(0.dp) }
     Row(
         modifier = Modifier
             .fillMaxSize()
@@ -66,7 +73,10 @@ fun schedulePageContent(
     ) {
         Column(
             modifier = Modifier
-                .fillMaxHeight(),
+                .fillMaxHeight()
+                .onGloballyPositioned { coordinates ->
+                column1HeightDp = with(localDensity) { coordinates.size.height.toDp() }
+            },
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.Start
         ) {
@@ -89,7 +99,8 @@ fun schedulePageContent(
                 deleteCallBack = { index: Int ->
                     selectedCourses.removeAt(index)
                 })
-            Spacer(modifier = Modifier.padding(10.dp))
+
+            Spacer(modifier = Modifier.padding(column1HeightDp / 30))
             preferenceSelectionWrapper(selectedPreferences,
                 showCallBack = {
                     showAddPreference.value = true
@@ -135,7 +146,7 @@ fun schedulePageContent(
         Column(
             modifier = Modifier
                 .fillMaxHeight(),
-            verticalArrangement = Arrangement.SpaceEvenly,
+            verticalArrangement = Arrangement.Center,
             horizontalAlignment = CenterHorizontally
         ) {
             Spacer(modifier = Modifier.weight(0.4f))
@@ -143,7 +154,7 @@ fun schedulePageContent(
             Row(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.Top,
-                modifier = Modifier.weight(0.6f)
+                modifier = Modifier.weight(1f)
             ) {
                 OutlinedButton(
                     onClick = {

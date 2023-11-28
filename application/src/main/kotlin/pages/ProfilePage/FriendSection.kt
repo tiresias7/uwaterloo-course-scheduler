@@ -9,6 +9,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.White
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -49,24 +51,14 @@ fun friendSection( USER_ID : Int) {
     var ifFriendList by remember { mutableStateOf(true)}
     var ifMessages by remember { mutableStateOf(false)}
     var ifAddFriends by remember { mutableStateOf(false)}
-    /*val friendsList =
-        remember {
-            mutableStateListOf<String>(
-                "queen",
-                "room",
-                "snake",
-                "tea",
-                "umbrella",
-                "vehicle",
-                "watermelon",
-                "banana",
-                "canana",
-                "danana",
-                "panana",
-                "ananana"
-            )
-        }*/
+    val localDensity = LocalDensity.current
+    var column1HeightDp by remember { mutableStateOf(0.dp) }
     Column (
+        verticalArrangement = Arrangement.Top,
+        modifier = Modifier.padding(top = 50.dp)
+        .onGloballyPositioned { coordinates ->
+            column1HeightDp = with(localDensity) { coordinates.size.height.toDp() }
+        }
     )
     {
         Text(text = "My Friends", fontSize = 30.sp)
@@ -121,30 +113,9 @@ fun friendSection( USER_ID : Int) {
                     modifier = Modifier.size(180.dp, 40.dp).padding(start = 5.dp)
                 )
             }
-            /*if (ifAddFriends) {
-                OutlinedButton(
-                    content = { Text("Add Friends") },
-                    onClick = {
-                        ifFriendList = false
-                        ifMessages = false
-                        ifAddFriends = true
-                    },
-                    modifier = Modifier.size(140.dp, 40.dp)
-                )
-            } else {
-                TextButton(
-                    content = { Text("Add Friends") },
-                    onClick = {
-                        ifFriendList = false
-                        ifMessages = false
-                        ifAddFriends = true
-                    },
-                    modifier = Modifier.size(140.dp, 40.dp)
-                )
-            }*/
         }
         Box(
-            modifier = Modifier.height(650.dp).fillMaxWidth().padding(top = 10.dp),
+            modifier = Modifier.height(column1HeightDp * 88 / 100).fillMaxWidth().padding(top = 10.dp),
         ) {
             if (ifFriendList) {
                 Column(

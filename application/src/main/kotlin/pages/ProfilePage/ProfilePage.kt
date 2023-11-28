@@ -85,7 +85,7 @@ fun profilePageContent(
                     onClick = {}
                 ),
             horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.Top
         ) {
             Column(
                 modifier = Modifier
