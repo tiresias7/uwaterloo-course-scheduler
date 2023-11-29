@@ -5,8 +5,8 @@ import logic.preference.NoCollisionPreference
 import logic.schedulealgo.OptimizedScheduleAlgorithm
 import Section
 import org.junit.jupiter.api.Test
-
-import database.sections.querySectionsByFacultyId
+import kotlinx.coroutines.runBlocking
+import logic.ktorClient.querySectionsByFacultyId
 
 class OptimizedScheduleAlgorithmTest {
 
@@ -25,10 +25,10 @@ class OptimizedScheduleAlgorithmTest {
         ).map { it ->
             val faculty = it.courseName.takeWhile { it.isLetter() }
             val courseId = it.courseName.dropWhile { it.isLetter() }
-            database.common.createDataSource().use{ querySectionsByFacultyId(faculty, courseId, it) }
+            runBlocking{ querySectionsByFacultyId(faculty, courseId) }
         }.flatten()
-            .map { it.map { Section(it.classNumber, it.component, it.sectionNumber, it.campus, it.room, it.instructor, it.startTime, it.endTime,
-                it.days, it.courseName) } }
+            .map { it.map { sec -> Section(sec.classNumber, sec.component, sec.sectionNumber, sec.campus, sec.room, sec.instructor, sec.startTime, sec.endTime,
+                sec.days, sec.courseName) } }
 
         val optimizedScheduleAlgorithm = OptimizedScheduleAlgorithm()
 
