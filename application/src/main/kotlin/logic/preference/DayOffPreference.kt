@@ -1,6 +1,6 @@
 package logic.preference
 
-import logic.Section
+import Section
 import java.time.DayOfWeek
 import java.util.*
 

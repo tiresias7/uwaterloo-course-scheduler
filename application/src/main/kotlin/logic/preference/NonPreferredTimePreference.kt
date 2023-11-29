@@ -1,6 +1,7 @@
 package logic.preference
 
 import Section
+import kotlinx.datetime.toJavaLocalTime
 import java.time.DayOfWeek
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -21,7 +22,7 @@ class NonPreferredTimePreference(
 
         for (section in sections) {
             if (section.days.intersect(days).isNotEmpty() &&
-                section.startTime.isBefore(endTime) && section.endTime.isAfter(startTime)) {
+                section.startTime.toJavaLocalTime().isBefore(endTime) && section.endTime.toJavaLocalTime().isAfter(startTime)) {
                 score -= 10
             }
         }

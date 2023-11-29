@@ -1,16 +1,18 @@
 package cache
 
-import database.common.createDataSource
-import database.sections.queryAllClasses
+import kotlinx.coroutines.runBlocking
+import logic.ktorClient.queryAllClasses
 import java.util.concurrent.CompletableFuture
 
 object CourseNameLoader {
-    private val allCourseNames: CompletableFuture<List<String>> = CompletableFuture.supplyAsync {
-        queryAllClasses(createDataSource())
-    }
+    private val allCourseNames: CompletableFuture<List<String>> = CompletableFuture.supplyAsync { runBlocking {
+        queryAllClasses()
+    }}
 
     fun cacheAllCourseNames() {
-        allCourseNames.complete(queryAllClasses(createDataSource()))
+        allCourseNames.complete(runBlocking {
+            queryAllClasses()
+        })
     }
 
     fun getAllCourseNames(): List<String> {

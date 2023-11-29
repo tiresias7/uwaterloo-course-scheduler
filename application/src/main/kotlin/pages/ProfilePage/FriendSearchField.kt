@@ -1,22 +1,18 @@
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Search
-import androidx.compose.material3.FilledTonalButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.PopupProperties
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontStyle
-import logic.RequestStatus
-import logic.friends.sendFriendRequest
-import pages.LoginPage.USER_ID
-import java.util.Dictionary
+import kotlinx.coroutines.runBlocking
+import logic.ktorClient.sendFriendRequest
+import request.RequestStatus
 
 
 @Composable
@@ -76,7 +72,9 @@ fun friendSearchInputField(
                 content = { Text("Add") },
                 onClick = {
                     if (inputValue.value.text != "") {
-                        val status = sendFriendRequest(myID, inputValue.value.text.toInt())
+                        val status = runBlocking {
+                            sendFriendRequest(myID, inputValue.value.text.toInt())
+                        }
                         if (status != RequestStatus.FRIEND_REQUEST_SUCCESS) {
                         }
                     }

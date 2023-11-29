@@ -1,9 +1,8 @@
 package cache
 
-import database.common.createDataSource
-import database.sections.querySectionsByFacultyId
+import logic.ktorClient.querySectionsByFacultyId
 import kotlinx.coroutines.*
-import logic.Section
+import Section
 
 typealias CourseData = List<List<Section>>
 
@@ -29,7 +28,7 @@ object CourseCache {
         val courseId = courseName.dropWhile { it.isLetter() }
 
         return withContext(Dispatchers.IO) {
-            querySectionsByFacultyId(faculty, courseId, createDataSource())
+            querySectionsByFacultyId(faculty, courseId)
         }
     }
 }

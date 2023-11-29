@@ -1,9 +1,10 @@
 package logic.preference
 
-import logic.Section
+import Section
 import java.time.DayOfWeek
 import java.time.Duration
-import java.time.LocalTime
+import kotlinx.datetime.LocalTime
+import kotlinx.datetime.toJavaLocalTime
 import java.time.format.DateTimeFormatter
 import kotlin.math.max
 
@@ -34,19 +35,19 @@ class LunchBreakPreference(
     private fun hasSufficientBreak(intervals: List<Pair<LocalTime, LocalTime>>, start: LocalTime, end: LocalTime, breakLength: Int): Boolean {
         var currentStart = start
         for ((sectionStart, sectionEnd) in intervals) {
-            if (sectionStart > currentStart && Duration.between(currentStart, sectionStart).toMinutes() >= breakLength) {
+            if (sectionStart > currentStart && Duration.between(currentStart.toJavaLocalTime(), sectionStart.toJavaLocalTime()).toMinutes() >= breakLength) {
                 currentStart = sectionEnd
             } else if (sectionStart <= currentStart) {
                 currentStart = maxOf(currentStart, sectionEnd)
             }
         }
-        return Duration.between(currentStart, end).toMinutes() >= breakLength
+        return Duration.between(currentStart.toJavaLocalTime(), end.toJavaLocalTime()).toMinutes() >= breakLength
     }
 
     override fun toString(): String {
         var outStr = "Lunch break "
         val formatter = DateTimeFormatter.ofPattern("HH:mm")
-        outStr += "${startTime.format(formatter)} to ${endTime.format(formatter)} for $lunchBreakLength mins"
+        outStr += "${startTime.toJavaLocalTime().format(formatter)} to ${endTime.toJavaLocalTime().format(formatter)} for $lunchBreakLength mins"
         //outStr += ". Weight: $weight"
 
         return outStr

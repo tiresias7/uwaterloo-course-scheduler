@@ -1,6 +1,7 @@
 package logic.preference
 
 import androidx.compose.runtime.mutableStateOf
+import kotlinx.datetime.toKotlinLocalTime
 import java.time.DayOfWeek
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -27,8 +28,8 @@ class PreferenceBuilder() {
         }
         if (tag == "LunchBreakPreference") {
             val formatter = DateTimeFormatter.ofPattern("HH:mm")
-            val startTime = LocalTime.parse(inputList[0], formatter)
-            val finishTime = LocalTime.parse(inputList[1], formatter)
+            val startTime = LocalTime.parse(inputList[0], formatter).toKotlinLocalTime()
+            val finishTime = LocalTime.parse(inputList[1], formatter).toKotlinLocalTime()
             val length = inputList[2].toInt()
             return LunchBreakPreference(weight, startTime, finishTime, length)
         }
@@ -71,20 +72,13 @@ fun convertfromDayOfWeek(days : Set<DayOfWeek>) : String {
     val length = days.size - 1
     val result = mutableStateOf("")
     for (day in days) {
-        if (day == DayOfWeek.MONDAY) {
-            result.value += "M/"
-        }
-        else if (day == DayOfWeek.TUESDAY) {
-            result.value += "T/"
-        }
-        else if (day == DayOfWeek.WEDNESDAY) {
-            result.value += "W/"
-        }
-        else if (day == DayOfWeek.THURSDAY) {
-            result.value += "Th/"
-        }
-        else if (day == DayOfWeek.FRIDAY) {
-            result.value += "F/"
+        when (day) {
+            DayOfWeek.MONDAY -> { result.value += "M/" }
+            DayOfWeek.TUESDAY -> { result.value += "T/" }
+            DayOfWeek.WEDNESDAY -> { result.value += "W/" }
+            DayOfWeek.THURSDAY -> { result.value += "Th/" }
+            DayOfWeek.FRIDAY -> { result.value += "F/" }
+            else -> TODO()
         }
     }
     return result.value.removeSuffix("/")
