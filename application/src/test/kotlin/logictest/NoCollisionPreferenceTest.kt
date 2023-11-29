@@ -3,7 +3,6 @@ package logictest
 import logic.preference.NoCollisionPreference
 import Section
 import org.junit.jupiter.api.Test
-
 import org.junit.jupiter.api.Assertions.*
 import java.time.DayOfWeek
 import kotlinx.datetime.LocalTime
