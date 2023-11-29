@@ -1,4 +1,4 @@
-package logic
+package request
 
 enum class SignStatus {
     SIGN_IN_SUCCESS,

@@ -30,16 +30,18 @@ dependencies {
     // (in a separate module for demo project and in testMain).
     // With compose.desktop.common you will also lose @Preview functionality
     implementation(compose.desktop.currentOs)
-    implementation("org.jsoup:jsoup:1.15.3")
     implementation("io.ktor:ktor-client-core:$ktor_version")
     implementation("io.ktor:ktor-client-cio:$ktor_version")
+    implementation("io.ktor:ktor-client-json:$ktor_version")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
+    implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
+    implementation(project(path =":models", configuration = "default"))
+    implementation("io.ktor:ktor-serialization-jackson:2.3.5")
     testImplementation(kotlin("test"))
-    implementation ("mysql:mysql-connector-java:8.0.33")
-    implementation ("com.zaxxer:HikariCP:4.0.3")
     implementation(group = "org.json", name = "json", version = "20231013")
     implementation("org.jetbrains.compose.material3:material3:$material3_version")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
-//    implementation ("com.fasterxml.jackson.module:jackson-module-kotlin:2.15.0")
+    implementation ("com.fasterxml.jackson.module:jackson-module-kotlin:2.15.0")
     implementation("com.squareup.okhttp3:okhttp:4.9.1")
     implementation("org.seleniumhq.selenium:selenium-api:4.0.0")
     implementation("org.seleniumhq.selenium:selenium-chrome-driver:4.0.0")
@@ -51,6 +53,7 @@ dependencies {
     implementation("org.jetbrains.exposed", "exposed-dao", "0.40.1")
     implementation("org.jetbrains.exposed", "exposed-jdbc", "0.40.1")
     implementation("org.jetbrains.exposed", "exposed-java-time", "0.40.1")
+    implementation ("com.zaxxer:HikariCP:4.0.3")
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
 }
 

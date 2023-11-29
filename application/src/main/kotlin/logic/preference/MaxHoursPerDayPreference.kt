@@ -1,6 +1,7 @@
 package logic.preference
 
-import logic.Section
+import Section
+import kotlinx.datetime.toJavaLocalTime
 import java.time.DayOfWeek
 import java.time.Duration
 import java.util.*
@@ -24,7 +25,7 @@ class MaxHoursPerDayPreference(
         sections.forEach { section ->
             section.days.forEach { day ->
                 hoursPerDay[day] = (hoursPerDay[day] ?: 0) +
-                        Duration.between(section.startTime, section.endTime).toMinutes()
+                        Duration.between(section.startTime.toJavaLocalTime(), section.endTime.toJavaLocalTime()).toMinutes()
             }
         }
 

@@ -1,24 +1,23 @@
 package logic.schedulealgo
 
-import data.SectionUnit
-import data.SelectedCourse
-import database.common.createDataSource
-import database.sections.querySectionsByFacultyId
+import SectionUnit
+import SelectedCourse
+import logic.ktorClient.querySectionsByFacultyId
 import logic.preference.NoCollisionPreference
-import logic.sectionListToUnits
+import sectionListToUnits
 
-fun testAlgo(selectSections: List<SelectedCourse>): List<SectionUnit> {
+suspend fun testAlgo(selectSections: List<SelectedCourse>): List<SectionUnit> {
     val allCourseSections = selectSections.map { it ->
         val faculty = it.courseName.takeWhile { it.isLetter() }
         val courseId = it.courseName.dropWhile { it.isLetter() }
-        createDataSource().use{ querySectionsByFacultyId(faculty, courseId, it) }
+        querySectionsByFacultyId(faculty, courseId)
     }.flatten()
     val algo = NaiveScheduleAlgorithm()
     val topOneSection = algo.generateSchedules(allCourseSections, listOf(NoCollisionPreference(10000)), 1).first()
     return sectionListToUnits(topOneSection)
 }
 
-fun main() {
+suspend fun main() {
     testAlgo(listOf(
         SelectedCourse("CS135", true),
         SelectedCourse("CS136", true),

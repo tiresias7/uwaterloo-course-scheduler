@@ -1,7 +1,8 @@
 package database.users
 
 import com.zaxxer.hikari.HikariDataSource
-import org.mindrot.jbcrypt.BCrypt
+import utility.checkPassword
+import utility.hashPassword
 
 fun createUsersTableIfNotExists(db: HikariDataSource) {
     db.connection.use { conn ->
@@ -20,21 +21,11 @@ fun createUsersTableIfNotExists(db: HikariDataSource) {
     }
 }
 
-
-private fun hashPassword(password: String): String {
-    val salt = BCrypt.gensalt()
-    return BCrypt.hashpw(password, salt)
-}
-
-private fun checkPassword(plainText: String, hashed: String): Boolean {
-    return BCrypt.checkpw(plainText, hashed)
-}
-
-fun verifyPasswordByUIDRaw(id: Int, password: String, db: HikariDataSource): Boolean {
+fun verifyPasswordByUID(id: Int, password: String, db: HikariDataSource): Boolean {
     return checkPassword(password, queryHashedPasswordByUID(id, db))
 }
 
-fun queryHashedPasswordByUID(id: Int, db: HikariDataSource): String {
+private fun queryHashedPasswordByUID(id: Int, db: HikariDataSource): String {
     val querySQL = """
         SELECT password FROM users
         WHERE id = ?
@@ -51,23 +42,23 @@ fun queryHashedPasswordByUID(id: Int, db: HikariDataSource): String {
 }
 
 
-fun queryUserInfoByEmail(email: String, db: HikariDataSource): Pair<Int, String> {
+fun queryUIDByEmail(email: String, db: HikariDataSource): Int {
     val querySQL = """
-       SELECT id, username FROM users 
+       SELECT id FROM users 
        WHERE email = ?
     """.trimIndent()
     db.connection.use { conn ->
         conn.prepareStatement(querySQL).use { stmt ->
             stmt.setString(1, email)
             stmt.executeQuery().use { result ->
-                if (result.next()) return Pair(result.getInt("id"), result.getString("username"))
-                else return Pair(0, "")
+                if (result.next()) return result.getInt("id")
+                else return 0
             }
         }
     }
 }
 
-private fun createUser(userName: String, hashedPassword: String, email: String, db: HikariDataSource) {
+fun createUser(userName: String, hashedPassword: String, email: String, db: HikariDataSource) {
     val insertSQL = """
         INSERT INTO users (
         SELECT COALESCE(MAX(id) + 1, 1), ?, ?, ?
@@ -88,7 +79,7 @@ fun createUserRaw(userName: String, password: String, email: String, db: HikariD
     createUser(userName, hashedPassword, email, db)
 }
 
-private fun updatePasswordByUID(id: Int, hashedPassword: String, db: HikariDataSource) {
+fun updatePasswordByUID(id: Int, hashedPassword: String, db: HikariDataSource) {
     val updateSQL = """
         UPDATE users
         SET password = ?
@@ -111,8 +102,8 @@ fun main() {
     database.common.createDataSource().use {
         createUsersTableIfNotExists(it)
         createUser("xiaoye", "password", "aaa@gmail.com", it)
-        val userInfo = queryUserInfoByEmail("aaa@gmail.com", it)
-        updatePasswordByUIDRaw(userInfo.first, "password", it)
+        val uid = queryUIDByEmail("aaa@gmail.com", it)
+        updatePasswordByUIDRaw(uid, "password", it)
         createUserRaw("eddy", "password", "ccc@gmail.com", it)
         createUserRaw("alex", "password", "bbb@gmail.com", it)
         createUserRaw("ryan", "password", "ddd@gmail.com", it)

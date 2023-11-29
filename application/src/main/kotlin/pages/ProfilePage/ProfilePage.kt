@@ -9,12 +9,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import common.navDrawer
 import pages.SchedulePage.ScheduleSection.schedule
-import data.SectionUnit
+import SectionUnit
 import common.navcontroller.NavController
 import pages.LoginPage.USER_EMAIL
 import pages.LoginPage.USER_ID

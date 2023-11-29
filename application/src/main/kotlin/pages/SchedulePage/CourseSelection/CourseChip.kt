@@ -11,7 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import data.SelectedCourse
+import SelectedCourse
 import style.md_theme_light_inversePrimary
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -27,7 +27,7 @@ fun courseChip(
     } else {
         InputChipDefaults.inputChipColors()
     }
-    var dropDownExpanded = remember { mutableStateOf(false) }
+    val dropDownExpanded = remember { mutableStateOf(false) }
     Box() {
         InputChip(
             onClick = {

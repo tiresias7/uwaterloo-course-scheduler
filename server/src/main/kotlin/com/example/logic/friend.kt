@@ -1,8 +1,8 @@
-package logic.friends
+package com.example.logic
 
+import request.RequestStatus
 import database.common.createDataSource
 import database.friends.*
-import logic.RequestStatus
 
 // id1 is sending friend request to id2
 fun sendFriendRequest(id1: Int, id2: Int): RequestStatus {
@@ -24,6 +24,7 @@ fun approveFriendRequest(id1: Int, id2: Int): RequestStatus {
 
         if (verifyFriendRelation(id1, id2, it)) return RequestStatus.FRIEND_RELATION_EXIST
         deleteFriendRequestsByUID(id2, id1, it)
+        deleteFriendRequestsByUID(id1, id2, it)
         insertNewFriendRelation(id1, id2, it)
     }
     return RequestStatus.FRIEND_REQUEST_SUCCESS

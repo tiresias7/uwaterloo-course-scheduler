@@ -1,9 +1,9 @@
 package logictest
 
-import data.SelectedCourse
+import SelectedCourse
 import logic.preference.NoCollisionPreference
 import logic.schedulealgo.OptimizedScheduleAlgorithm
-import logic.Section
+import Section
 import org.junit.jupiter.api.Test
 
 import database.sections.querySectionsByFacultyId

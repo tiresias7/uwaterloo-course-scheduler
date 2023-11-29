@@ -1,6 +1,3 @@
-package data
-
-import androidx.compose.ui.unit.dp
 import kotlinx.serialization.Serializable
 
 // Hardcoded values

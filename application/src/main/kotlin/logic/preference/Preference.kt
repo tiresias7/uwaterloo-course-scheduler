@@ -1,6 +1,6 @@
 package logic.preference
 
-import logic.Section
+import Section
 
 abstract class Preference {
     companion object {

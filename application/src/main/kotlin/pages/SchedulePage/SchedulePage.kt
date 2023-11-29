@@ -14,26 +14,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import cache.CourseNameLoader
 import common.*
-import data.SectionUnit
-import data.SelectedCourse
-import database.common.createDataSource
+import SectionUnit
+import SelectedCourse
 import common.navcontroller.NavController
-import database.sections.queryAllClasses
 import logic.getSchedule
 import logic.preference.NoCollisionPreference
 import logic.preference.Preference
 import logic.preference.PreferenceBuilder
-import logic.sectionListToUnits
+import sectionListToUnits
 
 val allCourses = CourseNameLoader.getAllCourseNames()
 

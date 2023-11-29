@@ -4,6 +4,8 @@ import cache.CourseCache
 import logic.preference.Preference
 import logic.schedulealgo.OptimizedScheduleAlgorithm
 import java.util.*
+import Schedule
+import Section
 
 fun getSchedule(
     hardCourses: List<String>,

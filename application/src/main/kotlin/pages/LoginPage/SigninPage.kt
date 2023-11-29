@@ -1,7 +1,6 @@
 package pages.LoginPage
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
@@ -19,16 +18,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import androidx.compose.material3.IconButtonColors
 import androidx.compose.ui.input.key.*
 import cache.CourseNameLoader
 import common.SimpleTextField
 import common.navcontroller.NavController
-import logic.SignStatus
-import logic.signing.signInExistingUsersByEmail
-import logic.signing.signUpNewUsers
-import style.md_theme_dark_primary
-import style.md_theme_light_inversePrimary
+import kotlinx.coroutines.runBlocking
+import logic.ktorClient.signInExistingUsersByEmail
+import logic.ktorClient.signUpNewUsers
+import request.SignStatus
 
 var USER_ID = 0
 var USER_NAME = ""
@@ -138,28 +135,34 @@ fun loginPage(
                                     passwordLabel = "Please enter password"
                                 }
                             } else {
-                                val response = signInExistingUsersByEmail(email.text, password.text)
+                                val response = runBlocking {
+                                    signInExistingUsersByEmail(email.text, password.text)
+                                }
                                 val status = response.first
-                                if (status == SignStatus.SIGN_IN_INVALID) {
-                                    isError = true
-                                    emailLabel = "Email Not Found"
-                                    email = TextFieldValue("")
-                                    password = TextFieldValue("")
-                                } else if (status == SignStatus.SIGN_IN_FAILED) {
-                                    isError = true
-                                    passwordLabel = "Incorrect Password"
-                                    password = TextFieldValue("")
-                                } else {
-                                    USER_EMAIL = email.text
-                                    USER_ID = response.second.first
-                                    USER_NAME = response.second.second
-                                    email = TextFieldValue("")
-                                    password = TextFieldValue("")
-                                    isError = false
-                                    emailLabel = "Enter Email"
-                                    passwordLabel = "Enter Password"
-                                    CourseNameLoader.cacheAllCourseNames()
-                                    navController.navigate(Screen.WelcomePage.name)
+                                when (status) {
+                                    SignStatus.SIGN_IN_INVALID -> {
+                                        isError = true
+                                        emailLabel = "Email Not Found"
+                                        email = TextFieldValue("")
+                                        password = TextFieldValue("")
+                                    }
+                                    SignStatus.SIGN_IN_FAILED -> {
+                                        isError = true
+                                        passwordLabel = "Incorrect Password"
+                                        password = TextFieldValue("")
+                                    }
+                                    else -> {
+                                        USER_EMAIL = email.text
+                                        USER_ID = response.second
+                                        USER_NAME = response.third
+                                        email = TextFieldValue("")
+                                        password = TextFieldValue("")
+                                        isError = false
+                                        emailLabel = "Enter Email"
+                                        passwordLabel = "Enter Password"
+                                        CourseNameLoader.cacheAllCourseNames()
+                                        navController.navigate(Screen.WelcomePage.name)
+                                    }
                                 }
                             }
                         }
@@ -182,28 +185,34 @@ fun loginPage(
                                 passwordLabel = "Please enter password"
                             }
                         } else {
-                            val response = signInExistingUsersByEmail(email.text, password.text)
+                            val response = runBlocking {
+                                signInExistingUsersByEmail(email.text, password.text)
+                            }
                             val status = response.first
-                            if (status == SignStatus.SIGN_IN_INVALID) {
-                                isError = true
-                                emailLabel = "Email Not Found"
-                                email = TextFieldValue("")
-                                password = TextFieldValue("")
-                            } else if (status == SignStatus.SIGN_IN_FAILED) {
-                                isError = true
-                                passwordLabel = "Incorrect Password"
-                                password = TextFieldValue("")
-                            } else {
-                                USER_EMAIL = email.text
-                                USER_ID = response.second.first
-                                USER_NAME = response.second.second
-                                email = TextFieldValue("")
-                                password = TextFieldValue("")
-                                isError = false
-                                emailLabel = "Enter Email"
-                                passwordLabel = "Enter Password"
-                                CourseNameLoader.cacheAllCourseNames()
-                                navController.navigate(Screen.WelcomePage.name)
+                            when (status) {
+                                SignStatus.SIGN_IN_INVALID -> {
+                                    isError = true
+                                    emailLabel = "Email Not Found"
+                                    email = TextFieldValue("")
+                                    password = TextFieldValue("")
+                                }
+                                SignStatus.SIGN_IN_FAILED -> {
+                                    isError = true
+                                    passwordLabel = "Incorrect Password"
+                                    password = TextFieldValue("")
+                                }
+                                else -> {
+                                    USER_EMAIL = email.text
+                                    USER_ID = response.second
+                                    USER_NAME = response.third
+                                    email = TextFieldValue("")
+                                    password = TextFieldValue("")
+                                    isError = false
+                                    emailLabel = "Enter Email"
+                                    passwordLabel = "Enter Password"
+                                    CourseNameLoader.cacheAllCourseNames()
+                                    navController.navigate(Screen.WelcomePage.name)
+                                }
                             }
                         }
                     },
@@ -301,13 +310,8 @@ fun signupDialog(ifShowSignup: MutableState<Boolean>) {
                         value = userName.text,
                         onValueChange = { newValue: String ->
                             userName = TextFieldValue(newValue)
-                            if (newValue.matches(Regex("[a-zA-Z0-9]*")) && newValue.length <= 20 &&
-                                newValue.length >= 1
-                            ) {
-                                ifNameInvalid.value = false
-                            } else {
-                                ifNameInvalid.value = true
-                            }
+                            ifNameInvalid.value = !(newValue.matches(Regex("[a-zA-Z0-9]*")) && newValue.length <= 20 &&
+                                    newValue.isNotEmpty())
                         },
                         leadingIcon = {
                             Icon(Icons.Outlined.Person, "Username")
@@ -328,13 +332,8 @@ fun signupDialog(ifShowSignup: MutableState<Boolean>) {
                         onValueChange = { newValue: String ->
                             email = TextFieldValue(newValue)
                             ifEmailAlreadyExists = false
-                            if (newValue.matches(Regex("[a-zA-Z0-9@.]*")) && newValue.length <= 50 &&
-                                newValue.length >= 1
-                            ) {
-                                ifEmailInvalid.value = false
-                            } else {
-                                ifEmailInvalid.value = true
-                            }
+                            ifEmailInvalid.value = !(newValue.matches(Regex("[a-zA-Z0-9@.]*")) && newValue.length <= 50 &&
+                                    newValue.isNotEmpty())
                         },
                         leadingIcon = {
                             Icon(Icons.Outlined.Email, "Email")
@@ -354,13 +353,8 @@ fun signupDialog(ifShowSignup: MutableState<Boolean>) {
                         value = password1.text,
                         onValueChange = { newValue: String ->
                             password1 = TextFieldValue(newValue)
-                            if (newValue.matches(Regex("[a-zA-Z0-9]*")) && newValue.length <= 20 &&
-                                newValue.length >= 5
-                            ) {
-                                ifPasswordInvalid.value = false
-                            } else {
-                                ifPasswordInvalid.value = true
-                            }
+                            ifPasswordInvalid.value = !(newValue.matches(Regex("[a-zA-Z0-9]*")) && newValue.length <= 20 &&
+                                    newValue.length >= 5)
                         },
                         leadingIcon = {
                             Icon(Icons.Outlined.Lock, "Password")
@@ -438,7 +432,9 @@ fun signupDialog(ifShowSignup: MutableState<Boolean>) {
                                 ifNotSame.value = true
                             }
                             if (!ifNotSame.value && userName.text != "" && email.text != "" && password1.text != "") {
-                                val status = signUpNewUsers(userName.text, password1.text, email.text).first
+                                val status = runBlocking {
+                                    signUpNewUsers(userName.text, password1.text, email.text).first
+                                }
                                 if (status == SignStatus.SIGN_UP_FAILED) {
                                     ifEmailAlreadyExists = true
                                 } else {

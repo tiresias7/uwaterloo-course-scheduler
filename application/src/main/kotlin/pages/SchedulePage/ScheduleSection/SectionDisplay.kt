@@ -17,9 +17,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import data.BASE_IMAGE_WIDTH
-import data.BLOCK_WIDTH
-import data.SectionUnit
+import BASE_IMAGE_WIDTH
+import BLOCK_WIDTH
+import SectionUnit
 import kotlinx.coroutines.launch
 import style.*
 
@@ -82,4 +82,5 @@ fun sectionBlock(section: SectionUnit, baseWidth: Dp) {
             )
         }
     }
+
 }

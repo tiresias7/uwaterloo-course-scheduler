@@ -1,11 +1,10 @@
-package logic
-
-import data.SectionUnit
-import java.time.LocalTime
+import kotlinx.datetime.LocalTime
+import kotlinx.serialization.Serializable
 import java.time.DayOfWeek
 
 private const val MINUTESPERHOUR = 60
 
+@Serializable
 data class Section(
     val classNumber: Int = 0,
     val component: String = "",
@@ -13,8 +12,8 @@ data class Section(
     val campus: String = "",
     val room: String = "",
     val instructor: String = "",
-    val startTime: LocalTime = LocalTime.MIN,
-    val endTime: LocalTime = LocalTime.MAX,
+    val startTime: LocalTime,
+    val endTime: LocalTime,
     val days: Set<DayOfWeek> = emptySet(),
     val courseName: String = ""
 ) {
