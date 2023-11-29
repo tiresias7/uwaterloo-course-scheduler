@@ -1,11 +1,11 @@
 package logic.schedulealgo
 
-import data.SectionUnit
-import data.SelectedCourse
+import SectionUnit
+import SelectedCourse
 import database.common.createDataSource
 import database.sections.querySectionsByFacultyId
 import logic.preference.NoCollisionPreference
-import logic.sectionListToUnits
+import sectionListToUnits
 
 fun testAlgo(selectSections: List<SelectedCourse>): List<SectionUnit> {
     val allCourseSections = selectSections.map { it ->

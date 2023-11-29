@@ -1,7 +1,7 @@
 package logictest
 
 import logic.preference.Preference
-import logic.Section
+import Section
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*

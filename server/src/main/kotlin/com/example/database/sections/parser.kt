@@ -1,6 +1,6 @@
 package database.sections
 
-import logic.Section
+import Section
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import java.io.File

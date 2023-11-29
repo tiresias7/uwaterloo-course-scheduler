@@ -1,7 +1,7 @@
 package database.users
 
-import com.zaxxer.hikari.HikariDataSource
 import SectionUnit
+import com.zaxxer.hikari.HikariDataSource
 import database.common.createDataSource
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json

@@ -1,6 +1,7 @@
 package database.sections
 
 import Section
+import java.io.File
 import com.zaxxer.hikari.HikariDataSource
 import java.time.DayOfWeek
 
@@ -71,21 +72,21 @@ fun insertSectionsIntoDatabase(sections: List<Section>, filename: String, db: Hi
 }
 
 
-//fun parseAndInsert(directoryPath: String, db: HikariDataSource) {
-//    val directory = File(directoryPath)
-//    if (directory.exists() && directory.isDirectory) {
-//        directory.listFiles()?.forEach { file ->
-//            if (file.isFile && file.name.endsWith(".html")) {
-//                try {
-//                    val sections = parser(file.absolutePath)
-//                    insertSectionsIntoDatabase(sections, file.nameWithoutExtension, db)
-//                } catch (e: Exception) {
-//                    print("Error with file ${file.nameWithoutExtension}\n")
-//                }
-//            }
-//        }
-//    }
-//}
+fun parseAndInsert(directoryPath: String, db: HikariDataSource) {
+    val directory = File(directoryPath)
+    if (directory.exists() && directory.isDirectory) {
+        directory.listFiles()?.forEach { file ->
+            if (file.isFile && file.name.endsWith(".html")) {
+                try {
+                    val sections = parser(file.absolutePath)
+                    insertSectionsIntoDatabase(sections, file.nameWithoutExtension, db)
+                } catch (e: Exception) {
+                    print("Error with file ${file.nameWithoutExtension}\n")
+                }
+            }
+        }
+    }
+}
 
 // To avoid multiple connections back and forth, query all faculty + courseId at once, and divide based on that.
 fun querySectionsByFacultyId(faculty: String, courseID: String, db: HikariDataSource): List<List<Section>> {
@@ -202,7 +203,7 @@ fun main() {
     createSectionsTableIfNotExists(database)
 
     // Parse HTML files in the directory and insert data into the database
-//    parseAndInsert(directoryPath, database)
+    parseAndInsert(directoryPath, database)
 
     // Test out section queries
     val section = querySectionsByFacultyId("MATH", "135", database)

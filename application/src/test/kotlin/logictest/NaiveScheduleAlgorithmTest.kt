@@ -1,10 +1,10 @@
 package logictest
 
 import database.common.createDataSource
-import data.SelectedCourse
+import SelectedCourse
 import logic.schedulealgo.NaiveScheduleAlgorithm
 import logic.preference.NoCollisionPreference
-import logic.Section
+import Section
 import org.junit.jupiter.api.Test
 import database.sections.querySectionsByFacultyId
 import java.time.DayOfWeek

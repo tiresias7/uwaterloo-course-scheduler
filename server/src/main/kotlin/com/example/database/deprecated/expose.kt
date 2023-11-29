@@ -1,8 +1,10 @@
 package database.deprecated
 
+import database.sections.parser
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.javatime.*
 import org.jetbrains.exposed.sql.transactions.transaction
+import java.io.File
 import Section
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.lessEq
 import java.time.LocalDateTime
@@ -78,21 +80,21 @@ fun insertSectionsIntoDatabase(sections: List<Section>, filename: String) {
     }
 }
 
-//fun parseAndInsert(directoryPath: String) {
-//    val directory = File(directoryPath)
-//    if (directory.exists() && directory.isDirectory) {
-//        directory.listFiles()?.forEach { file ->
-//            if (file.isFile && file.name.endsWith(".html")) {
-//                try {
-//                    val sections = parser(file.absolutePath)
-//                    insertSectionsIntoDatabase(sections, file.nameWithoutExtension)
-//                } catch (e: Exception) {
-//                    print("Error with file ${file.nameWithoutExtension}\n")
-//                }
-//            }
-//        }
-//    }
-//}
+fun parseAndInsert(directoryPath: String) {
+    val directory = File(directoryPath)
+    if (directory.exists() && directory.isDirectory) {
+        directory.listFiles()?.forEach { file ->
+            if (file.isFile && file.name.endsWith(".html")) {
+                try {
+                    val sections = parser(file.absolutePath)
+                    insertSectionsIntoDatabase(sections, file.nameWithoutExtension)
+                } catch (e: Exception) {
+                    print("Error with file ${file.nameWithoutExtension}\n")
+                }
+            }
+        }
+    }
+}
 
 
 // To avoid multiple connections back and forth, query all faculty + courseId at once, and divide based on that.
@@ -178,7 +180,7 @@ fun main() {
     createTableIfNotExists()
 
     // Parse HTML files in the directory and insert data into the database
-//    parseAndInsert(directoryPath)
+    parseAndInsert(directoryPath)
 
     // Test out old data cleanup
 //    deleteRowsByHours(0)

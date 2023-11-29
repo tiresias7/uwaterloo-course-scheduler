@@ -1,6 +1,6 @@
 package logic.schedulealgo
 
-import logic.Section
+import Section
 import logic.preference.Preference
 
 abstract class ScheduleAlgorithm {

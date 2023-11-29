@@ -1,4 +1,4 @@
-package logic
+package request
 
 enum class RequestStatus {
     FRIEND_REQUEST_SELF,

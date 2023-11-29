@@ -9,11 +9,9 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupProperties
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontStyle
 import cache.CourseCache
-import data.SelectedCourse
 
 
 val list = mutableStateOf(listOf<String>())
@@ -65,7 +63,7 @@ fun courseSearchInputField(
             modifier = Modifier.width(446.dp).heightIn(max = 500.dp)
         ) {
             if (list.value.isNotEmpty()) {
-                list.value.take(50).forEach { text: String ->
+                list.value.forEach { text: String ->
                     DropdownMenuItem(
                         modifier = Modifier.size(446.dp, 35.dp),
                         onClick = {

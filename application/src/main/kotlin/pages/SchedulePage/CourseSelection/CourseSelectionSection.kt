@@ -18,7 +18,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.PopupProperties
 import common.SimpleTextField
-import data.SelectedCourse
+import SelectedCourse
 
 
 @Composable

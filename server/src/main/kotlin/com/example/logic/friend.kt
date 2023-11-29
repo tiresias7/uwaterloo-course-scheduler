@@ -1,8 +1,8 @@
-package logic.friends
+package com.example.logic
 
+import request.RequestStatus
 import database.common.createDataSource
 import database.friends.*
-import logic.RequestStatus
 
 // id1 is sending friend request to id2
 fun sendFriendRequest(id1: Int, id2: Int): RequestStatus {

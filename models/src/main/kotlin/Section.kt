@@ -1,6 +1,3 @@
-package logic
-
-import data.SectionUnit
 import java.time.LocalTime
 import java.time.DayOfWeek
 
