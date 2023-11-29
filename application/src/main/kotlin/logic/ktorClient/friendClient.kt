@@ -64,7 +64,7 @@ suspend fun approveFriendRequest(senderId: Int, receiverId: Int): RequestStatus 
 
 // sender is denying friend request from receiver
 suspend fun denyFriendRequest(senderId: Int, receiverId: Int): RequestStatus {
-    val respond = httpClient.put("$baseUrl/friend/request/denial") {
+    val respond = httpClient.delete("$baseUrl/friend/request") {
         contentType(ContentType.Application.Json)
         setBody(PairID(senderId, receiverId))
     }

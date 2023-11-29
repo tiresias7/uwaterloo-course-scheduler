@@ -3,6 +3,8 @@ package database.sections
 import Section
 import java.io.File
 import com.zaxxer.hikari.HikariDataSource
+import kotlinx.datetime.toJavaLocalTime
+import kotlinx.datetime.toKotlinLocalTime
 import java.time.DayOfWeek
 
 fun createSectionsTableIfNotExists(db: HikariDataSource) {
@@ -62,8 +64,8 @@ fun insertSectionsIntoDatabase(sections: List<Section>, filename: String, db: Hi
                 stmt.setString(6, section.campus)
                 stmt.setString(7, section.room)
                 stmt.setString(8, section.instructor)
-                stmt.setTime(9, java.sql.Time.valueOf(section.startTime))
-                stmt.setTime(10, java.sql.Time.valueOf(section.endTime))
+                stmt.setTime(9, java.sql.Time.valueOf(section.startTime.toJavaLocalTime()))
+                stmt.setTime(10, java.sql.Time.valueOf(section.endTime.toJavaLocalTime()))
                 stmt.setString(11, section.days.joinToString(","))
                 stmt.execute()
             }
@@ -115,8 +117,8 @@ fun querySectionsByFacultyId(faculty: String, courseID: String, db: HikariDataSo
                             result.getString("campus"),
                             result.getString("room"),
                             result.getString("instructor"),
-                            result.getTime("startTime").toLocalTime(),
-                            result.getTime("endTime").toLocalTime(),
+                            result.getTime("startTime").toLocalTime().toKotlinLocalTime(),
+                            result.getTime("endTime").toLocalTime().toKotlinLocalTime(),
                             days,
                             result.getString("faculty") + result.getString("courseID")
                         )

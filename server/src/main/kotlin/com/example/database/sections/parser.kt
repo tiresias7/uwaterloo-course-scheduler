@@ -1,6 +1,7 @@
 package database.sections
 
 import Section
+import kotlinx.datetime.toKotlinLocalTime
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import java.io.File
@@ -80,7 +81,7 @@ fun parser(filepath: String): ArrayList<Section> {
             // Create a ClassInfo object and add it to the list
             val classInfo = Section(
                 classNbr, sectionComponent.first, sectionComponent.second, campus,
-                room, instructor, dayTimeInfo.first, dayTimeInfo.second, dayTimeInfo.third
+                room, instructor, dayTimeInfo.first.toKotlinLocalTime(), dayTimeInfo.second.toKotlinLocalTime(), dayTimeInfo.third
             )
             classInfoList.add(classInfo)
         }

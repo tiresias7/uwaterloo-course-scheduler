@@ -26,7 +26,7 @@ suspend fun signUpNewUsers(name: String, password: String, email: String): Tripl
 
 // The password hashing over internet might need to be resolved
 suspend fun signInExistingUsersByEmail(email: String, password: String): Triple<SignStatus, Int, String> {
-    val respond = httpClient.post("$baseUrl/user/sign-in") {
+    val respond = httpClient.put("$baseUrl/user/sign-in") {
         contentType(ContentType.Application.Json)
         setBody(SignInRequest(email, password))
     }

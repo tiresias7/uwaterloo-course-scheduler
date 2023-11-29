@@ -6,6 +6,8 @@ import database.common.createDataSource
 import database.friends.queryAllFriendRequestsByUID
 import database.friends.queryAllFriendsRelationByUID
 import database.friends.verifyFriendRelation
+import database.sections.queryAllClasses
+import database.sections.querySectionsByFacultyId
 import database.users.queryExisingUserProfileByUID
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -77,7 +79,7 @@ fun Application.configureRouting() {
                     }
                 }
 
-                put("denial") {
+                delete("") {
                     val input = call.receive<PairID>()
                     val requestStatus = denyFriendRequest(input.senderId, input.receiverId)
 
@@ -85,7 +87,7 @@ fun Application.configureRouting() {
                         RequestStatus.FRIEND_REQUEST_SELF -> call.respond(HttpStatusCode.BadRequest, "Cannot deny own friend request.")
                         RequestStatus.FRIEND_REQUEST_NOT_EXIST -> call.respond(HttpStatusCode.NotFound, "Friend request does not exist.")
                         RequestStatus.FRIEND_REQUEST_SUCCESS -> call.respond(HttpStatusCode.OK, "Friend request denied successfully.")
-                        else -> return@put
+                        else -> return@delete
                     }
                 }
             }
@@ -93,7 +95,7 @@ fun Application.configureRouting() {
         }
 
         route("/user") {
-            post("/sign-in") {
+            put("/sign-in") {
                 val request = call.receive<SignInRequest>()
                 val result = signInExistingUsersByEmail(request.email, request.password)
 
@@ -104,7 +106,7 @@ fun Application.configureRouting() {
                         val cookie = generateUserCookie(result.second)
                         call.respond(HttpStatusCode.OK,  SignResponse(result.second, cookie))
                     }
-                    else -> return@post
+                    else -> return@put
                 }
             }
 
@@ -120,6 +122,20 @@ fun Application.configureRouting() {
                     }
                     else -> return@post
                 }
+            }
+        }
+
+        route("/section") {
+            get("courses") {
+                val result = createDataSource().use { queryAllClasses(it) }
+
+                call.respond(HttpStatusCode.OK, result)
+            }
+            get("/faculty/id") {
+                val request = call.receive<FacultyIDQueryRequest>()
+                val result = createDataSource().use { querySectionsByFacultyId(request.faculty, request.courseID, it) }
+
+                call.respond(HttpStatusCode.OK, result)
             }
         }
     }
