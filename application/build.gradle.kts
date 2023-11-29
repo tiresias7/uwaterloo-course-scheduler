@@ -55,6 +55,7 @@ dependencies {
     implementation("org.jetbrains.exposed", "exposed-java-time", "0.40.1")
     implementation ("com.zaxxer:HikariCP:4.0.3")
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
+    testImplementation(project(mapOf("path" to ":server")))
 }
 
 compose.desktop {

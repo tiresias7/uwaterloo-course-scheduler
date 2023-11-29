@@ -7,8 +7,9 @@ import logic.preference.NoCollisionPreference
 import Section
 import org.junit.jupiter.api.Test
 import database.sections.querySectionsByFacultyId
+import logic.ktorClient.querySectionsByFacultyId
 import java.time.DayOfWeek
-import java.time.LocalTime
+import kotlinx.datetime.LocalTime
 
 class NaiveScheduleAlgorithmTest {
     @Test
@@ -18,12 +19,12 @@ class NaiveScheduleAlgorithmTest {
         )
         val sectionLists = listOf(
             listOf(
-                Section(startTime = LocalTime.of(8, 0), endTime = LocalTime.of(8, 50), days = setOf(DayOfWeek.MONDAY)),
-                Section(startTime = LocalTime.of(9, 0), endTime = LocalTime.of(9, 50), days = setOf(DayOfWeek.MONDAY)),
+                Section(startTime = LocalTime(8, 0), endTime = LocalTime(8, 50), days = setOf(DayOfWeek.MONDAY)),
+                Section(startTime = LocalTime(9, 0), endTime = LocalTime(9, 50), days = setOf(DayOfWeek.MONDAY)),
             ),
             listOf(
-                Section(startTime = LocalTime.of(8, 0), endTime = LocalTime.of(8, 50), days = setOf(DayOfWeek.MONDAY)),
-                Section(startTime = LocalTime.of(9, 0), endTime = LocalTime.of(9, 50), days = setOf(DayOfWeek.MONDAY)),
+                Section(startTime = LocalTime(8, 0), endTime = LocalTime(8, 50), days = setOf(DayOfWeek.MONDAY)),
+                Section(startTime = LocalTime(9, 0), endTime = LocalTime(9, 50), days = setOf(DayOfWeek.MONDAY)),
             ),
         )
 

@@ -13,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -57,9 +58,9 @@ fun sectionBlock(section: SectionUnit, baseWidth: Dp) {
         elevation = CardDefaults.cardElevation(
             defaultElevation = 6.dp
         ),
-        colors = CardDefaults.cardColors(containerColor = md_theme_light_primaryContainer),
+        colors = CardDefaults.cardColors(containerColor = currentColorScheme.value.cs.primaryContainer),
         shape = RoundedCornerShape(3.dp),
-        border = BorderStroke(0.1.dp, color = md_theme_dark_primary),
+        border = BorderStroke(0.1.dp, color = Color.Black),
         modifier = Modifier
             .size(
                 width = baseWidth * section.getWidth() / BASE_IMAGE_WIDTH,

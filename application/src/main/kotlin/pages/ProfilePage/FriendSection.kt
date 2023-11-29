@@ -15,8 +15,8 @@ import androidx.compose.ui.unit.sp
 import friendSearchInputField
 import kotlinx.coroutines.runBlocking
 import logic.ktorClient.*
-import style.md_theme_light_inversePrimary
-import style.md_theme_light_primaryContainer
+import org.jetbrains.skia.Color
+import style.currentColorScheme
 
 /*
 var allUser = listOf(
@@ -176,9 +176,9 @@ fun friendSection( USER_ID : Int) {
                                         }
                                     },
                                     tonalElevation = 30.dp,
-                                    colors = ListItemDefaults.colors(containerColor = md_theme_light_primaryContainer)
+                                    colors = ListItemDefaults.colors(containerColor = currentColorScheme.value.cs.primaryContainer)
                                 )
-                                Divider(thickness = 1.dp, color = md_theme_light_inversePrimary)
+                                Divider(thickness = 1.dp, color = currentColorScheme.value.cs.inversePrimary)
                             }
                         }
                     }
@@ -229,9 +229,9 @@ fun friendSection( USER_ID : Int) {
                                     }
                                 },
                                 tonalElevation = 30.dp,
-                                colors = ListItemDefaults.colors(containerColor = md_theme_light_primaryContainer)
+                                colors = ListItemDefaults.colors(containerColor = currentColorScheme.value.cs.primaryContainer)
                             )
-                            Divider(thickness = 1.dp, color = md_theme_light_inversePrimary)
+                            Divider(thickness = 1.dp, color = currentColorScheme.value.cs.inversePrimary)
                         }
                     }
                 }

@@ -11,8 +11,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import style.currentColorScheme
 import SelectedCourse
-import style.md_theme_light_inversePrimary
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -23,7 +23,7 @@ fun courseChip(
     deleteCallBack: (index: Int) -> Unit
 ) {
     val chipColor = if (course.required) {
-        InputChipDefaults.inputChipColors(selectedContainerColor = md_theme_light_inversePrimary)
+        InputChipDefaults.inputChipColors(selectedContainerColor = currentColorScheme.value.cs.inversePrimary)
     } else {
         InputChipDefaults.inputChipColors()
     }

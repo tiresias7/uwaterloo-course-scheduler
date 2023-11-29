@@ -18,4 +18,4 @@ val httpClient = HttpClient(CIO) {
 }
 
 // Shared base URL
-const val baseUrl = "http://127.0.0.1:8080"
+const val baseUrl = "http://127.0.0.1:8081"

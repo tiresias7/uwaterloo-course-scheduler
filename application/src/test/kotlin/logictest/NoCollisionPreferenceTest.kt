@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
 import java.time.DayOfWeek
-import java.time.LocalTime
+import kotlinx.datetime.LocalTime
 
 class NoCollisionPreferenceTest {
 
@@ -15,13 +15,13 @@ class NoCollisionPreferenceTest {
         val pref = NoCollisionPreference(10000)
         val sections = listOf(
             Section(
-                startTime = LocalTime.of(9, 0),
-                endTime = LocalTime.of(10, 50),
+                startTime = LocalTime(9, 0),
+                endTime = LocalTime(10, 50),
                 days = setOf(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY)
             ),
             Section(
-                startTime = LocalTime.of(9, 0),
-                endTime = LocalTime.of(10, 50),
+                startTime = LocalTime(9, 0),
+                endTime = LocalTime(10, 50),
                 days = setOf(DayOfWeek.TUESDAY, DayOfWeek.THURSDAY)
             ),
         )
@@ -33,13 +33,13 @@ class NoCollisionPreferenceTest {
         val pref = NoCollisionPreference(1)
         val sections = listOf(
             Section(
-                startTime = LocalTime.of(9, 0),
-                endTime = LocalTime.of(10, 50),
+                startTime = LocalTime(9, 0),
+                endTime = LocalTime(10, 50),
                 days = setOf(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY)
             ),
             Section(
-                startTime = LocalTime.of(9, 0),
-                endTime = LocalTime.of(10, 50),
+                startTime = LocalTime(9, 0),
+                endTime = LocalTime(10, 50),
                 days = setOf(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY)
             ),
         )
@@ -51,18 +51,18 @@ class NoCollisionPreferenceTest {
         val pref = NoCollisionPreference(1)
         val sections = listOf(
             Section(
-                startTime = LocalTime.of(9, 0),
-                endTime = LocalTime.of(10, 50),
+                startTime = LocalTime(9, 0),
+                endTime = LocalTime(10, 50),
                 days = setOf(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY)
             ),
             Section(
-                startTime = LocalTime.of(10, 0),
-                endTime = LocalTime.of(11, 50),
+                startTime = LocalTime(10, 0),
+                endTime = LocalTime(11, 50),
                 days = setOf(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY)
             ),
             Section(
-                startTime = LocalTime.of(11, 0),
-                endTime = LocalTime.of(12, 50),
+                startTime = LocalTime(11, 0),
+                endTime = LocalTime(12, 50),
                 days = setOf(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY)
             ),
         )
@@ -74,53 +74,53 @@ class NoCollisionPreferenceTest {
         val pref = NoCollisionPreference(1)
         val sections = listOf(
             Section(
-                startTime = LocalTime.of(11, 30),
-                endTime = LocalTime.of(12, 50),
+                startTime = LocalTime(11, 30),
+                endTime = LocalTime(12, 50),
                 days = setOf(DayOfWeek.TUESDAY, DayOfWeek.THURSDAY)
             ),
             Section(
-                startTime = LocalTime.of(13, 30),
-                endTime = LocalTime.of(14, 20),
+                startTime = LocalTime(13, 30),
+                endTime = LocalTime(14, 20),
                 days = setOf(DayOfWeek.FRIDAY)
             ),
             Section(
-                startTime = LocalTime.of(11, 30),
-                endTime = LocalTime.of(12, 50),
+                startTime = LocalTime(11, 30),
+                endTime = LocalTime(12, 50),
                 days = setOf(DayOfWeek.TUESDAY, DayOfWeek.THURSDAY)
             ),
             Section(
-                startTime = LocalTime.of(14, 30),
-                endTime = LocalTime.of(15, 50),
+                startTime = LocalTime(14, 30),
+                endTime = LocalTime(15, 50),
                 days = setOf(DayOfWeek.TUESDAY, DayOfWeek.THURSDAY)
             ),
             Section(
-                startTime = LocalTime.of(11, 30),
-                endTime = LocalTime.of(12, 20),
+                startTime = LocalTime(11, 30),
+                endTime = LocalTime(12, 20),
                 days = setOf(DayOfWeek.FRIDAY)
             ),
             Section(
-                startTime = LocalTime.of(8, 30),
-                endTime = LocalTime.of(9, 20),
+                startTime = LocalTime(8, 30),
+                endTime = LocalTime(9, 20),
                 days = setOf(DayOfWeek.WEDNESDAY)
             ),
             Section(
-                startTime = LocalTime.of(11, 30),
-                endTime = LocalTime.of(12, 50),
+                startTime = LocalTime(11, 30),
+                endTime = LocalTime(12, 50),
                 days = setOf(DayOfWeek.TUESDAY, DayOfWeek.THURSDAY)
             ),
             Section(
-                startTime = LocalTime.of(13, 0),
-                endTime = LocalTime.of(14, 20),
+                startTime = LocalTime(13, 0),
+                endTime = LocalTime(14, 20),
                 days = setOf(DayOfWeek.TUESDAY, DayOfWeek.THURSDAY)
             ),
             Section(
-                startTime = LocalTime.of(15, 30),
-                endTime = LocalTime.of(16, 20),
+                startTime = LocalTime(15, 30),
+                endTime = LocalTime(16, 20),
                 days = setOf(DayOfWeek.WEDNESDAY)
             ),
             Section(
-                startTime = LocalTime.of(11, 30),
-                endTime = LocalTime.of(12, 50),
+                startTime = LocalTime(11, 30),
+                endTime = LocalTime(12, 50),
                 days = setOf(DayOfWeek.TUESDAY, DayOfWeek.THURSDAY)
             )
         )
