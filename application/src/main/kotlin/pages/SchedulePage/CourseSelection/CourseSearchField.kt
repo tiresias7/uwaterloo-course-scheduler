@@ -63,7 +63,7 @@ fun courseSearchInputField(
             modifier = Modifier.width(446.dp).heightIn(max = 500.dp)
         ) {
             if (list.value.isNotEmpty()) {
-                list.value.forEach { text: String ->
+                list.value.take(50).forEach { text: String ->
                     DropdownMenuItem(
                         modifier = Modifier.size(446.dp, 35.dp),
                         onClick = {
