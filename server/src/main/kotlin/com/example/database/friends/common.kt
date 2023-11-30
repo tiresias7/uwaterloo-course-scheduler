@@ -1,4 +1,4 @@
-package database.friends
+package com.example.database.friends
 
 import com.zaxxer.hikari.HikariDataSource
 

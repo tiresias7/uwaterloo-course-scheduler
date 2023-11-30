@@ -1,4 +1,4 @@
-package database.sections
+package com.example.database.sections
 
 import Section
 import kotlinx.datetime.toKotlinLocalTime

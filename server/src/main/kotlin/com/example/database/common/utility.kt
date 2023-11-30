@@ -1,4 +1,4 @@
-package database.common
+package com.example.database.common
 
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource

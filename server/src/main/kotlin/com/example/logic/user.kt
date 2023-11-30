@@ -1,10 +1,10 @@
 package com.example.logic
 
 import request.SignStatus
-import database.users.queryUIDByEmail
-import database.common.createDataSource
-import database.users.createUser
-import database.users.verifyPasswordByUID
+import com.example.database.users.queryUIDByEmail
+import com.example.database.common.createDataSource
+import com.example.database.users.createUser
+import com.example.database.users.verifyPasswordByUID
 
 fun signUpNewUsers(name: String, passwordHashed: String, email: String): Pair<SignStatus, Int> {
     createDataSource().use { db ->

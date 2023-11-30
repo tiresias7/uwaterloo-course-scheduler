@@ -1,14 +1,15 @@
 package com.example.plugins
 
-import SectionUnit
+import Section
 import com.example.logic.*
-import database.common.createDataSource
-import database.friends.queryAllFriendRequestsByUID
-import database.friends.queryAllFriendsRelationByUID
-import database.friends.verifyFriendRelation
-import database.sections.queryAllClasses
-import database.sections.querySectionsByFacultyId
-import database.users.queryExisingUserProfileByUID
+import com.example.database.common.createDataSource
+import com.example.database.friends.queryAllFriendRequestsByUID
+import com.example.database.friends.queryAllFriendsRelationByUID
+import com.example.database.friends.verifyFriendRelation
+import com.example.database.sections.queryAllClasses
+import com.example.database.sections.querySectionsByFacultyId
+import com.example.database.users.queryExisingUserProfileByUID
+import com.example.database.users.resetUserProfileByUID
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -26,6 +27,16 @@ fun Application.configureRouting() {
         }
 
         route("/friend") {
+            delete("") {
+                val input = call.receive<PairID>()
+
+                val status = deleteFriendRelation(input.senderId, input.receiverId)
+                when (status) {
+                    RequestStatus.FRIEND_DELETE_SUCCESS -> call.respond(HttpStatusCode.OK, "Friend Relation removed successfully.")
+                    else -> call.respond(HttpStatusCode.BadRequest, "Invalid Friend Relation.")
+                }
+            }
+
             get("/list") {
                 val input = call.receive<ID>()
 
@@ -37,12 +48,21 @@ fun Application.configureRouting() {
                 get("") {
                     val input = call.receive<PairID>()
 
-                    var profile = mutableListOf<SectionUnit>()
+                    var profile = mutableListOf<Section>()
                     createDataSource().use {
-                        if (verifyFriendRelation(input.senderId, input.receiverId, it)) profile = queryExisingUserProfileByUID(input.receiverId, it)
-                        else call.respondText("Friend Relation doesn't exist", ContentType.Text.Plain, HttpStatusCode.BadRequest)
+                        if (input.senderId == input.receiverId || verifyFriendRelation(input.senderId, input.receiverId, it)) {
+                            profile = queryExisingUserProfileByUID(input.receiverId, 1, it)
+                        }
+                        else call.respond(HttpStatusCode.BadRequest, profile)
                     }
                     call.respond(HttpStatusCode.OK, profile)
+                }
+
+                put("") {
+                    val input = call.receive<ProfileUpdateRequest>()
+
+                    createDataSource().use { resetUserProfileByUID(input.id, input.profileNumber, input.profile, it) }
+                    call.respond(HttpStatusCode.OK, "Put request received.")
                 }
             }
             route("/request") {

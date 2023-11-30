@@ -1,6 +1,7 @@
-package database.sections
+package com.example.database.sections
 
 import Section
+import com.example.database.common.createDataSource
 import java.io.File
 import com.zaxxer.hikari.HikariDataSource
 import kotlinx.datetime.toJavaLocalTime
@@ -199,7 +200,7 @@ fun main() {
     val directoryPath = "C:\\Users\\YZM\\Desktop\\chromedriver-win64\\course"
 
     // Connect to the MySQL database
-    val database = database.common.createDataSource()
+    val database = createDataSource()
 
     // Create a table (if it doesn't exist)
     createSectionsTableIfNotExists(database)
@@ -210,7 +211,7 @@ fun main() {
     // Test out section queries
     val section = querySectionsByFacultyId("MATH", "135", database)
     section.forEach { list ->
-        println("newlist")
+        println("newList")
         list.forEach { sec ->
             println(sec)
         }
