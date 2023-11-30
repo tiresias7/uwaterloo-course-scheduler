@@ -31,7 +31,6 @@ fun welcomePageContent(
     navController: NavController
 ){
     GlobalScope.launch {
-        delay(4000)
         CourseNameLoader.cacheAllCourseNames()
     }
     Row(){
