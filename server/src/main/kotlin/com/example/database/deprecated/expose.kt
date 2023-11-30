@@ -1,6 +1,6 @@
 //package database.deprecated
 //
-//import database.sections.parser
+//import com.example.database.sections.parser
 //import org.jetbrains.exposed.sql.*
 //import org.jetbrains.exposed.sql.javatime.*
 //import org.jetbrains.exposed.sql.transactions.transaction

@@ -1,5 +1,6 @@
-package database.users
+package com.example.database.users
 
+import com.example.database.common.createDataSource
 import com.zaxxer.hikari.HikariDataSource
 import utility.checkPassword
 import utility.hashPassword
@@ -99,7 +100,7 @@ fun updatePasswordByUIDRaw(id: Int, password: String, db: HikariDataSource) {
 }
 
 fun main() {
-    database.common.createDataSource().use {
+    createDataSource().use {
         createUsersTableIfNotExists(it)
         createUser("xiaoye", "password", "aaa@gmail.com", it)
         val uid = queryUIDByEmail("aaa@gmail.com", it)

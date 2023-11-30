@@ -3,6 +3,7 @@ package logic.ktorClient
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
+import ktor.ProfileUpdateRequest
 import ktor.SignInRequest
 import ktor.SignResponse
 import ktor.SignUpRequest
@@ -41,12 +42,20 @@ suspend fun signInExistingUsersByEmail(email: String, password: String): Triple<
     }
 }
 
+suspend fun updateUserProfile(id: Int, profileNumber: Int, profile: List<Int>) {
+    httpClient.put("$baseUrl/friend/profile") {
+        contentType(ContentType.Application.Json)
+        setBody(ProfileUpdateRequest(id, profileNumber, profile))
+    }
+}
+
 suspend fun main() {
-    println(signInExistingUsersByEmail("aaa@gmail.com", "password"))
-    println(signInExistingUsersByEmail("aaa@gmail.com", "passd"))
-    println(signInExistingUsersByEmail("pp@gmail.com", "password"))
-    println("....................")
-    println(signUpNewUsers("hello", "password","aaa@gmail.com"))
-    println(signUpNewUsers("xiaoye", "password","pp@good.com"))
-    println(signInExistingUsersByEmail("pp@good.com", "password"))
+    updateUserProfile(2, 1, intArrayOf(2787, 2786).toList())
+//    println(signInExistingUsersByEmail("aaa@gmail.com", "password"))
+//    println(signInExistingUsersByEmail("aaa@gmail.com", "passd"))
+//    println(signInExistingUsersByEmail("pp@gmail.com", "password"))
+//    println("....................")
+//    println(signUpNewUsers("hello", "password","aaa@gmail.com"))
+//    println(signUpNewUsers("xiaoye", "password","pp@good.com"))
+//    println(signInExistingUsersByEmail("pp@good.com", "password"))
 }

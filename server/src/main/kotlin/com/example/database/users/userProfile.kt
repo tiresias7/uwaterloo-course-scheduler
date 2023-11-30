@@ -1,17 +1,19 @@
-package database.users
+package com.example.database.users
 
-import SectionUnit
+import Section
 import com.zaxxer.hikari.HikariDataSource
-import database.common.createDataSource
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
+import com.example.database.common.createDataSource
+import kotlinx.datetime.toKotlinLocalTime
+import java.time.DayOfWeek
 
 fun createUserProfileTableIfNotExists(db: HikariDataSource) {
     val createSQL = """
         CREATE TABLE IF NOT EXISTS user_profiles (
             user INT,
-            section varchar(255),
-            FOREIGN KEY (user) REFERENCES users(id)
+            profile_number INT,
+            section INT,
+            FOREIGN KEY (user) REFERENCES users(id),
+            FOREIGN KEY (section) REFERENCES sections(classNumber)
         )
     """.trimIndent()
 
@@ -23,40 +25,37 @@ fun createUserProfileTableIfNotExists(db: HikariDataSource) {
 }
 
 // Return true for successful reset, false for invalid SectionUnit length
-fun resetUserProfileByUID(id: Int, profile: List<SectionUnit>, db: HikariDataSource): Boolean {
-    val profileString = profile.map {
-        val temp = Json.encodeToString(it)
-        if (temp.length <= 255) temp else return false
-    }
-    resetUserProfileWithSerializationByUID(id, profileString, db)
-    return true
+fun resetUserProfileByUID(id: Int, profileNumber: Int, profile: List<Int>, db: HikariDataSource) {
+    dropExistingUserProfileByUID(id, profileNumber, db)
+    profile.forEach { insertNewSectionByUIDClassNumber(id, profileNumber, it, db) }
 }
 
-private fun resetUserProfileWithSerializationByUID(id: Int, profile: List<String>, db: HikariDataSource) {
-    dropExistingUserProfileByUID(id, db)
-    profile.forEach { insertNewSectionUnitWithSerializationByUID(id, it, db) }
-}
+//private fun resetUserProfileWithSerializationByUID(id: Int, profile: List<String>, db: HikariDataSource) {
+//    dropExistingUserProfileByUID(id, db)
+//    profile.forEach { insertNewSectionUnitWithSerializationByUID(id, it, db) }
+//}
 
-private fun insertNewSectionUnitWithSerializationByUID(id: Int, s: String, db: HikariDataSource) {
+private fun insertNewSectionByUIDClassNumber(id: Int, profileNumber: Int, classNumber: Int, db: HikariDataSource) {
     val insertSQL = """
         INSERT IGNORE INTO user_profiles 
-        (user, section)  
-        VALUES (?, ?)
+        (user, profile_number, section)  
+        VALUES (?, ?, ?)
     """.trimIndent()
 
     db.connection.use { conn ->
         conn.prepareStatement(insertSQL).use { stmt ->
             stmt.setInt(1, id)
-            stmt.setString(2, s)
+            stmt.setInt(2, profileNumber)
+            stmt.setInt(3, classNumber)
             stmt.execute()
         }
     }
 }
 
-private fun dropExistingUserProfileByUID(id: Int, db: HikariDataSource) {
+private fun dropExistingUserProfileByUID(id: Int, profileNumber: Int, db: HikariDataSource) {
     val deleteSQL = """
         DELETE FROM user_profiles
-        WHERE user = $id
+        WHERE user = $id AND profile_number = $profileNumber
     """.trimIndent()
 
     db.connection.use { conn ->
@@ -66,32 +65,49 @@ private fun dropExistingUserProfileByUID(id: Int, db: HikariDataSource) {
     }
 }
 
-fun queryExisingUserProfileByUID(id: Int, db: HikariDataSource): MutableList<SectionUnit> {
+fun queryExisingUserProfileByUID(id: Int, profileNumber: Int, db: HikariDataSource): MutableList<Section> {
     val querySQL = """
        SELECT *
        FROM user_profiles
-       WHERE user = $id
+       JOIN courses.sections s on s.classNumber = user_profiles.section
+       WHERE user = $id AND profile_number = $profileNumber
     """.trimIndent()
 
-    val ret = mutableListOf<SectionUnit>()
+    val sections = mutableListOf<Section>()
     db.connection.use { conn ->
         conn.prepareStatement(querySQL).use { stmt ->
             stmt.executeQuery().use { result ->
                 while (result.next()) {
-                    ret.add(Json.decodeFromString(result.getString("section")))
+                    val days: Set<DayOfWeek> = if (result.getString("days") == "") emptySet()
+                    else result.getString("days").split(",").map { DayOfWeek.valueOf(it) }.toSet()
+                    sections.add(
+                        Section(
+                            result.getInt("classNumber"),
+                            result.getString("component"),
+                            result.getInt("sectionNumber"),
+                            result.getString("campus"),
+                            result.getString("room"),
+                            result.getString("instructor"),
+                            result.getTime("startTime").toLocalTime().toKotlinLocalTime(),
+                            result.getTime("endTime").toLocalTime().toKotlinLocalTime(),
+                            days,
+                            result.getString("faculty") + result.getString("courseID")
+                        )
+                    )
                 }
             }
         }
     }
-    return ret
+    return sections
 }
 
 fun main() {
     createDataSource().use {
         createUserProfileTableIfNotExists(it)
-        val s = mutableListOf<SectionUnit>()
-        s.add(SectionUnit(1, 14.00f, 15.00f, "cs231", "good", "mc123"))
-        resetUserProfileByUID(1, s, it)
-        queryExisingUserProfileByUID(1, it).forEach { temp -> println(Json.encodeToString(temp)) }
+//       insertNewSectionByUIDClassNumber(1, 1, 2785, it)
+//        insertNewSectionByUIDClassNumber(1, 1, 2786, it)
+//
+//        insertNewSectionByUIDClassNumber(1, 2, 2789, it)
+       queryExisingUserProfileByUID(1, 1, it).forEach { temp -> println(temp) }
     }
 }
