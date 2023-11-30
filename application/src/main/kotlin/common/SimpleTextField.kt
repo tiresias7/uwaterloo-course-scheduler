@@ -11,19 +11,20 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.graphics.*
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import style.currentColorScheme
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun SimpleTextField(
     value: String,
@@ -42,17 +43,23 @@ fun SimpleTextField(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     placeholder: @Composable (() -> Unit)? = null,
     onTextLayout: (TextLayoutResult) -> Unit = {},
-    cursorBrush: Brush = SolidColor(Color.Black),
-    colors: TextFieldColors = TextFieldDefaults.textFieldColors(),
-    shape: Shape = RoundedCornerShape(8.dp),
+    cursorBrush: Brush = SolidColor(currentColorScheme.value.cs.onBackground),
+    colors: TextFieldColors = OutlinedTextFieldDefaults.colors(),
+    shape: Shape = OutlinedTextFieldDefaults.shape,
     isError: MutableState<Boolean> = mutableStateOf(false)
 ) {
-    val color = mutableStateOf(Color.Black)
+    val color = mutableStateOf(Color.Transparent)
+    // If color is not provided via the text style, use currentColorScheme
+    val textColor = textStyle.color.takeOrElse {
+        currentColorScheme.value.cs.onSurface
+    }
+    val mergedTextStyle = textStyle.merge(TextStyle(color = textColor))
+
     if (isError.value) {color.value = Color.Red}
-    else {color.value = Color.Black}
+    else {color.value = Color.Transparent}
     BasicTextField(modifier = modifier
         .background(color = Color.Transparent)
-        .border(BorderStroke(1.dp, color.value), shape = shape),
+        .border(BorderStroke(2.dp, color.value), shape = shape),
         value = value,
         onValueChange = onValueChange,
         singleLine = singleLine,
@@ -60,14 +67,14 @@ fun SimpleTextField(
         enabled = enabled,
         readOnly = readOnly,
         interactionSource = interactionSource,
-        textStyle = textStyle,
+        textStyle = mergedTextStyle,
         visualTransformation = visualTransformation,
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
         onTextLayout = onTextLayout,
         cursorBrush = cursorBrush,
-        decorationBox = { innerTextField ->
-            TextFieldDefaults.TextFieldDecorationBox(
+        decorationBox = @Composable { innerTextField ->
+            OutlinedTextFieldDefaults.DecorationBox(
                 value = value,
                 innerTextField = {
                     Box(

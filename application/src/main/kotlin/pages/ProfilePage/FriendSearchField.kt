@@ -28,7 +28,6 @@ fun friendSearchInputField(
     val dropDownExpanded = remember { mutableStateOf(false) }
     var label by remember { mutableStateOf("Enter UID") }
     val ifFocused = mutableStateOf(true)
-    val focusManager = LocalFocusManager.current
 
     for (user in all) {
         userNameList.add(user.second)

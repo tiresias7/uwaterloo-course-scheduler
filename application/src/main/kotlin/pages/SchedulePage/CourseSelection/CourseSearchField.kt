@@ -1,5 +1,6 @@
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.runtime.*
@@ -13,16 +14,14 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontStyle
 import cache.CourseCache
 
-
-val list = mutableStateOf(listOf<String>())
-val value = mutableStateOf(TextFieldValue())
-val dropDownExpanded = mutableStateOf(false)
-
 @Composable
 fun courseSearchInputField(
     all: List<String>,
     addCallBack: (courseName: String) -> Unit
 ) {
+    val courseList = remember { mutableStateOf(listOf<String>()) }
+    val inputValue = remember { mutableStateOf(TextFieldValue()) }
+    val dropDownExpanded = remember { mutableStateOf(false) }
     var label by remember { mutableStateOf("Add as many courses as you want") }
     val ifFocused = mutableStateOf(true)
     val focusManager = LocalFocusManager.current
@@ -35,19 +34,19 @@ fun courseSearchInputField(
                     .onFocusChanged { focusState ->
                         ifFocused.value = focusState.isFocused
                         if (!ifFocused.value) {
-                            value.value = TextFieldValue("")
+                            inputValue.value = TextFieldValue("")
                         } else {
                             label = "Add more courses"
                             dropDownExpanded.value = true
-                            list.value = all
+                            courseList.value = all
                         }
                     },
                 singleLine = true,
-                value = value.value,
+                value = inputValue.value,
                 onValueChange = { newValue: TextFieldValue ->
                     dropDownExpanded.value = true
-                    value.value = newValue
-                    list.value = searchFilter(newValue.text, all)
+                    inputValue.value = newValue
+                    courseList.value = searchFilter(newValue.text, all)
                 },
                 label = { Text(label, fontStyle = FontStyle.Italic) },
                 placeholder = { Text("Eg. CS346") },
@@ -62,13 +61,13 @@ fun courseSearchInputField(
             onDismissRequest = { dropDownExpanded.value = false },
             modifier = Modifier.width(446.dp).heightIn(max = 500.dp)
         ) {
-            if (list.value.isNotEmpty()) {
-                list.value.take(50).forEach { text: String ->
+            if (courseList.value.isNotEmpty()) {
+                courseList.value.take(50).forEach { text: String ->
                     DropdownMenuItem(
                         modifier = Modifier.size(446.dp, 35.dp),
                         onClick = {
                             dropDownExpanded.value = false
-                            value.value = TextFieldValue("")
+                            inputValue.value = TextFieldValue("")
                             focusManager.clearFocus()
                             label = text + " Added ✓"
                             CourseCache.cacheCourse(text)
