@@ -167,12 +167,14 @@ fun schedulePageContent(
                                 requiredNumberOfCourses,
                                 selectedPreferences
                             )
+                            println("sections: ")
                             println(tempSections)
-                            if (tempSections.isNotEmpty()) {
-                                returnedSections.addAll(tempSections)
-                            } else {
+                            if (tempSections.isEmpty()){
                                 ifErrorDialog.value = true
                                 errorCauses.add("no schedule returned")
+                            }
+                            else {
+                                returnedSections.addAll(tempSections[0])
                             }
                         }
                     },
@@ -215,7 +217,7 @@ fun courseSelectionWrapper(
 ) {
     //Course Selection Section
     courseSelectionSection(
-        allCourses, selectedCourses, requiredNumberOfCourses,
+        selectedCourses, requiredNumberOfCourses,
         addCallBack,
         toggleCallBack,
         deleteCallBack
@@ -236,7 +238,7 @@ fun getScheduleService(
     selectedCourses: MutableList<SelectedCourse>,
     requiredNumberOfCourses: MutableState<Int>,
     selectedPreferences: MutableList<Preference>
-): List<SectionUnit> {
+): List<List<SectionUnit>> {
     val hardCourses: MutableList<String> = mutableListOf()
     val softCourses: MutableList<String> = mutableListOf()
     val hardPreference: MutableList<Preference> = mutableListOf()
@@ -257,9 +259,12 @@ fun getScheduleService(
         hardPreference.toList(), softPreference.toList()
     )
     if (tempResult.isEmpty()) {
-        return listOf()
+        return listOf()     // conflicting schedule
     }
-    return sectionListToUnits(tempResult[0])
+    else if (tempResult[0].isEmpty()){
+        return listOf(emptyList<SectionUnit>())    // empty schedule
+    }
+    return listOf(sectionListToUnits(tempResult[0]))
 }
 
 fun numOfHard(selectedCourses: MutableList<SelectedCourse>): Int {

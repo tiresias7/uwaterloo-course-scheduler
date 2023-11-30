@@ -10,16 +10,18 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupProperties
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontStyle
 import cache.CourseCache
+import cache.CourseNameLoader
 
 @Composable
 fun courseSearchInputField(
-    all: List<String>,
     addCallBack: (courseName: String) -> Unit
 ) {
-    val courseList = remember { mutableStateOf(listOf<String>()) }
+    var allCourses = CourseNameLoader.getAllCourseNames()
+    var courseList = remember { mutableStateOf(listOf<String>()) }
     val inputValue = remember { mutableStateOf(TextFieldValue()) }
     val dropDownExpanded = remember { mutableStateOf(false) }
     var label by remember { mutableStateOf("Add as many courses as you want") }
@@ -31,14 +33,13 @@ fun courseSearchInputField(
         ) {
             OutlinedTextField(
                 modifier = Modifier.size(width = 446.dp, height = 60.dp)
-                    .onFocusChanged { focusState ->
-                        ifFocused.value = focusState.isFocused
-                        if (!ifFocused.value) {
-                            inputValue.value = TextFieldValue("")
-                        } else {
+                    .onFocusEvent { focusState ->
+                        if (focusState.isFocused) {
                             label = "Add more courses"
                             dropDownExpanded.value = true
-                            courseList.value = all
+                            courseList.value = allCourses
+                        } else if (!focusState.isFocused) {
+                            inputValue.value = TextFieldValue("")
                         }
                     },
                 singleLine = true,
@@ -46,7 +47,7 @@ fun courseSearchInputField(
                 onValueChange = { newValue: TextFieldValue ->
                     dropDownExpanded.value = true
                     inputValue.value = newValue
-                    courseList.value = searchFilter(newValue.text, all)
+                    courseList.value = searchFilter(newValue.text, allCourses)
                 },
                 label = { Text(label, fontStyle = FontStyle.Italic) },
                 placeholder = { Text("Eg. CS346") },
@@ -83,15 +84,23 @@ fun courseSearchInputField(
                     modifier = Modifier.size(446.dp, 35.dp),
                     onClick = {}
                 ) {
-                    Text(text = "No Matching Course")
+                    if (allCourses.isEmpty()) {
+                        allCourses = CourseNameLoader.getAllCourseNames()
+                        courseList.value = allCourses
+                        dropDownExpanded.value = false
+                        dropDownExpanded.value = true
+                        Text(text = "Loading courses...")
+                    } else {
+                        Text(text = "No Matching Course")
+                    }
                 }
             }
         }
     }
 }
 
-fun searchFilter(inputValue : String, all : List<String>) : List<String> {
-    val startWith = all.filter{
+fun searchFilter(inputValue: String, all: List<String>): List<String> {
+    val startWith = all.filter {
         it.startsWith(inputValue, ignoreCase = true) ||
                 inputValue.startsWith(it, ignoreCase = true)
     }.sorted()

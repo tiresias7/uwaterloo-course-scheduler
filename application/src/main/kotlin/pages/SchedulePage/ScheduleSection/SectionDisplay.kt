@@ -8,10 +8,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
@@ -21,6 +17,9 @@ import androidx.compose.ui.zIndex
 import BASE_IMAGE_WIDTH
 import BLOCK_WIDTH
 import SectionUnit
+import androidx.compose.runtime.*
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import kotlinx.coroutines.launch
 import style.*
 
@@ -32,12 +31,19 @@ fun sectionBlock(section: SectionUnit, baseWidth: Dp) {
     val tooltipState = remember { RichTooltipState() }
     val scope = rememberCoroutineScope()
     val isHover by interactionSource.collectIsHoveredAsState()
+    val hoverHeight = remember { mutableStateOf(0.dp) }
+    val density = LocalDensity.current.density
     if (isHover) {
         ElevatedCard(
             modifier = Modifier
+                .onSizeChanged {
+                    hoverHeight.value = (it.height / density).dp
+                }
                 .offset(
-                    x = baseWidth * section.getXOffset() / BASE_IMAGE_WIDTH - BLOCK_WIDTH.dp + section.getWidth().dp,
-                    y = baseWidth * section.getYOffset() / BASE_IMAGE_WIDTH + section.getHeight().dp
+                    x = baseWidth * section.getXOffset() / BASE_IMAGE_WIDTH,
+                    y = if (section.finishTime < 19f)
+                            (baseWidth * section.getYOffset() / BASE_IMAGE_WIDTH + section.getHeight().dp)
+                    else (baseWidth * section.getYOffset() / BASE_IMAGE_WIDTH - hoverHeight.value)
                 )
                 .heightIn(0.dp, 400.dp).widthIn(0.dp, 150.dp)
                 .hoverable(interactionSource)
@@ -45,12 +51,11 @@ fun sectionBlock(section: SectionUnit, baseWidth: Dp) {
         ) {
             Column(
                 modifier = Modifier.padding(10.dp),
-            ){
+            ) {
                 SelectionContainer { Text(section.courseName + "\n" + section.profName + "\n" + section.location) }
             }
         }
-    }
-    else {
+    } else {
         scope.launch { tooltipState.dismiss() }
     }
 

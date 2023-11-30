@@ -23,7 +23,6 @@ import SelectedCourse
 
 @Composable
 fun courseSelectionSection(
-    allCourses: List<String>,
     selectedCourses: MutableList<SelectedCourse>,
     requiredNumberOfCourses: MutableState<Int>,
     addCallBack: (courseName: String) -> Unit,
@@ -41,7 +40,7 @@ fun courseSelectionSection(
             Text("Courses",fontSize = 14.sp,color = Color.Gray)
             Divider(modifier = Modifier.width(195.dp).padding(start = 3.dp))
         }
-        courseSearchInputField(allCourses, addCallBack)
+        courseSearchInputField(addCallBack)
         Text(
             text = "Click on a selected course to modify its priority:",
             fontSize = 12.sp,
