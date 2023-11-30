@@ -204,16 +204,15 @@ fun loginPage(
                                 coroutineScope.launch(Dispatchers.IO) {
                                     val response = signInExistingUsersByEmail(email.text, password.text)
                                     val status = response.first
+                                    isLoading.value = false
                                     when (status) {
                                         SignStatus.SIGN_IN_INVALID -> {
-                                            isLoading.value = false
                                             isError = true
                                             emailLabel = "Email Not Found"
                                             email = TextFieldValue("")
                                             password = TextFieldValue("")
                                         }
                                         SignStatus.SIGN_IN_FAILED -> {
-                                            isLoading.value = false
                                             isError = true
                                             passwordLabel = "Incorrect Password"
                                             password = TextFieldValue("")
@@ -225,8 +224,6 @@ fun loginPage(
 //                                            email = TextFieldValue("")
 //                                            password = TextFieldValue("")
                                             isError = false
-                                            CourseNameLoader.cacheAllCourseNames()
-                                            isLoading.value = false
                                             navController.navigate(Screen.WelcomePage.name)
                                         }
                                     }

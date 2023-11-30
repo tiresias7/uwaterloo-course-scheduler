@@ -5,15 +5,14 @@ import logic.ktorClient.queryAllClasses
 import java.util.concurrent.CompletableFuture
 
 object CourseNameLoader {
-    private val allCourseNames: CompletableFuture<List<String>> = CompletableFuture.supplyAsync { runBlocking {
-        queryAllClasses()
-    }}
+    private var allCourseNames: MutableList<String> = mutableListOf()
 
     suspend fun cacheAllCourseNames() {
-        allCourseNames.complete(queryAllClasses())
+        allCourseNames.clear()
+        allCourseNames.addAll(queryAllClasses())
     }
 
     fun getAllCourseNames(): List<String> {
-        return allCourseNames.get() // blocks until futureCourses is done
+        return allCourseNames
     }
 }

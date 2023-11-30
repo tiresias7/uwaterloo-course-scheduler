@@ -10,8 +10,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import cache.CourseNameLoader
 import common.navDrawer
 import common.navcontroller.NavController
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import style.welcomeFontFamily
 
 
@@ -26,6 +30,9 @@ fun welcomePage(
 fun welcomePageContent(
     navController: NavController
 ){
+    GlobalScope.launch {
+        CourseNameLoader.cacheAllCourseNames()
+    }
     Row(){
         Column(
             modifier = Modifier.fillMaxSize(),
