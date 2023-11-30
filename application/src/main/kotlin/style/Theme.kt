@@ -143,6 +143,136 @@ private val DarkColorSchemeGreen = darkColorScheme(
     onSurfaceVariant = md_theme_dark_onSurfaceVariantgreen,
 )
 
+private val LightColorSchemeBlue = lightColorScheme(
+    primary = md_theme_light_primaryblue,
+    onPrimary = md_theme_light_onPrimaryblue,
+    primaryContainer = md_theme_light_primaryContainerblue,
+    onPrimaryContainer = md_theme_light_onPrimaryContainerblue,
+    secondary = md_theme_light_secondaryblue,
+    onSecondary = md_theme_light_onSecondaryblue,
+    secondaryContainer = md_theme_light_secondaryContainerblue,
+    onSecondaryContainer = md_theme_light_onSecondaryContainerblue,
+    tertiary = md_theme_light_tertiaryblue,
+    onTertiary = md_theme_light_onTertiaryblue,
+    tertiaryContainer = md_theme_light_tertiaryContainerblue,
+    onTertiaryContainer = md_theme_light_onTertiaryContainerblue,
+    error = md_theme_light_errorblue,
+    errorContainer = md_theme_light_errorContainerblue,
+    onError = md_theme_light_onErrorblue,
+    onErrorContainer = md_theme_light_onErrorContainerblue,
+    background = md_theme_light_backgroundblue,
+    onBackground = md_theme_light_onBackgroundblue,
+    outline = md_theme_light_outlineblue,
+    inverseOnSurface = md_theme_light_inverseOnSurfaceblue,
+    inverseSurface = md_theme_light_inverseSurfaceblue,
+    inversePrimary = md_theme_light_inversePrimaryblue,
+    surfaceTint = md_theme_light_surfaceTintblue,
+    outlineVariant = md_theme_light_outlineVariantblue,
+    scrim = md_theme_light_scrimblue,
+    surface = md_theme_light_surfaceblue,
+    onSurface = md_theme_light_onSurfaceblue,
+    surfaceVariant = md_theme_light_surfaceVariantblue,
+    onSurfaceVariant = md_theme_light_onSurfaceVariantblue,
+)
+
+
+private val DarkColorSchemeBlue = darkColorScheme(
+    primary = md_theme_dark_primaryblue,
+    onPrimary = md_theme_dark_onPrimaryblue,
+    primaryContainer = md_theme_dark_primaryContainerblue,
+    onPrimaryContainer = md_theme_dark_onPrimaryContainerblue,
+    secondary = md_theme_dark_secondaryblue,
+    onSecondary = md_theme_dark_onSecondaryblue,
+    secondaryContainer = md_theme_dark_secondaryContainerblue,
+    onSecondaryContainer = md_theme_dark_onSecondaryContainerblue,
+    tertiary = md_theme_dark_tertiaryblue,
+    onTertiary = md_theme_dark_onTertiaryblue,
+    tertiaryContainer = md_theme_dark_tertiaryContainerblue,
+    onTertiaryContainer = md_theme_dark_onTertiaryContainerblue,
+    error = md_theme_dark_errorblue,
+    errorContainer = md_theme_dark_errorContainerblue,
+    onError = md_theme_dark_onErrorblue,
+    onErrorContainer = md_theme_dark_onErrorContainerblue,
+    background = md_theme_dark_backgroundblue,
+    onBackground = md_theme_dark_onBackgroundblue,
+    outline = md_theme_dark_outlineblue,
+    inverseOnSurface = md_theme_dark_inverseOnSurfaceblue,
+    inverseSurface = md_theme_dark_inverseSurfaceblue,
+    inversePrimary = md_theme_dark_inversePrimaryblue,
+    surfaceTint = md_theme_dark_surfaceTintblue,
+    outlineVariant = md_theme_dark_outlineVariantblue,
+    scrim = md_theme_dark_scrimblue,
+    surface = md_theme_dark_surfaceblue,
+    onSurface = md_theme_dark_onSurfaceblue,
+    surfaceVariant = md_theme_dark_surfaceVariantblue,
+    onSurfaceVariant = md_theme_dark_onSurfaceVariantblue,
+)
+
+private val LightColorSchemeOrange = lightColorScheme(
+    primary = md_theme_light_primaryorange,
+    onPrimary = md_theme_light_onPrimaryorange,
+    primaryContainer = md_theme_light_primaryContainerorange,
+    onPrimaryContainer = md_theme_light_onPrimaryContainerorange,
+    secondary = md_theme_light_secondaryorange,
+    onSecondary = md_theme_light_onSecondaryorange,
+    secondaryContainer = md_theme_light_secondaryContainerorange,
+    onSecondaryContainer = md_theme_light_onSecondaryContainerorange,
+    tertiary = md_theme_light_tertiaryorange,
+    onTertiary = md_theme_light_onTertiaryorange,
+    tertiaryContainer = md_theme_light_tertiaryContainerorange,
+    onTertiaryContainer = md_theme_light_onTertiaryContainerorange,
+    error = md_theme_light_errororange,
+    errorContainer = md_theme_light_errorContainerorange,
+    onError = md_theme_light_onErrororange,
+    onErrorContainer = md_theme_light_onErrorContainerorange,
+    background = md_theme_light_backgroundorange,
+    onBackground = md_theme_light_onBackgroundorange,
+    outline = md_theme_light_outlineorange,
+    inverseOnSurface = md_theme_light_inverseOnSurfaceorange,
+    inverseSurface = md_theme_light_inverseSurfaceorange,
+    inversePrimary = md_theme_light_inversePrimaryorange,
+    surfaceTint = md_theme_light_surfaceTintorange,
+    outlineVariant = md_theme_light_outlineVariantorange,
+    scrim = md_theme_light_scrimorange,
+    surface = md_theme_light_surfaceorange,
+    onSurface = md_theme_light_onSurfaceorange,
+    surfaceVariant = md_theme_light_surfaceVariantorange,
+    onSurfaceVariant = md_theme_light_onSurfaceVariantorange,
+)
+
+
+private val DarkColorSchemeOrange = darkColorScheme(
+    primary = md_theme_dark_primaryorange,
+    onPrimary = md_theme_dark_onPrimaryorange,
+    primaryContainer = md_theme_dark_primaryContainerorange,
+    onPrimaryContainer = md_theme_dark_onPrimaryContainerorange,
+    secondary = md_theme_dark_secondaryorange,
+    onSecondary = md_theme_dark_onSecondaryorange,
+    secondaryContainer = md_theme_dark_secondaryContainerorange,
+    onSecondaryContainer = md_theme_dark_onSecondaryContainerorange,
+    tertiary = md_theme_dark_tertiaryorange,
+    onTertiary = md_theme_dark_onTertiaryorange,
+    tertiaryContainer = md_theme_dark_tertiaryContainerorange,
+    onTertiaryContainer = md_theme_dark_onTertiaryContainerorange,
+    error = md_theme_dark_errororange,
+    errorContainer = md_theme_dark_errorContainerorange,
+    onError = md_theme_dark_onErrororange,
+    onErrorContainer = md_theme_dark_onErrorContainerorange,
+    background = md_theme_dark_backgroundorange,
+    onBackground = md_theme_dark_onBackgroundorange,
+    outline = md_theme_dark_outlineorange,
+    inverseOnSurface = md_theme_dark_inverseOnSurfaceorange,
+    inverseSurface = md_theme_dark_inverseSurfaceorange,
+    inversePrimary = md_theme_dark_inversePrimaryorange,
+    surfaceTint = md_theme_dark_surfaceTintorange,
+    outlineVariant = md_theme_dark_outlineVariantorange,
+    scrim = md_theme_dark_scrimorange,
+    surface = md_theme_dark_surfaceorange,
+    onSurface = md_theme_dark_onSurfaceorange,
+    surfaceVariant = md_theme_dark_surfaceVariantorange,
+    onSurfaceVariant = md_theme_dark_onSurfaceVariantorange,
+)
+
 
 val welcomeFontFamily = FontFamily(
     Font(
@@ -155,15 +285,23 @@ val welcomeFontFamily = FontFamily(
 enum class MyColorTheme(val cs: ColorScheme) {
     GREEN(LightColorSchemeGreen),
     PURPLE(LightColorSchemePurple),
+    BLUE(LightColorSchemeBlue),
+    ORANGE(LightColorSchemeOrange),
     GREEN_DARK(DarkColorSchemeGreen),
-    PURPLE_DARK(DarkColorSchemePurple);
+    PURPLE_DARK(DarkColorSchemePurple),
+    BLUE_DARK(DarkColorSchemeBlue),
+    ORANGE_DARK(DarkColorSchemeOrange);
 
     fun toggleTheme(): MyColorTheme {
         return when (this) {
             GREEN -> GREEN_DARK
             PURPLE -> PURPLE_DARK
+            BLUE -> BLUE_DARK
+            ORANGE -> ORANGE_DARK
             GREEN_DARK -> GREEN
             PURPLE_DARK -> PURPLE
+            BLUE_DARK -> BLUE
+            ORANGE_DARK -> ORANGE
         }
     }
 }

@@ -90,6 +90,10 @@ fun navDrawer(
                             ThemeButton(MyColorTheme.GREEN, isDark)
                             Spacer(Modifier.width(5.dp))
                             ThemeButton(MyColorTheme.PURPLE, isDark)
+                            Spacer(Modifier.width(5.dp))
+                            ThemeButton(MyColorTheme.BLUE, isDark)
+                            Spacer(Modifier.width(5.dp))
+                            ThemeButton(MyColorTheme.ORANGE, isDark)
                         }
                         Row(
                             modifier = Modifier.padding(10.dp),
