@@ -147,6 +147,10 @@ fun friendSection( USER_ID : Int, savedSections : MutableList<SectionUnit>) {
                         fontSize = 12.sp,
                         fontStyle = FontStyle.Italic
                     )
+                    if (friendsList.value.isEmpty()) {
+                        Text("You currently have no friend in ω",
+                            fontStyle = FontStyle.Italic)
+                    }
                     ElevatedCard(
                         elevation = CardDefaults.cardElevation(
                             defaultElevation = 6.dp
@@ -259,24 +263,26 @@ fun viewProfilePageDialog(friendID : Int, ifViewProfile : MutableState<Boolean>,
             var friendSections : MutableList<SectionUnit>
             runBlocking { friendSections = fromSectionToSectionUnit(fetchFriendProfile(USER_ID, friendID)) }
             Card(
-                modifier = Modifier.size(1000.dp, 1000.dp),
+                modifier = Modifier.size(900.dp, 800.dp),
             ) {
                 Column(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier.fillMaxSize().padding(top = 20.dp, bottom = 40.dp),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Row(
-                        modifier = Modifier.fillMaxWidth().padding(start = 40.dp),
+                        modifier = Modifier.fillMaxWidth().padding(start = 40.dp, end = 40.dp),
                         horizontalArrangement = Arrangement.Start,
                         verticalAlignment = Alignment.Bottom
                     ) {
-                        Text(USER_NAME + " 's Profile")
-                        //Text( "a 's Profile", fontSize = 45.sp,)
+                        val name : String
+                        if (USER_NAME.length > 10) { name = USER_NAME.take(10) + "..."}
+                        else { name = USER_NAME }
+                        Text(name + " 's Profile", fontSize = 35.sp)
                         OutlinedButton(
                             onClick = { ifViewProfile.value = false },
                             content = { Text("Return") },
-                            modifier = Modifier.padding(start = 20.dp).height(50.dp)
+                            modifier = Modifier.padding(start = 20.dp).height(40.dp)
                         )
                     }
                     schedule(friendSections, modifier = Modifier.padding(top = 20.dp))

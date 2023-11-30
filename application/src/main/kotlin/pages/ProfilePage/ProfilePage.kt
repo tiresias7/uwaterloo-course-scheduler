@@ -57,8 +57,14 @@ fun profilePageContent(
                     horizontalArrangement = Arrangement.Start,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
+                    val name : String
+                    val email : String
+                    if (USER_NAME.length > 10) { name = USER_NAME.take(10) + "..."}
+                    else { name = USER_NAME }
+                    if (USER_EMAIL.length > 30) { email = USER_NAME.take(30) + "..."}
+                    else { email = USER_EMAIL }
                     Text(
-                        text = USER_NAME + "'s profile", fontSize = 45.sp,
+                        text = name + "'s profile", fontSize = 45.sp,
                         modifier = Modifier.padding(end = 50.dp)
                     )
                     Text(
@@ -66,7 +72,7 @@ fun profilePageContent(
                         modifier = Modifier.padding(end = 20.dp)
                     )
                     Text(
-                        "Email: " + USER_EMAIL, fontSize = 15.sp,
+                        "Email: " + email, fontSize = 15.sp,
                         modifier = Modifier.padding(end = 50.dp)
                     )
                 }
