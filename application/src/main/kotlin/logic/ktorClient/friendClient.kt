@@ -1,6 +1,6 @@
 package logic.ktorClient
 
-import SectionUnit
+import Section
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
@@ -22,8 +22,8 @@ suspend fun fetchFriendRequests(id: Int): List<Pair<Int, String>> {
     }.body()
 }
 
-// sender is trying to query the user profile of receiver (not yet implemented)
-suspend fun fetchFriendProfile(senderId: Int, receiverId: Int): List<SectionUnit> {
+// sender is trying to query the user profile of receiver
+suspend fun fetchFriendProfile(senderId: Int, receiverId: Int): List<Section> {
     return httpClient.get("$baseUrl/friend/profile") {
         contentType(ContentType.Application.Json)
         setBody(PairID(senderId, receiverId))
@@ -76,32 +76,54 @@ suspend fun denyFriendRequest(senderId: Int, receiverId: Int): RequestStatus {
     }
 }
 
-suspend fun main () {
-    val friendList = fetchFriendList(3)
-    for (pair in friendList) {
-        println(pair.first.toString() + " " + pair.second)
+suspend fun deleteFriendRelation(senderId: Int, receiverId: Int): RequestStatus {
+    val respond = httpClient.delete("$baseUrl/friend") {
+        contentType(ContentType.Application.Json)
+        setBody(PairID(senderId, receiverId))
     }
+    val statusCode = respond.status
+    return when(statusCode) {
+        HttpStatusCode.OK -> RequestStatus.FRIEND_DELETE_SUCCESS
+        else -> RequestStatus.FRIEND_DELETE_FAILED
+    }
+}
 
-    println("..........")
-    fetchFriendRequests(7).forEach { println(it.first.toString() + " " + it.second) }
-    println("..........")
-    fetchFriendRequests(11).forEach { println(it.first.toString() + " " + it.second) }
-    println("...........")
-    println(sendFriendRequest(7, 10))
-    println(sendFriendRequest(7, 10))
-    println(sendFriendRequest(7, 7))
-    println(sendFriendRequest(1, 2))
-    println(sendFriendRequest(2, 1))
-    println("...........")
-    println(approveFriendRequest(7,7))
-    println(approveFriendRequest(1,10))
-    println(approveFriendRequest(7, 10))
-    println("...........")
-    println(denyFriendRequest(7, 10))
-    println(denyFriendRequest(10, 7))
-    println(denyFriendRequest(7, 7))
-    println("...........")
-    sendFriendRequest(1, 10)
-    sendFriendRequest(10, 1)
-    approveFriendRequest(10, 1)
+suspend fun main () {
+//    println(deleteFriendRelation(1, 10))
+//    println(deleteFriendRelation(10, 1))
+//    println(deleteFriendRelation(4, 2))
+
+
+//    println(LocalTime.now())
+//    println(fetchFriendProfile(1,1))
+//    println(LocalTime.now())
+
+
+//    val friendList = fetchFriendList(3)
+//    for (pair in friendList) {
+//        println(pair.first.toString() + " " + pair.second)
+//    }
+//
+//    println("..........")
+//    fetchFriendRequests(7).forEach { println(it.first.toString() + " " + it.second) }
+//    println("..........")
+//    fetchFriendRequests(11).forEach { println(it.first.toString() + " " + it.second) }
+//    println("...........")
+//    println(sendFriendRequest(7, 10))
+//    println(sendFriendRequest(7, 10))
+//    println(sendFriendRequest(7, 7))
+//    println(sendFriendRequest(1, 2))
+//    println(sendFriendRequest(2, 1))
+//    println("...........")
+//    println(approveFriendRequest(7,7))
+//    println(approveFriendRequest(1,10))
+//    println(approveFriendRequest(7, 10))
+//    println("...........")
+//    println(denyFriendRequest(7, 10))
+//    println(denyFriendRequest(10, 7))
+//    println(denyFriendRequest(7, 7))
+//    println("...........")
+//    sendFriendRequest(1, 10)
+//    sendFriendRequest(10, 1)
+//    approveFriendRequest(10, 1)
 }

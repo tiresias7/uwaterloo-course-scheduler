@@ -1,5 +1,6 @@
-package database.friends
+package com.example.database.friends
 
+import com.example.database.common.createDataSource
 import com.zaxxer.hikari.HikariDataSource
 
 fun createRequestsTableIfNotExists(db: HikariDataSource) {
@@ -75,7 +76,7 @@ fun deleteFriendRequestsByUID(id1: Int, id2: Int, db: HikariDataSource) {
 }
 
 fun main() {
-    database.common.createDataSource().use {
+    createDataSource().use {
         createRequestsTableIfNotExists(it)
         println(verifyFriendRequest(1, 2, it))
     }
