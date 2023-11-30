@@ -56,7 +56,7 @@ fun navDrawer(
                             modifier = Modifier.padding(10.dp, 0.dp),
                             icon = { Icon(Icons.Outlined.Add, "") },
                             label = { Text(text = "Scheduler") },
-                            selected = navController.currentScreen.value == Screen.WelcomePage.name,
+                            selected = navController.currentScreen.value == Screen.SchedulePage.name,
                             onClick = {
                                 navController.navigate(Screen.SchedulePage.name)
                                 scope.launch {

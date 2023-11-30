@@ -170,11 +170,9 @@ fun loginPage(
                                                 println(USER_EMAIL)
                                                 println(USER_ID)
                                                 println(USER_NAME)
-                                                email = TextFieldValue("")
-                                                password = TextFieldValue("")
+//                                                email = TextFieldValue("")
+//                                                password = TextFieldValue("")
                                                 isError = false
-                                                emailLabel = "Enter Email"
-                                                passwordLabel = "Enter Password"
                                                 CourseNameLoader.cacheAllCourseNames()
                                                 isLoading.value = false
                                                 navController.navigate(Screen.WelcomePage.name)
@@ -224,11 +222,9 @@ fun loginPage(
                                             USER_EMAIL = email.text
                                             USER_ID = response.second
                                             USER_NAME = response.third
-                                            email = TextFieldValue("")
-                                            password = TextFieldValue("")
+//                                            email = TextFieldValue("")
+//                                            password = TextFieldValue("")
                                             isError = false
-//                                            emailLabel = "Enter Email"
-//                                            passwordLabel = "Enter Password"
                                             CourseNameLoader.cacheAllCourseNames()
                                             isLoading.value = false
                                             navController.navigate(Screen.WelcomePage.name)
