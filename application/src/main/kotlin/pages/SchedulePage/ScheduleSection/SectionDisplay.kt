@@ -55,12 +55,8 @@ fun sectionBlock(section: SectionUnit, baseWidth: Dp) {
     }
 
     Card(
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 6.dp
-        ),
         colors = CardDefaults.cardColors(containerColor = currentColorScheme.value.cs.primaryContainer),
         shape = RoundedCornerShape(3.dp),
-        border = BorderStroke(0.1.dp, color = Color.Black),
         modifier = Modifier
             .size(
                 width = baseWidth * section.getWidth() / BASE_IMAGE_WIDTH,

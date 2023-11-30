@@ -14,6 +14,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import SectionUnit
+import style.currentColorScheme
 
 @Composable
 fun schedule(
@@ -27,8 +28,10 @@ fun schedule(
         modifier = modifier,
     ) {
         Card(
-            border = BorderStroke(0.1.dp, Color.Black),
-            colors = CardDefaults.cardColors(containerColor = Color.White),
+            elevation = CardDefaults.cardElevation(
+                defaultElevation = 6.dp
+            ),
+            colors = CardDefaults.cardColors(containerColor = currentColorScheme.value.cs.background),
             shape = RoundedCornerShape((0.dp)),
 //            modifier = Modifier.onPointerEvent(PointerEventType.Move) {
 //                val position = it.changes.first().position;
