@@ -15,13 +15,18 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontStyle
 import cache.CourseCache
 import cache.CourseNameLoader
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun courseSearchInputField(
     addCallBack: (courseName: String) -> Unit
 ) {
-    var allCourses = CourseNameLoader.getAllCourseNames()
-    var courseList = remember { mutableStateOf(listOf<String>()) }
+    val allCourses = CourseNameLoader.getAllCourseNames()
+    val isInit = remember { mutableStateOf(false) }
+    val courseList = remember { mutableStateOf(listOf<String>()) }
     val inputValue = remember { mutableStateOf(TextFieldValue()) }
     val dropDownExpanded = remember { mutableStateOf(false) }
     var label by remember { mutableStateOf("Add as many courses as you want") }
@@ -37,7 +42,6 @@ fun courseSearchInputField(
                         if (focusState.isFocused) {
                             label = "Add more courses"
                             dropDownExpanded.value = true
-                            courseList.value = allCourses
                         } else if (!focusState.isFocused) {
                             inputValue.value = TextFieldValue("")
                         }
@@ -62,6 +66,7 @@ fun courseSearchInputField(
             onDismissRequest = { dropDownExpanded.value = false },
             modifier = Modifier.width(446.dp).heightIn(max = 500.dp)
         ) {
+            val coroutineScope = rememberCoroutineScope()
             if (courseList.value.isNotEmpty()) {
                 courseList.value.take(50).forEach { text: String ->
                     DropdownMenuItem(
@@ -84,11 +89,14 @@ fun courseSearchInputField(
                     modifier = Modifier.size(446.dp, 35.dp),
                     onClick = {}
                 ) {
-                    if (allCourses.isEmpty()) {
-                        allCourses = CourseNameLoader.getAllCourseNames()
-                        courseList.value = allCourses
-                        dropDownExpanded.value = false
-                        dropDownExpanded.value = true
+                    if (!isInit.value) {
+                        coroutineScope.launch(Dispatchers.IO){
+                            while (allCourses.isEmpty()){
+                                delay(50)
+                            }
+                            isInit.value = true
+                            courseList.value = allCourses
+                        }
                         Text(text = "Loading courses...")
                     } else {
                         Text(text = "No Matching Course")
