@@ -110,6 +110,69 @@ private val LightColorSchemeGreen = lightColorScheme(
     onSurfaceVariant = md_theme_light_onSurfaceVariantgreen,
 )
 
+private val LightColorSchemeZG = lightColorScheme(
+    primary = md_theme_light_primaryZG,
+    onPrimary = md_theme_light_onPrimaryZG,
+    primaryContainer = md_theme_light_primaryContainerZG,
+    onPrimaryContainer = md_theme_light_onPrimaryContainerZG,
+    secondary = md_theme_light_secondaryZG,
+    onSecondary = md_theme_light_onSecondaryZG,
+    secondaryContainer = md_theme_light_secondaryContainerZG,
+    onSecondaryContainer = md_theme_light_onSecondaryContainerZG,
+    tertiary = md_theme_light_tertiaryZG,
+    onTertiary = md_theme_light_onTertiaryZG,
+    tertiaryContainer = md_theme_light_tertiaryContainerZG,
+    onTertiaryContainer = md_theme_light_onTertiaryContainerZG,
+    error = md_theme_light_errorZG,
+    onError = md_theme_light_onErrorZG,
+    errorContainer = md_theme_light_errorContainerZG,
+    onErrorContainer = md_theme_light_onErrorContainerZG,
+    outline = md_theme_light_outlineZG,
+    background = md_theme_light_backgroundZG,
+    onBackground = md_theme_light_onBackgroundZG,
+    surface = md_theme_light_surfaceZG,
+    onSurface = md_theme_light_onSurfaceZG,
+    surfaceVariant = md_theme_light_surfaceVariantZG,
+    onSurfaceVariant = md_theme_light_onSurfaceVariantZG,
+    inverseSurface = md_theme_light_inverseSurfaceZG,
+    inverseOnSurface = md_theme_light_inverseOnSurfaceZG,
+    inversePrimary = md_theme_light_inversePrimaryZG,
+//    surfaceTint = md_theme_light_surfaceTintZG,
+//    outlineVariant = md_theme_light_outlineVariantZG,
+//    scrim = md_theme_light_scrimZG,
+)
+
+private val DarkColorSchemeZG = darkColorScheme(
+    primary = md_theme_dark_primaryZG,
+    onPrimary = md_theme_dark_onPrimaryZG,
+    primaryContainer = md_theme_dark_primaryContainerZG,
+    onPrimaryContainer = md_theme_dark_onPrimaryContainerZG,
+    secondary = md_theme_dark_secondaryZG,
+    onSecondary = md_theme_dark_onSecondaryZG,
+    secondaryContainer = md_theme_dark_secondaryContainerZG,
+    onSecondaryContainer = md_theme_dark_onSecondaryContainerZG,
+    tertiary = md_theme_dark_tertiaryZG,
+    onTertiary = md_theme_dark_onTertiaryZG,
+    tertiaryContainer = md_theme_dark_tertiaryContainerZG,
+    onTertiaryContainer = md_theme_dark_onTertiaryContainerZG,
+    error = md_theme_dark_errorZG,
+    onError = md_theme_dark_onErrorZG,
+    errorContainer = md_theme_dark_errorContainerZG,
+    onErrorContainer = md_theme_dark_onErrorContainerZG,
+    outline = md_theme_dark_outlineZG,
+    background = md_theme_dark_backgroundZG,
+    onBackground = md_theme_dark_onBackgroundZG,
+    surface = md_theme_dark_surfaceZG,
+    onSurface = md_theme_dark_onSurfaceZG,
+    surfaceVariant = md_theme_dark_surfaceVariantZG,
+    onSurfaceVariant = md_theme_dark_onSurfaceVariantZG,
+    inverseSurface = md_theme_dark_inverseSurfaceZG,
+    inverseOnSurface = md_theme_dark_inverseOnSurfaceZG,
+    inversePrimary = md_theme_dark_inversePrimaryZG,
+//    surfaceTint = md_theme_dark_surfaceTintZG,
+//    outlineVariant = md_theme_dark_outlineVariantZG,
+//    scrim = md_theme_dark_scrimZG,
+)
 
 private val DarkColorSchemeGreen = darkColorScheme(
     primary = md_theme_dark_primarygreen,
@@ -287,10 +350,12 @@ enum class MyColorTheme(val cs: ColorScheme) {
     PURPLE(LightColorSchemePurple),
     BLUE(LightColorSchemeBlue),
     ORANGE(LightColorSchemeOrange),
+    ZG(LightColorSchemeZG),
     GREEN_DARK(DarkColorSchemeGreen),
     PURPLE_DARK(DarkColorSchemePurple),
     BLUE_DARK(DarkColorSchemeBlue),
-    ORANGE_DARK(DarkColorSchemeOrange);
+    ORANGE_DARK(DarkColorSchemeOrange),
+    ZG_DARK(DarkColorSchemeZG);
 
     fun toggleTheme(): MyColorTheme {
         return when (this) {
@@ -298,10 +363,12 @@ enum class MyColorTheme(val cs: ColorScheme) {
             PURPLE -> PURPLE_DARK
             BLUE -> BLUE_DARK
             ORANGE -> ORANGE_DARK
+            ZG -> ZG_DARK
             GREEN_DARK -> GREEN
             PURPLE_DARK -> PURPLE
             BLUE_DARK -> BLUE
             ORANGE_DARK -> ORANGE
+            ZG_DARK -> ZG
         }
     }
 }

@@ -1,5 +1,6 @@
 package pages.ProfilePage
 
+import Section
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -15,6 +16,8 @@ import common.navDrawer
 import pages.SchedulePage.ScheduleSection.schedule
 import SectionUnit
 import common.navcontroller.NavController
+import kotlinx.coroutines.runBlocking
+import logic.ktorClient.fetchFriendProfile
 import pages.LoginPage.USER_EMAIL
 import pages.LoginPage.USER_ID
 import pages.LoginPage.USER_NAME
@@ -31,7 +34,8 @@ fun profilePageContent(
     navController: NavController
 ) {
     val interactionSource = remember { MutableInteractionSource() }
-    val savedSections = remember { mutableStateListOf<SectionUnit>() }
+    var savedSections: MutableList<SectionUnit>
+    runBlocking { savedSections = fromSectionToSectionUnit(fetchFriendProfile(USER_ID, USER_ID)) }
     Column(
         modifier = Modifier.fillMaxSize().padding(start = 40.dp),
         verticalArrangement = Arrangement.Center,
@@ -93,7 +97,7 @@ fun profilePageContent(
                 horizontalAlignment = Alignment.Start,
             ) {
                 ///////// friend ///////////////
-                friendSection(USER_ID)
+                friendSection(USER_ID, savedSections)
                 ///////////////////////////////
             }
             Column(
@@ -116,4 +120,12 @@ fun profilePageContent(
             }
         }
     }
+}
+
+fun fromSectionToSectionUnit(sections : List<Section>) : MutableList<SectionUnit> {
+    var sectionUnits = mutableListOf<SectionUnit>()
+    for (section in sections) {
+        sectionUnits.addAll(section.toSectionUnit())
+    }
+    return sectionUnits
 }

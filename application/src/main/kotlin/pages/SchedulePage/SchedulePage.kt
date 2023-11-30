@@ -25,11 +25,14 @@ import common.*
 import SectionUnit
 import SelectedCourse
 import common.navcontroller.NavController
+import kotlinx.coroutines.runBlocking
 import logic.getSchedule
+import logic.ktorClient.updateUserProfile
 import logic.preference.NoCollisionPreference
 import logic.preference.Preference
 import logic.preference.PreferenceBuilder
 import sectionListToUnits
+import pages.LoginPage.USER_ID
 
 val allCourses = CourseNameLoader.getAllCourseNames()
 
@@ -186,7 +189,7 @@ fun schedulePageContent(
                 }
                 TextButton(
                     content = { Text("Save") },
-                    onClick = {},
+                    onClick = { saveSchedule(USER_ID, returnedSections) },
                     modifier = Modifier.padding(top = 10.dp)
                 )
                 /*TextButton(
@@ -307,7 +310,7 @@ fun errorDialog(ifErrorDialog: MutableState<Boolean>, errorCauses: MutableList<S
                                 modifier = Modifier.padding(start = 30.dp, end = 30.dp, bottom = 10.dp)
                             )
                             Text(
-                                "Number of courses you want to take should not be less than the number of required courses",
+                                "Number of courses you want to take should be greater than or equal to the number of required courses",
                                 fontSize = 15.sp,
                                 modifier = Modifier.padding(start = 30.dp, end = 30.dp)
                             )
@@ -324,14 +327,14 @@ fun errorDialog(ifErrorDialog: MutableState<Boolean>, errorCauses: MutableList<S
                                 modifier = Modifier.padding(start = 30.dp, end = 30.dp, bottom = 10.dp)
                             )
                             Text(
-                                "Number of courses you want to take should not be greater than the number of selected courses",
+                                "Number of courses you want to take should not be greater than the number of total selected courses",
                                 fontSize = 15.sp,
                                 modifier = Modifier.padding(start = 30.dp, end = 30.dp)
                             )
                         }
                     } else if (errorCauses.contains("no schedule returned")) {
                         Text(
-                            "It's impossible to generate a schedule including all courses you selects without time conflicts",
+                            "It's impossible to generate a schedule including all courses you select without time conflicts",
                             fontSize = 15.sp,
                             modifier = Modifier.padding(start = 30.dp, end = 30.dp)
                         )
@@ -348,4 +351,12 @@ fun errorDialog(ifErrorDialog: MutableState<Boolean>, errorCauses: MutableList<S
             }
         }
     }
+}
+
+fun saveSchedule(ID: Int, sectionsUnits : List<SectionUnit>) {
+    val sections = mutableListOf<Int>()
+    for (sectionUnit in sectionsUnits) {
+        if (!sections.contains(sectionUnit.classNumber)) sections.add(sectionUnit.classNumber)
+    }
+    runBlocking {updateUserProfile(ID, 1, sections)}
 }

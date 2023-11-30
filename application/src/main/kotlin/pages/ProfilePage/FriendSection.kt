@@ -1,5 +1,6 @@
 package pages.ProfilePage
 
+import SectionUnit
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -12,10 +13,15 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import friendSearchInputField
 import kotlinx.coroutines.runBlocking
 import logic.ktorClient.*
 import org.jetbrains.skia.Color
+import pages.LoginPage.USER_ID
+import pages.LoginPage.USER_NAME
+import pages.SchedulePage.ScheduleSection.schedule
 import style.currentColorScheme
 
 /*
@@ -42,7 +48,7 @@ var allUser = listOf(
 var allUser : MutableList<Pair<Int, String>> = mutableListOf()
 
 @Composable
-fun friendSection( USER_ID : Int) {
+fun friendSection( USER_ID : Int, savedSections : MutableList<SectionUnit>) {
     val friendsList = remember { mutableStateOf(runBlocking {
         fetchFriendList(USER_ID)
     }) }
@@ -52,9 +58,10 @@ fun friendSection( USER_ID : Int) {
     }) }
     var ifFriendList by remember { mutableStateOf(true)}
     var ifMessages by remember { mutableStateOf(false)}
-    var ifAddFriends by remember { mutableStateOf(false)}
     val localDensity = LocalDensity.current
     var column1HeightDp by remember { mutableStateOf(0.dp) }
+    val ifViewProfile = remember { mutableStateOf(false)}
+    var friendID by remember { mutableStateOf(0)}
     Column (
         verticalArrangement = Arrangement.Top,
         modifier = Modifier.padding(top = 50.dp)
@@ -78,7 +85,6 @@ fun friendSection( USER_ID : Int) {
                         }
                         ifFriendList = true
                         ifMessages = false
-                        ifAddFriends = false
                     },
                     modifier = Modifier.size(180.dp, 40.dp)
                 )
@@ -91,7 +97,6 @@ fun friendSection( USER_ID : Int) {
                         }
                         ifFriendList = true
                         ifMessages = false
-                        ifAddFriends = false
                     },
                     modifier = Modifier.size(180.dp, 40.dp)
                 )
@@ -105,7 +110,6 @@ fun friendSection( USER_ID : Int) {
                         }
                         ifFriendList = false
                         ifMessages = true
-                        ifAddFriends = false
                     },
                     modifier = Modifier.size(180.dp, 40.dp).padding(start = 5.dp)
                 )
@@ -118,7 +122,6 @@ fun friendSection( USER_ID : Int) {
                         }
                         ifFriendList = false
                         ifMessages = true
-                        ifAddFriends = false
                     },
                     modifier = Modifier.size(180.dp, 40.dp).padding(start = 5.dp)
                 )
@@ -162,13 +165,18 @@ fun friendSection( USER_ID : Int) {
                                             TextButton(
                                                 onClick = { runBlocking {
                                                     fetchFriendProfile(USER_ID, friend.first)
+                                                    ifViewProfile.value = true;
+                                                    friendID = friend.first
                                                 }},
                                                 modifier = Modifier.padding(end = 4.dp)
                                             ) {
                                                 Text("View profile")
                                             }
                                             TextButton(
-                                                onClick = { },
+                                                onClick = { runBlocking {
+                                                    deleteFriendRelation(USER_ID, friend.first)
+                                                    friendsList.value = fetchFriendList(USER_ID)
+                                                } },
                                                 modifier = Modifier
                                             ) {
                                                 Text("Remove")
@@ -235,8 +243,45 @@ fun friendSection( USER_ID : Int) {
                         }
                     }
                 }
-            } else if (ifAddFriends) {
-                friendSearchInputField(allUser, {}, USER_ID)
+            }
+        }
+    }
+    viewProfilePageDialog(friendID, ifViewProfile, savedSections)
+}
+
+@Composable
+fun viewProfilePageDialog(friendID : Int, ifViewProfile : MutableState<Boolean>, savedSections: MutableList<SectionUnit>) {
+    if (ifViewProfile.value) {
+        Dialog(
+            onDismissRequest = { ifViewProfile.value = false },
+            properties = DialogProperties(dismissOnClickOutside = true, usePlatformDefaultWidth = false),
+        ){
+            var friendSections : MutableList<SectionUnit>
+            runBlocking { friendSections = fromSectionToSectionUnit(fetchFriendProfile(USER_ID, friendID)) }
+            Card(
+                modifier = Modifier.size(1000.dp, 1000.dp),
+            ) {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth().padding(start = 40.dp),
+                        horizontalArrangement = Arrangement.Start,
+                        verticalAlignment = Alignment.Bottom
+                    ) {
+                        Text(USER_NAME + " 's Profile")
+                        //Text( "a 's Profile", fontSize = 45.sp,)
+                        OutlinedButton(
+                            onClick = { ifViewProfile.value = false },
+                            content = { Text("Return") },
+                            modifier = Modifier.padding(start = 20.dp).height(50.dp)
+                        )
+                    }
+                    schedule(friendSections, modifier = Modifier.padding(top = 20.dp))
+
+                }
             }
         }
     }

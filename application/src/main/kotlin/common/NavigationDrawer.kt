@@ -143,7 +143,7 @@ fun navDrawer(
                         }
                     ) {
                         Icon(
-                            Icons.Outlined.AccountCircle,
+                            Icons.Outlined.Menu,
                             contentDescription = "",
                             tint = currentColorScheme.value.cs.primary
                         )
