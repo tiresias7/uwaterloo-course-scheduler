@@ -97,6 +97,8 @@ Welcome to the Waterloo Course Scheduler applicataion made by TEAM PP-Legend. Th
 
  * Designed and implemented custom themes and dark mode to enhance user experiences.
 
+ * Created a loading screen - responsive UI.
+
 #### Installers
 
 - [Windows Installer](https://git.uwaterloo.ca/q258wu/pplegend-project/-/raw/main/releases/0.3.0/course-scheduler-0.3.0.msi)
