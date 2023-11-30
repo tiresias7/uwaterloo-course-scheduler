@@ -108,52 +108,57 @@ fun preferenceDialog(
         ) {
             Card(
                 modifier = Modifier
-                    .size(700.dp, 1000.dp)
+                    .width(700.dp)
                     .padding(16.dp),
                 shape = RoundedCornerShape(8.dp),
             ) {
                 Column(
                     modifier = Modifier
-                        .fillMaxSize()
-                        . padding(20.dp),
-                    verticalArrangement = Arrangement.Top,
+                        .padding(20.dp),
+                    verticalArrangement = Arrangement.SpaceBetween,
                     horizontalAlignment = Alignment.Start,
                 ) {
-                    for(sectionName in preferenceDialogSection) {
-                        Text(sectionName,
-                            fontSize = 30.sp,
-                            modifier = Modifier
-                                .padding(top = 20.dp)
-                        )
-                        if (sectionName == "Class Time Preference") {
-                            Spacer(modifier = Modifier.height(5.dp))
-                            MaxHoursPerDayChip(addCallBack)
-                            Spacer(modifier = Modifier.height(5.dp))
-                            PreferredTimeChip(addCallBack)
-                            Spacer(modifier = Modifier.height(5.dp))
-                            NonPreferredTimeChip(addCallBack)
-                            Spacer(modifier = Modifier.height(5.dp))
-                            LunchBreakPreferenceChip(addCallBack)
-                            Spacer(modifier = Modifier.height(5.dp))
-                            DayOffPreferenceChip(addCallBack)
-                        }
-                        else if (sectionName == "Course Preference") {
-                            ////////FILLMEIN////////
-                        }
-                        else if (sectionName == "Instructor Preference") {
-                            ////////FILLMEIN////////
-                        }
-                        else if (sectionName == "Friend Preference") {
-                            ////////FILLMEIN////////
+                    LazyColumn(
+                        modifier = Modifier.weight(8f)
+                    ) {
+                        items(preferenceDialogSection, { it }) { sectionName ->
+                            Text(
+                                sectionName,
+                                fontSize = 30.sp,
+                                modifier = Modifier
+                                    .padding(top = 20.dp)
+                            )
+                            if (sectionName == "Class Time Preference") {
+                                Spacer(modifier = Modifier.height(5.dp))
+                                MaxHoursPerDayChip(addCallBack)
+                                Spacer(modifier = Modifier.height(5.dp))
+                                PreferredTimeChip(addCallBack)
+                                Spacer(modifier = Modifier.height(5.dp))
+                                NonPreferredTimeChip(addCallBack)
+                                Spacer(modifier = Modifier.height(5.dp))
+                                LunchBreakPreferenceChip(addCallBack)
+                                Spacer(modifier = Modifier.height(5.dp))
+                                DayOffPreferenceChip(addCallBack)
+                            } else if (sectionName == "Course Preference") {
+                                ////////FILLMEIN////////
+                            } else if (sectionName == "Instructor Preference") {
+                                ////////FILLMEIN////////
+                            } else if (sectionName == "Friend Preference") {
+                                ////////FILLMEIN////////
+                            }
                         }
                     }
-                    TextButton(
-                        onClick = { showAddPreference.value = false },
-                        modifier = Modifier
-                            .padding(8.dp)
-                            .align(Alignment.CenterHorizontally)
-                    ) {
-                        Text("Close")
+                    Box(
+                        modifier = Modifier.weight(1f).fillMaxWidth(),
+                        contentAlignment = Alignment.Center
+                    ){
+                        TextButton(
+                            onClick = { showAddPreference.value = false },
+                            modifier = Modifier
+                                .padding(8.dp)
+                        ) {
+                            Text("Close")
+                        }
                     }
                 }
             }

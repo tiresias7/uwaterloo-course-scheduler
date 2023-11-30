@@ -173,7 +173,6 @@ fun loginPage(
 //                                                email = TextFieldValue("")
 //                                                password = TextFieldValue("")
                                                 isError = false
-                                                CourseNameLoader.cacheAllCourseNames()
                                                 isLoading.value = false
                                                 navController.navigate(Screen.WelcomePage.name)
                                             }
