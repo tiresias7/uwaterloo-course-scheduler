@@ -80,7 +80,29 @@ Welcome to the Waterloo Course Scheduler applicataion made by TEAM PP-Legend. Th
 - [Windows Installer](https://git.uwaterloo.ca/q258wu/pplegend-project/-/raw/main/releases/0.3.0/course-scheduler-0.3.0.msi)
 - [MacOS Installer](https://git.uwaterloo.ca/q258wu/pplegend-project/-/raw/main/releases/0.3.0/course-scheduler-0.3.0.dmg?ref_type=heads)
 
-### Release 0.4.0 (Coming Soon)
+### Release 0.4.0 (Dec 1, 2023)
+
+**Release Date:** December 1, 2023
+**Version:** 0.4.0
+
+#### List of Changes
+
+ * Implemented friend request logic for database and business layer.
+
+ * Integrated the friend-related APIs into frontend.
+
+ * Created the Ktor service project so that communications between frontend and backend fully migrated to HTTP requests.
+
+ * Enabled text selection, and mouse on hover effect on schedules, improved user experiences.
+
+ * Designed and implemented custom themes and dark mode to enhance user experiences.
+
+#### Installers
+
+- [Windows Installer](https://git.uwaterloo.ca/q258wu/pplegend-project/-/raw/main/releases/0.3.0/course-scheduler-0.3.0.msi)
+- [MacOS Installer](https://git.uwaterloo.ca/q258wu/pplegend-project/-/raw/main/releases/0.3.0/course-scheduler-0.3.0.dmg?ref_type=heads)
+
+### Major Release 1.0.0 (coming soon)
 
 Stay tuned for our next release, which will include exciting new features and improvements.
 
