@@ -9,10 +9,8 @@ object CourseNameLoader {
         queryAllClasses()
     }}
 
-    fun cacheAllCourseNames() {
-        allCourseNames.complete(runBlocking {
-            queryAllClasses()
-        })
+    suspend fun cacheAllCourseNames() {
+        allCourseNames.complete(queryAllClasses())
     }
 
     fun getAllCourseNames(): List<String> {
