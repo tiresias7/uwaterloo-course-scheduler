@@ -1,5 +1,6 @@
-package database.friends
+package com.example.database.friends
 
+import com.example.database.common.createDataSource
 import com.zaxxer.hikari.HikariDataSource
 
 fun createFriendsTableIfNotExists(db: HikariDataSource) {
@@ -35,6 +36,19 @@ fun verifyFriendRelation(id1: Int, id2: Int, db: HikariDataSource): Boolean {
     }
 }
 
+fun deleteFriendRelationByUID(id1: Int, id2: Int, db: HikariDataSource) {
+    val deleteSQl = """
+        DELETE FROM friends
+        WHERE user1 = LEAST(${id1}, ${id2}) AND user2 = GREATEST(${id1}, ${id2})
+    """.trimIndent()
+
+    db.connection.use { conn ->
+        conn.createStatement().use { stmt ->
+            stmt.executeUpdate(deleteSQl)
+        }
+    }
+}
+
 fun queryAllFriendsRelationByUID(id: Int, db: HikariDataSource): List<Pair<Int, String>> {
     val querySQL = """
         SELECT user2 AS id, username
@@ -62,7 +76,7 @@ fun queryAllFriendsRelationByUID(id: Int, db: HikariDataSource): List<Pair<Int, 
 }
 
 fun main() {
-    database.common.createDataSource().use {
+    createDataSource().use {
         createFriendsTableIfNotExists(it)
         insertNewFriendRelation(1, 2, it)
         insertNewFriendRelation(2, 1, it)
