@@ -21,6 +21,7 @@ class SectionUnit(
     val location: String,
     val component: String = "LEC",  // eg. LEC, TUT
     val sectionNum: Int = 1,    // eg. 1, 2
+    val classNumber: Int,
 ){
     fun getWidth(): Float{
         return BLOCK_WIDTH

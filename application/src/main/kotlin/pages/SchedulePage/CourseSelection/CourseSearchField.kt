@@ -29,7 +29,7 @@ fun courseSearchInputField(
     val courseList = remember { mutableStateOf(listOf<String>()) }
     val inputValue = remember { mutableStateOf(TextFieldValue()) }
     val dropDownExpanded = remember { mutableStateOf(false) }
-    var label by remember { mutableStateOf("Add as many courses as you want") }
+    var label by remember { mutableStateOf("Start from adding courses here") }
     val ifFocused = mutableStateOf(true)
     val focusManager = LocalFocusManager.current
     Box() {

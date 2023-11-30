@@ -8,25 +8,30 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.Color
 
+var isLoading = mutableStateOf(false)
 @Composable
 fun LoadingFullScreen(
-    modifier: Modifier
+    reason : String,
+    modifier: Modifier = Modifier
 ){
-    Box(
-        modifier = Modifier.background(Color.Gray.copy(alpha = 0.5f)).composed { modifier },
-        contentAlignment = Alignment.Center
-    ){
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
+    if (isLoading.value) {
+        Box(
+            modifier = Modifier.background(Color.Gray.copy(alpha = 0.5f)).composed { modifier },
+            contentAlignment = Alignment.Center
         ) {
-            CircularProgressIndicator()
-            Text(text = "loading")
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                CircularProgressIndicator()
+                Text(text = reason)
+            }
         }
     }
 }

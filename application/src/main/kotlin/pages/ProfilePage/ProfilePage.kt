@@ -1,5 +1,6 @@
 package pages.ProfilePage
 
+import Section
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -15,6 +16,8 @@ import common.navDrawer
 import pages.SchedulePage.ScheduleSection.schedule
 import SectionUnit
 import common.navcontroller.NavController
+import kotlinx.coroutines.runBlocking
+import logic.ktorClient.fetchFriendProfile
 import pages.LoginPage.USER_EMAIL
 import pages.LoginPage.USER_ID
 import pages.LoginPage.USER_NAME
@@ -31,7 +34,8 @@ fun profilePageContent(
     navController: NavController
 ) {
     val interactionSource = remember { MutableInteractionSource() }
-    val savedSections = remember { mutableStateListOf<SectionUnit>() }
+    var savedSections: MutableList<SectionUnit>
+    runBlocking { savedSections = fromSectionToSectionUnit(fetchFriendProfile(USER_ID, USER_ID)) }
     Column(
         modifier = Modifier.fillMaxSize().padding(start = 40.dp),
         verticalArrangement = Arrangement.Center,
@@ -53,8 +57,14 @@ fun profilePageContent(
                     horizontalArrangement = Arrangement.Start,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
+                    val name : String
+                    val email : String
+                    if (USER_NAME.length > 10) { name = USER_NAME.take(10) + "..."}
+                    else { name = USER_NAME }
+                    if (USER_EMAIL.length > 30) { email = USER_NAME.take(30) + "..."}
+                    else { email = USER_EMAIL }
                     Text(
-                        text = USER_NAME + "'s profile", fontSize = 45.sp,
+                        text = name + "'s profile", fontSize = 45.sp,
                         modifier = Modifier.padding(end = 50.dp)
                     )
                     Text(
@@ -62,7 +72,7 @@ fun profilePageContent(
                         modifier = Modifier.padding(end = 20.dp)
                     )
                     Text(
-                        "Email: " + USER_EMAIL, fontSize = 15.sp,
+                        "Email: " + email, fontSize = 15.sp,
                         modifier = Modifier.padding(end = 50.dp)
                     )
                 }
@@ -88,12 +98,13 @@ fun profilePageContent(
         ) {
             Column(
                 modifier = Modifier
-                    .width(400.dp),
+                    .width(400.dp)
+                    .padding(bottom = 10.dp),
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.Start,
             ) {
                 ///////// friend ///////////////
-                friendSection(USER_ID)
+                friendSection(USER_ID, savedSections)
                 ///////////////////////////////
             }
             Column(
@@ -116,4 +127,12 @@ fun profilePageContent(
             }
         }
     }
+}
+
+fun fromSectionToSectionUnit(sections : List<Section>) : MutableList<SectionUnit> {
+    var sectionUnits = mutableListOf<SectionUnit>()
+    for (section in sections) {
+        sectionUnits.addAll(section.toSectionUnit())
+    }
+    return sectionUnits
 }
