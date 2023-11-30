@@ -98,7 +98,8 @@ fun profilePageContent(
         ) {
             Column(
                 modifier = Modifier
-                    .width(400.dp),
+                    .width(400.dp)
+                    .padding(bottom = 10.dp),
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.Start,
             ) {

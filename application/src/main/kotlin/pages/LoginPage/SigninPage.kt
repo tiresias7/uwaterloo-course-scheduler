@@ -24,6 +24,7 @@ import androidx.compose.ui.zIndex
 import cache.CourseNameLoader
 import common.LoadingFullScreen
 import common.SimpleTextField
+import common.isLoading
 import common.navcontroller.NavController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -49,7 +50,7 @@ fun loginPage(
     var passwordVisible by remember { mutableStateOf(false) }
     var isError by remember { mutableStateOf(false) }
     val ifShowSignup = remember { mutableStateOf(false) }
-    val isLoading = remember { mutableStateOf(false) }
+    //val isLoading = remember { mutableStateOf(false) }
     Box(
     ) {
         Column(
@@ -264,7 +265,7 @@ fun loginPage(
             }
         }
         if (isLoading.value) {
-            LoadingFullScreen(modifier = Modifier.matchParentSize())
+            LoadingFullScreen("Signing in", modifier = Modifier.matchParentSize())
         }
     }
 
@@ -481,7 +482,7 @@ fun signupDialog(
                     }
                 }
                 if (isLoading.value) {
-                    LoadingFullScreen(modifier = Modifier.matchParentSize())
+                    LoadingFullScreen("Signing in", modifier = Modifier.matchParentSize())
                 }
             }
         }
