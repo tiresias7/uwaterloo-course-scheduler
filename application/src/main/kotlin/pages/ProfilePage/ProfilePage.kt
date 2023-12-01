@@ -37,7 +37,8 @@ fun profilePageContent(
     var savedSections: MutableList<SectionUnit>
     runBlocking { savedSections = fromSectionToSectionUnit(fetchFriendProfile(USER_ID, USER_ID)) }
     Column(
-        modifier = Modifier.fillMaxSize().padding(start = 40.dp),
+        modifier = Modifier.fillMaxSize()
+            .padding(start = 40.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -64,7 +65,7 @@ fun profilePageContent(
                     if (USER_EMAIL.length > 30) { email = USER_NAME.take(30) + "..."}
                     else { email = USER_EMAIL }
                     Text(
-                        text = name + "'s profile", fontSize = 45.sp,
+                        text = "My profile", fontSize = 45.sp,
                         modifier = Modifier.padding(end = 50.dp)
                     )
                     Text(

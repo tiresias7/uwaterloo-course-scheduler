@@ -1,6 +1,7 @@
 package pages.ProfilePage
 
 import SectionUnit
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -8,8 +9,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -21,6 +24,7 @@ import logic.ktorClient.*
 import org.jetbrains.skia.Color
 import pages.LoginPage.USER_ID
 import pages.LoginPage.USER_NAME
+import pages.SchedulePage.CourseSelection.dropDownExpanded
 import pages.SchedulePage.ScheduleSection.schedule
 import style.currentColorScheme
 
@@ -62,6 +66,7 @@ fun friendSection( USER_ID : Int, savedSections : MutableList<SectionUnit>) {
     var column1HeightDp by remember { mutableStateOf(0.dp) }
     val ifViewProfile = remember { mutableStateOf(false)}
     var friendID by remember { mutableStateOf(0)}
+    val interactionSource = remember { MutableInteractionSource() }
     Column (
         verticalArrangement = Arrangement.Top,
         modifier = Modifier.padding(top = 50.dp)
@@ -70,7 +75,7 @@ fun friendSection( USER_ID : Int, savedSections : MutableList<SectionUnit>) {
         }
     )
     {
-        Text(text = "My Friends", fontSize = 30.sp)
+        Text(text = "Friends", fontSize = 30.sp)
         Row(
             modifier = Modifier.padding(top = 10.dp),
             horizontalArrangement = Arrangement.Start,
@@ -174,7 +179,7 @@ fun friendSection( USER_ID : Int, savedSections : MutableList<SectionUnit>) {
                                                 }},
                                                 modifier = Modifier.padding(end = 4.dp)
                                             ) {
-                                                Text("View profile")
+                                                Text("View Schedule")
                                             }
                                             TextButton(
                                                 onClick = { runBlocking {
@@ -262,32 +267,18 @@ fun viewProfilePageDialog(friendID : Int, ifViewProfile : MutableState<Boolean>,
         ){
             var friendSections : MutableList<SectionUnit>
             runBlocking { friendSections = fromSectionToSectionUnit(fetchFriendProfile(USER_ID, friendID)) }
-            Card(
-                modifier = Modifier.size(900.dp, 800.dp),
+            Column(
+                modifier = Modifier.fillMaxHeight().width(1000.dp).padding(top = 20.dp, bottom = 20.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Column(
-                    modifier = Modifier.fillMaxSize().padding(top = 20.dp, bottom = 40.dp),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth().padding(start = 40.dp, end = 40.dp),
-                        horizontalArrangement = Arrangement.Start,
-                        verticalAlignment = Alignment.Bottom
-                    ) {
-                        val name : String
-                        if (USER_NAME.length > 10) { name = USER_NAME.take(10) + "..."}
-                        else { name = USER_NAME }
-                        Text(name + " 's Profile", fontSize = 35.sp)
-                        OutlinedButton(
-                            onClick = { ifViewProfile.value = false },
-                            content = { Text("Return") },
-                            modifier = Modifier.padding(start = 20.dp).height(40.dp)
-                        )
-                    }
-                    schedule(friendSections, modifier = Modifier.padding(top = 20.dp))
-
+                val name: String = if (USER_NAME.length > 10) {
+                    USER_NAME.take(10) + "..."
+                } else {
+                    USER_NAME
                 }
+                Text("$name 's Schedule", fontSize = 35.sp, color = androidx.compose.ui.graphics.Color.White,)
+                schedule(friendSections, modifier = Modifier.padding(top = 20.dp, bottom = 20.dp))
             }
         }
     }
