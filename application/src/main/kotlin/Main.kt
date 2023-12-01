@@ -13,15 +13,23 @@ import pages.LoginPage.loginPage
 import style.AppTheme
 import style.MyColorTheme
 import style.currentColorScheme
+import style.isDark
 import java.io.FileInputStream
 import java.io.FileOutputStream
+import java.nio.file.Files
+import java.nio.file.Paths
 import java.util.*
+
+val homedir = System.getProperty("user.home")
+val outputDir = Paths.get(homedir, "UWCourseScheduler")
+val outputFile = Paths.get(outputDir.toString(), "local.properties").toString()
 
 fun main() = application {
     val savedPreferences = readFromFile()
     val windowState = savedPreferences.second ?: rememberWindowState(placement = WindowPlacement.Fullscreen)
     if (savedPreferences.first != null){
         currentColorScheme.value = savedPreferences.first!!
+        isDark.value = savedPreferences.first!!.name.contains("dark", ignoreCase = true)
     }
 
     Window(
@@ -41,7 +49,7 @@ fun readFromFile(): Pair<MyColorTheme?, WindowState?> {
     var cs: MyColorTheme?
 
     try {
-        FileInputStream("local.properties").use { inputStream ->
+        FileInputStream(outputFile).use { inputStream ->
             properties.load(inputStream)
             try {
                 cs = MyColorTheme.valueOf(properties.getProperty("theme") ?: "null")
@@ -82,7 +90,8 @@ fun onCloseSave(
     properties.setProperty("theme", cs.name)
 
     try {
-        FileOutputStream("local.properties").use { outputStream ->
+        Files.createDirectories(outputDir)
+        FileOutputStream(outputFile).use { outputStream ->
             properties.store(outputStream, "Saved preference")
         }
     } catch (e: Exception) {
