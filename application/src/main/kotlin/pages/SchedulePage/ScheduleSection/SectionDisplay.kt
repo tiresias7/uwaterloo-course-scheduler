@@ -42,7 +42,7 @@ fun sectionBlock(section: SectionUnit, baseWidth: Dp) {
                 .offset(
                     x = baseWidth * section.getXOffset() / BASE_IMAGE_WIDTH,
                     y = if (section.finishTime < 19f)
-                            (baseWidth * section.getYOffset() / BASE_IMAGE_WIDTH + section.getHeight().dp)
+                            (baseWidth * section.getYOffset() / BASE_IMAGE_WIDTH + baseWidth * section.getHeight() / BASE_IMAGE_WIDTH)
                     else (baseWidth * section.getYOffset() / BASE_IMAGE_WIDTH - hoverHeight.value)
                 )
                 .heightIn(0.dp, 400.dp).widthIn(0.dp, 150.dp)

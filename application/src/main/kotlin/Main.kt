@@ -2,6 +2,7 @@ import pages.ProfilePage.profilePage
 import pages.SchedulePage.schedulePage
 import pages.WelcomePage.welcomePage
 import androidx.compose.runtime.*
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.*
@@ -14,6 +15,7 @@ import style.AppTheme
 import style.MyColorTheme
 import style.currentColorScheme
 import style.isDark
+import java.awt.Dimension
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.nio.file.Files
@@ -38,8 +40,10 @@ fun main() = application {
         onCloseRequest = {
             onCloseSave(windowState, currentColorScheme.value)
             exitApplication()
-        }
+        },
     ) {
+        val localDensity = LocalDensity.current.density
+        window.minimumSize = Dimension((1152 * localDensity).toInt(), (762 * localDensity).toInt())
         AppTheme { App() }
     }
 }
