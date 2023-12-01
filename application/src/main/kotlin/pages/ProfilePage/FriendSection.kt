@@ -66,7 +66,7 @@ fun friendSection( USER_ID : Int, savedSections : MutableList<SectionUnit>) {
     var column1HeightDp by remember { mutableStateOf(0.dp) }
     val ifViewProfile = remember { mutableStateOf(false)}
     var friendID by remember { mutableStateOf(0)}
-    val interactionSource = remember { MutableInteractionSource() }
+    val friendName = remember { mutableStateOf("") }
     Column (
         verticalArrangement = Arrangement.Top,
         modifier = Modifier.padding(top = 50.dp)
@@ -176,6 +176,7 @@ fun friendSection( USER_ID : Int, savedSections : MutableList<SectionUnit>) {
                                                     fetchFriendProfile(USER_ID, friend.first)
                                                     ifViewProfile.value = true;
                                                     friendID = friend.first
+                                                    friendName.value = friend.second
                                                 }},
                                                 modifier = Modifier.padding(end = 4.dp)
                                             ) {
@@ -255,11 +256,11 @@ fun friendSection( USER_ID : Int, savedSections : MutableList<SectionUnit>) {
             }
         }
     }
-    viewProfilePageDialog(friendID, ifViewProfile, savedSections)
+    viewProfilePageDialog(friendID, ifViewProfile, friendName)
 }
 
 @Composable
-fun viewProfilePageDialog(friendID : Int, ifViewProfile : MutableState<Boolean>, savedSections: MutableList<SectionUnit>) {
+fun viewProfilePageDialog(friendID : Int, ifViewProfile : MutableState<Boolean>, friendName : MutableState<String>) {
     if (ifViewProfile.value) {
         Dialog(
             onDismissRequest = { ifViewProfile.value = false },
@@ -272,12 +273,12 @@ fun viewProfilePageDialog(friendID : Int, ifViewProfile : MutableState<Boolean>,
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                val name: String = if (USER_NAME.length > 10) {
-                    USER_NAME.take(10) + "..."
+                val name: String = if (friendName.value.length > 10) {
+                    friendName.value.take(10) + "..."
                 } else {
-                    USER_NAME
+                    friendName.value
                 }
-                Text("$name 's Schedule", fontSize = 35.sp, color = androidx.compose.ui.graphics.Color.White,)
+                Text("$name's Schedule", fontSize = 35.sp, color = androidx.compose.ui.graphics.Color.White,)
                 schedule(friendSections, modifier = Modifier.padding(top = 20.dp, bottom = 20.dp))
             }
         }
