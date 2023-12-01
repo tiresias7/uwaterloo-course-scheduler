@@ -125,7 +125,7 @@ fun loginPage(
                             IconButton(
                                 onClick = { passwordVisible = !passwordVisible },
                                 modifier = Modifier.width(50.dp).padding(end = 10.dp),
-                                colors = IconButtonDefaults.iconButtonColors(contentColor = Color.Black)
+                                colors = IconButtonDefaults.iconButtonColors()
                             ) {
                                 if (passwordVisible) {
                                     Text("Hide", fontSize = 14.sp)
@@ -166,8 +166,8 @@ fun loginPage(
                                             }
                                             else -> {
                                                 USER_EMAIL = email.text
-                                                USER_ID = response.second
-                                                USER_NAME = response.third
+                                                USER_ID = response.second.first
+                                                USER_NAME = response.second.second
                                                 println(USER_EMAIL)
                                                 println(USER_ID)
                                                 println(USER_NAME)
@@ -219,8 +219,8 @@ fun loginPage(
                                         }
                                         else -> {
                                             USER_EMAIL = email.text
-                                            USER_ID = response.second
-                                            USER_NAME = response.third
+                                            USER_ID = response.second.first
+                                            USER_NAME = response.second.second
 //                                            email = TextFieldValue("")
 //                                            password = TextFieldValue("")
                                             isError = false
@@ -391,7 +391,7 @@ fun signupDialog(
                                 IconButton(
                                     onClick = { passwordVisible = !passwordVisible },
                                     modifier = Modifier.width(50.dp).padding(end = 10.dp),
-                                    colors = IconButtonDefaults.iconButtonColors(contentColor = Color.Black)
+                                    colors = IconButtonDefaults.iconButtonColors()
                                 ) {
                                     if (passwordVisible) {
                                         Text("Hide", fontSize = 14.sp)
@@ -433,7 +433,7 @@ fun signupDialog(
                                 IconButton(
                                     onClick = { passwordVisible = !passwordVisible },
                                     modifier = Modifier.width(50.dp).padding(end = 10.dp),
-                                    colors = IconButtonDefaults.iconButtonColors(contentColor = Color.Black)
+                                    colors = IconButtonDefaults.iconButtonColors()
                                 ) {
                                     if (passwordVisible) {
                                         Text("Hide", fontSize = 14.sp)

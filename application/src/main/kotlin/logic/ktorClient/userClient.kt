@@ -10,34 +10,34 @@ import ktor.SignUpRequest
 import request.SignStatus
 import utility.hashPassword
 
-suspend fun signUpNewUsers(name: String, password: String, email: String): Triple<SignStatus, Int, String> {
+suspend fun signUpNewUsers(name: String, password: String, email: String): Triple<SignStatus, Pair<Int, String>, String> {
     val respond = httpClient.post("$baseUrl/user/sign-up") {
         contentType(ContentType.Application.Json)
         setBody(SignUpRequest(name, hashPassword(password), email))
     }
     val statusCode = respond.status
     return when (statusCode) {
-        HttpStatusCode.Conflict -> Triple(SignStatus.SIGN_UP_FAILED, 0, "")
+        HttpStatusCode.Conflict -> Triple(SignStatus.SIGN_UP_FAILED, Pair(0, ""), "")
         else -> {
             val message: SignResponse = respond.body()
-            Triple(SignStatus.SIGN_UP_CREATE, message.uid, message.cookie)
+            Triple(SignStatus.SIGN_UP_CREATE, message.uidNamePair, message.cookie)
         }
     }
 }
 
 // The password hashing over internet might need to be resolved
-suspend fun signInExistingUsersByEmail(email: String, password: String): Triple<SignStatus, Int, String> {
+suspend fun signInExistingUsersByEmail(email: String, password: String): Triple<SignStatus, Pair<Int, String>, String> {
     val respond = httpClient.put("$baseUrl/user/sign-in") {
         contentType(ContentType.Application.Json)
         setBody(SignInRequest(email, password))
     }
     val statusCode = respond.status
     return when (statusCode) {
-        HttpStatusCode.NotFound -> Triple(SignStatus.SIGN_IN_INVALID, 0, "")
-        HttpStatusCode.Unauthorized -> Triple(SignStatus.SIGN_IN_FAILED, 0, "")
+        HttpStatusCode.NotFound -> Triple(SignStatus.SIGN_IN_INVALID, Pair(0, ""), "")
+        HttpStatusCode.Unauthorized -> Triple(SignStatus.SIGN_IN_FAILED, Pair(0, ""), "")
         else -> {
             val message: SignResponse = respond.body()
-            Triple(SignStatus.SIGN_IN_SUCCESS, message.uid, message.cookie)
+            Triple(SignStatus.SIGN_IN_SUCCESS, message.uidNamePair, message.cookie)
         }
     }
 }
