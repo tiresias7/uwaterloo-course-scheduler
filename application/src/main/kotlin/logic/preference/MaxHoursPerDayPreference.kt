@@ -1,11 +1,12 @@
 package logic.preference
 
 import Section
+import config.DebugConfig
 import kotlinx.datetime.toJavaLocalTime
 import java.time.DayOfWeek
 import java.time.Duration
 import java.util.*
-import kotlin.math.min
+import kotlin.math.max
 
 class MaxHoursPerDayPreference(
     override var weight: Int,
@@ -16,12 +17,7 @@ class MaxHoursPerDayPreference(
     override fun getScore(sections: List<Section>): Int {
         val hoursPerDay = EnumMap<DayOfWeek, Long>(DayOfWeek::class.java)
 
-        // Initialize the map with zeros
-        DayOfWeek.entries.forEach { day ->
-            hoursPerDay[day] = 0L
-        }
-
-        // Tally hours per day
+        // Calculate total hours per day
         sections.forEach { section ->
             section.days.forEach { day ->
                 hoursPerDay[day] = (hoursPerDay[day] ?: 0) +
@@ -29,12 +25,16 @@ class MaxHoursPerDayPreference(
             }
         }
 
-        val totalViolations = min(hoursPerDay.values.count { it > maxHoursPerDay * 60 }, 5)
+        // Any extra hours should be penalized
+        val totalExtraHours = hoursPerDay.values.sumOf { max(0, it - maxHoursPerDay * 60) }
 
-        return (100 - totalViolations * 20)
+        return max(100 - totalExtraHours.toInt() * 10, 0)
     }
 
     override fun toString(): String {
-        return "Maximum hours of classes per day: $maxHoursPerDay. Weight: $weight"
+        if (DebugConfig.PRINT_PREFERENCE_DEBUG_INFO) {
+            return "$tag: $maxHoursPerDay hours. Weight: $weight"
+        }
+        return "Maximum hours of classes per day: $maxHoursPerDay"
     }
 }

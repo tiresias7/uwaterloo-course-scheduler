@@ -1,6 +1,7 @@
 package logic.preference
 
 import Section
+import config.DebugConfig
 import java.time.DayOfWeek
 import java.util.*
 
@@ -28,6 +29,9 @@ class DayOffPreference(
     }
 
     override fun toString(): String {
-        return "Prefer at least one weekday off. Weight: $weight"
+        if (DebugConfig.PRINT_PREFERENCE_DEBUG_INFO) {
+            return "$tag. Weight: $weight"
+        }
+        return "Prefer at least one weekday off"
     }
 }

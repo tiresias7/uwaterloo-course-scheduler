@@ -1,6 +1,7 @@
 package logic.preference
 
 import Section
+import config.DebugConfig
 import java.time.DayOfWeek
 import java.time.Duration
 import kotlinx.datetime.LocalTime
@@ -45,11 +46,13 @@ class LunchBreakPreference(
     }
 
     override fun toString(): String {
-        var outStr = "Lunch break "
         val formatter = DateTimeFormatter.ofPattern("HH:mm")
-        outStr += "${startTime.toJavaLocalTime().format(formatter)} to ${endTime.toJavaLocalTime().format(formatter)} for $lunchBreakLength mins"
-        //outStr += ". Weight: $weight"
+        val timeStr = "${startTime.toJavaLocalTime().format(formatter)} to ${endTime.toJavaLocalTime().format(formatter)} for $lunchBreakLength mins"
 
-        return outStr
+        if (DebugConfig.PRINT_PREFERENCE_DEBUG_INFO) {
+            return "$tag: $timeStr. Weight: $weight"
+        }
+
+        return "Lunch break $timeStr"
     }
 }
