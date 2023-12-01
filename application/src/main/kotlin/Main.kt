@@ -34,7 +34,10 @@ fun main() = application {
         currentColorScheme.value = savedPreferences.first!!
         isDark.value = savedPreferences.first!!.name.contains("dark", ignoreCase = true)
     }
-
+//    LaunchedEffect(windowState.size) {
+//        if(windowState.size.width < 1152.dp)
+//            windowState.size = DpSize(1152.dp,windowState.size.height)
+//    }
     Window(
         state = windowState,
         title = "UW Course Scheduler",
@@ -43,8 +46,6 @@ fun main() = application {
             exitApplication()
         },
     ) {
-        val localDensity = LocalDensity.current.density
-        window.minimumSize = Dimension((1152 * localDensity).toInt(), (762 * localDensity).toInt())
         AppTheme { App() }
     }
 }
@@ -88,10 +89,10 @@ fun onCloseSave(
     val position = windowState.position
     val size = windowState.size
 
-    properties.setProperty("window.x", position.x.value.toString())
-    properties.setProperty("window.y", position.y.value.toString())
-    properties.setProperty("window.width", size.width.value.toString())
-    properties.setProperty("window.height", size.height.value.toString())
+//    properties.setProperty("window.x", position.x.value.toString())
+//    properties.setProperty("window.y", position.y.value.toString())
+//    properties.setProperty("window.width", size.width.value.toString())
+//    properties.setProperty("window.height", size.height.value.toString())
     properties.setProperty("theme", cs.name)
 
     try {
