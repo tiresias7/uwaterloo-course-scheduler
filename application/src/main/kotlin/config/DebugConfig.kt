@@ -1,5 +1,5 @@
 package config
 
 object DebugConfig {
-    var PRINT_PREFERENCE_DEBUG_INFO = true
+    var PRINT_PREFERENCE_DEBUG_INFO = false
 }
