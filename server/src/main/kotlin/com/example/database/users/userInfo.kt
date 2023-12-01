@@ -43,17 +43,17 @@ private fun queryHashedPasswordByUID(id: Int, db: HikariDataSource): String {
 }
 
 
-fun queryUIDByEmail(email: String, db: HikariDataSource): Int {
+fun queryUIDByEmail(email: String, db: HikariDataSource): Pair<Int, String> {
     val querySQL = """
-       SELECT id FROM users 
+       SELECT id, username FROM users 
        WHERE email = ?
     """.trimIndent()
     db.connection.use { conn ->
         conn.prepareStatement(querySQL).use { stmt ->
             stmt.setString(1, email)
             stmt.executeQuery().use { result ->
-                if (result.next()) return result.getInt("id")
-                else return 0
+                if (result.next()) return Pair(result.getInt("id"), result.getString("username"))
+                else return Pair(0, "")
             }
         }
     }
@@ -103,7 +103,7 @@ fun main() {
     createDataSource().use {
         createUsersTableIfNotExists(it)
         createUser("xiaoye", "password", "aaa@gmail.com", it)
-        val uid = queryUIDByEmail("aaa@gmail.com", it)
+        val uid = queryUIDByEmail("aaa@gmail.com", it).first
         updatePasswordByUIDRaw(uid, "password", it)
         createUserRaw("eddy", "password", "ccc@gmail.com", it)
         createUserRaw("alex", "password", "bbb@gmail.com", it)

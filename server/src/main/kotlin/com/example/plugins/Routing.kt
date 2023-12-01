@@ -123,7 +123,7 @@ fun Application.configureRouting() {
                     SignStatus.SIGN_IN_INVALID -> call.respond(HttpStatusCode.NotFound, "User not found.")
                     SignStatus.SIGN_IN_FAILED -> call.respond(HttpStatusCode.Unauthorized, "Invalid credentials.")
                     SignStatus.SIGN_IN_SUCCESS -> {
-                        val cookie = generateUserCookie(result.second)
+                        val cookie = generateUserCookie(result.second.first)
                         call.respond(HttpStatusCode.OK,  SignResponse(result.second, cookie))
                     }
                     else -> return@put
@@ -137,7 +137,7 @@ fun Application.configureRouting() {
                 when (result.first) {
                     SignStatus.SIGN_UP_FAILED -> call.respond(HttpStatusCode.Conflict, "User exist.")
                     SignStatus.SIGN_UP_CREATE -> {
-                        val cookie = generateUserCookie(result.second)
+                        val cookie = generateUserCookie(result.second.first)
                         call.respond(HttpStatusCode.Created, SignResponse(result.second, cookie))
                     }
                     else -> return@post

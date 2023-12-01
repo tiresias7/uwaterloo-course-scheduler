@@ -9,4 +9,4 @@ data class SignInRequest(val email: String, val password: String)
 data class SignUpRequest(val name: String, val passwordHashed: String, val email: String)
 
 @Serializable
-data class SignResponse(val uid: Int, val cookie: String)
+data class SignResponse(val uidNamePair: Pair<Int, String>, val cookie: String)
