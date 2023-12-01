@@ -269,7 +269,7 @@ fun viewProfilePageDialog(friendID : Int, ifViewProfile : MutableState<Boolean>,
             var friendSections : MutableList<SectionUnit>
             runBlocking { friendSections = fromSectionToSectionUnit(fetchFriendProfile(USER_ID, friendID)) }
             Column(
-                modifier = Modifier.fillMaxHeight().width(1000.dp).padding(top = 20.dp, bottom = 20.dp),
+                modifier = Modifier.fillMaxHeight().width(900.dp).padding(top = 20.dp, bottom = 20.dp),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
