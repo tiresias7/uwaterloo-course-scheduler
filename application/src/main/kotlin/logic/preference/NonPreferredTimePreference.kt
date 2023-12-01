@@ -1,6 +1,7 @@
 package logic.preference
 
 import Section
+import config.DebugConfig
 import kotlinx.datetime.toJavaLocalTime
 import java.time.DayOfWeek
 import java.time.LocalTime
@@ -31,10 +32,12 @@ class NonPreferredTimePreference(
 
     override fun toString(): String {
         val formatter = DateTimeFormatter.ofPattern("HH:mm")
-        var outStr = "Avoid "
-        outStr += "${startTime.format(formatter)} to ${endTime.format(formatter)} on "
-        outStr += convertfromDayOfWeek(days)
-        //outStr += ". Weight: ${weight}"
-        return outStr
+        val timeStr = "${startTime.format(formatter)} to ${endTime.format(formatter)} on ${convertfromDayOfWeek(days)}"
+
+        if (DebugConfig.PRINT_PREFERENCE_DEBUG_INFO) {
+            return "$tag: $timeStr. Weight: $weight"
+        }
+
+        return "Avoid $timeStr"
     }
 }

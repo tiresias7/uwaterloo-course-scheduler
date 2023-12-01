@@ -1,11 +1,13 @@
 package logic.preference
 
 import Section
+import config.DebugConfig
 import kotlinx.datetime.toJavaLocalTime
 import java.time.DayOfWeek
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.*
+import kotlin.math.max
 
 class PreferredTimePreference(
     override var weight: Int,
@@ -25,20 +27,22 @@ class PreferredTimePreference(
         // We want courses to be entirely within the preferred time
         var score = 100
         for (section in sections) {
-            if (section.days.intersect(days).isEmpty() ||
-                section.startTime.toJavaLocalTime().isBefore(startTime) || section.endTime.toJavaLocalTime().isAfter(endTime)) {
-                score -= 10
+            if (section.days.intersect(days).isNotEmpty() &&
+                (section.startTime.toJavaLocalTime().isBefore(startTime) || section.endTime.toJavaLocalTime().isAfter(endTime))) {
+                score -= 5
             }
         }
-        return score
+        return max(score, 0)
     }
 
     override fun toString(): String {
         val formatter = DateTimeFormatter.ofPattern("HH:mm")
-        var outStr = "Prefer "
-        outStr += "${startTime.format(formatter)} to ${endTime.format(formatter)} on "
-        outStr += convertfromDayOfWeek(days)
-        //outStr += ". Weight: ${weight}"
-        return outStr
+        val timeStr = "${startTime.format(formatter)} to ${endTime.format(formatter)} on ${convertfromDayOfWeek(days)}"
+
+        if (DebugConfig.PRINT_PREFERENCE_DEBUG_INFO) {
+            return "$tag: $timeStr. Weight: $weight"
+        }
+
+        return "Prefer $timeStr"
     }
 }
