@@ -26,6 +26,7 @@ val homedir = System.getProperty("user.home")
 val outputDir = Paths.get(homedir, "UWCourseScheduler")
 val outputFile = Paths.get(outputDir.toString(), "local.properties").toString()
 
+
 fun main() = application {
     val savedPreferences = readFromFile()
     val windowState = savedPreferences.second ?: rememberWindowState(placement = WindowPlacement.Fullscreen)
@@ -98,6 +99,7 @@ fun onCloseSave(
         FileOutputStream(outputFile).use { outputStream ->
             properties.store(outputStream, "Saved preference")
         }
+        print(outputFile)
     } catch (e: Exception) {
         e.printStackTrace()
     }
