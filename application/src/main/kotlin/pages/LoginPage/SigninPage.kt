@@ -50,7 +50,7 @@ fun loginPage(
     var passwordVisible by remember { mutableStateOf(false) }
     var isError by remember { mutableStateOf(false) }
     val ifShowSignup = remember { mutableStateOf(false) }
-    //val isLoading = remember { mutableStateOf(false) }
+    var forgotPassword by remember { mutableStateOf(false) }
     Box(
     ) {
         Column(
@@ -184,13 +184,21 @@ fun loginPage(
                             false
                         },
                     )
-                    TextButton(
-                        content = { Text("Forgot password?", fontSize = 15.sp) },
-                        onClick = {}
-                    )
+                    if (!forgotPassword) {
+                        TextButton(
+                            content = { Text("Forgot password?", fontSize = 15.sp) },
+                            onClick = { forgotPassword = true}
+                        )
+                    } else {
+                        TextButton(
+                            content = { Text("Please create a new account", fontSize = 15.sp) },
+                            onClick = { forgotPassword = false }
+                        )
+                    }
                     Spacer(modifier = Modifier.padding(vertical = 15.dp))
                     Button(
                         onClick = {
+                            forgotPassword = false
                             if (email.text == "" || password.text == "") {
                                 isError = true
                                 if (email.text == "") {
@@ -238,6 +246,7 @@ fun loginPage(
                     TextButton(
                         content = { Text("New to ω? Join now", fontSize = 15.sp) },
                         onClick = {
+                            forgotPassword = false
                             email = TextFieldValue("")
                             password = TextFieldValue("")
                             isError = false
@@ -258,10 +267,10 @@ fun loginPage(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text("UWCourseScheduler@2023")
-                Text("    Maybe something here")
-                Text("    Maybe something here")
-                Text("    Maybe something here")
-                Text("    Maybe something here")
+                Text("    University of Waterloo")
+                Text("    CS346")
+                Text("    PPLegend")
+                //Text("    ")
             }
         }
         if (isLoading.value) {

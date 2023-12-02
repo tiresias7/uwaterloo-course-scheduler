@@ -1,5 +1,6 @@
 package pages.WelcomePage
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
@@ -7,6 +8,8 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -16,6 +19,7 @@ import common.navcontroller.NavController
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import style.currentColorScheme
 import style.welcomeFontFamily
 
 
@@ -33,9 +37,14 @@ fun welcomePageContent(
     GlobalScope.launch {
         CourseNameLoader.cacheAllCourseNames()
     }
+    val gradientBrush = Brush.verticalGradient(
+        colors = listOf(currentColorScheme.value.cs.primaryContainer, currentColorScheme.value.cs.background), // Gradient colors
+        //startY = 0f, // Starting Y position of the gradient
+        //endY = 500f // Ending Y position of the gradient
+    )
     Row(){
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize().background(brush = gradientBrush),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ){
@@ -66,7 +75,8 @@ fun welcomeMessage() {
             style = TextStyle(
                 fontSize = 80.sp,
                 fontFamily = welcomeFontFamily
-            )
+            ),
+            color = currentColorScheme.value.cs.onPrimaryContainer
         )
         Text("ω", fontSize = 90.sp)
         Text("UW Course Scheduler", fontSize = 30.sp)

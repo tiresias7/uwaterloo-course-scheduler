@@ -100,7 +100,8 @@ fun preferenceDialog(
     showAddPreference : MutableState<Boolean>,
     addCallBack: (String, List<String>) -> Unit
 ) {
-    val preferenceDialogSection = listOf("Class Time Preference", "Course Preference", "Instructor Preference", "Friend Preference")
+    //val preferenceDialogSection = listOf("Class Time Preference", "Course Preference", "Instructor Preference", "Friend Preference")
+    val preferenceDialogSection = listOf("Preferences")
     if(showAddPreference.value) {
         Dialog(
             onDismissRequest = { showAddPreference.value = false },
@@ -108,7 +109,7 @@ fun preferenceDialog(
         ) {
             Card(
                 modifier = Modifier
-                    .width(700.dp)
+                    .size(700.dp, 650.dp)
                     .padding(16.dp),
                 shape = RoundedCornerShape(8.dp),
             ) {
@@ -126,9 +127,9 @@ fun preferenceDialog(
                                 sectionName,
                                 fontSize = 30.sp,
                                 modifier = Modifier
-                                    .padding(top = 20.dp)
+                                    .padding(top = 20.dp, bottom = 20.dp)
                             )
-                            if (sectionName == "Class Time Preference") {
+                            if (sectionName == "Preferences") {
                                 Spacer(modifier = Modifier.height(5.dp))
                                 MaxHoursPerDayChip(addCallBack)
                                 Spacer(modifier = Modifier.height(5.dp))
