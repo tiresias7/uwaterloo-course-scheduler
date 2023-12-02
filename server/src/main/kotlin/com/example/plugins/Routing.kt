@@ -2,7 +2,6 @@ package com.example.plugins
 
 import Section
 import com.example.logic.*
-import com.example.database.common.createDataSource
 import com.example.database.friends.queryAllFriendRequestsByUID
 import com.example.database.friends.queryAllFriendsRelationByUID
 import com.example.database.friends.verifyFriendRelation
@@ -40,7 +39,7 @@ fun Application.configureRouting() {
             get("/list") {
                 val input = call.receive<ID>()
 
-                val friendList = createDataSource().use { queryAllFriendsRelationByUID(input.id, it) }
+                val friendList = queryAllFriendsRelationByUID(input.id)
                 call.respond(HttpStatusCode.OK, friendList)
             }
 
@@ -49,19 +48,18 @@ fun Application.configureRouting() {
                     val input = call.receive<PairID>()
 
                     var profile = mutableListOf<Section>()
-                    createDataSource().use {
-                        if (input.senderId == input.receiverId || verifyFriendRelation(input.senderId, input.receiverId, it)) {
-                            profile = queryExisingUserProfileByUID(input.receiverId, 1, it)
-                        }
-                        else call.respond(HttpStatusCode.BadRequest, profile)
+                    if (input.senderId == input.receiverId || verifyFriendRelation(input.senderId, input.receiverId)) {
+                        profile = queryExisingUserProfileByUID(input.receiverId, 1)
                     }
+                    else call.respond(HttpStatusCode.BadRequest, profile)
+
                     call.respond(HttpStatusCode.OK, profile)
                 }
 
                 put("") {
                     val input = call.receive<ProfileUpdateRequest>()
 
-                    createDataSource().use { resetUserProfileByUID(input.id, input.profileNumber, input.profile, it) }
+                    resetUserProfileByUID(input.id, input.profileNumber, input.profile)
                     call.respond(HttpStatusCode.OK, "Put request received.")
                 }
             }
@@ -69,7 +67,7 @@ fun Application.configureRouting() {
                 get("") {
                     val input = call.receive<ID>()
 
-                    val requestList = createDataSource().use { queryAllFriendRequestsByUID(input.id, it) }
+                    val requestList = queryAllFriendRequestsByUID(input.id)
                     call.respond(HttpStatusCode.OK, requestList)
                 }
 
@@ -147,13 +145,13 @@ fun Application.configureRouting() {
 
         route("/section") {
             get("courses") {
-                val result = createDataSource().use { queryAllClasses(it) }
+                val result = queryAllClasses()
 
                 call.respond(HttpStatusCode.OK, result)
             }
             get("/faculty/id") {
                 val request = call.receive<FacultyIDQueryRequest>()
-                val result = createDataSource().use { querySectionsByFacultyId(request.faculty, request.courseID, it) }
+                val result = querySectionsByFacultyId(request.faculty, request.courseID)
 
                 call.respond(HttpStatusCode.OK, result)
             }
