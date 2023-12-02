@@ -34,10 +34,7 @@ fun main() = application {
         currentColorScheme.value = savedPreferences.first!!
         isDark.value = savedPreferences.first!!.name.contains("dark", ignoreCase = true)
     }
-//    LaunchedEffect(windowState.size) {
-//        if(windowState.size.width < 1152.dp)
-//            windowState.size = DpSize(1152.dp,windowState.size.height)
-//    }
+
     Window(
         state = windowState,
         title = "UW Course Scheduler",
@@ -46,6 +43,9 @@ fun main() = application {
             exitApplication()
         },
     ) {
+        val density = LocalDensity.current.density
+        window.minimumSize = Dimension((1152 * density).toInt(), (786 * density).toInt())
+
         AppTheme { App() }
     }
 }
