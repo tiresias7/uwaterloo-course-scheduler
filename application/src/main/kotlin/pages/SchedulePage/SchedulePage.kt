@@ -61,7 +61,6 @@ fun schedulePageContent(
     val preferenceBuilder = PreferenceBuilder()
     val localDensity = LocalDensity.current
     var column1HeightDp by remember { mutableStateOf(0.dp) }
-    var column2HeightDp by remember { mutableStateOf(0.dp) }
     val reason = remember { mutableStateOf("") }
     Box() {
         Row(

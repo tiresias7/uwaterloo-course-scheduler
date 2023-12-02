@@ -70,11 +70,21 @@ fun friendSearchInputField(
             ExtendedFloatingActionButton(
                 content = { Text("Add") },
                 onClick = {
-                    if (inputValue.value.text != "") {
+                    if (!inputValue.value.text.matches(Regex("[0-9]+"))) {
+                        inputValue.value = TextFieldValue("")
+                        label = "Invalid UID"
+                    }
+                    else {
                         val status = runBlocking {
                             sendFriendRequest(myID, inputValue.value.text.toInt())
                         }
-                        if (status != RequestStatus.FRIEND_REQUEST_SUCCESS) {
+                        inputValue.value = TextFieldValue("")
+                        label = when (status) {
+                            RequestStatus.FRIEND_REQUEST_EXIST -> "Request already sent"
+                            RequestStatus.FRIEND_REQUEST_SELF -> "Cannot add yourself"
+                            RequestStatus.FRIEND_REQUEST_SUCCESS -> "Request sent"
+                            RequestStatus.FRIEND_RELATION_EXIST -> "Friend already added"
+                            else -> label
                         }
                     }
                 },

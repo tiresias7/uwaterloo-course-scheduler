@@ -14,6 +14,7 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -52,7 +53,7 @@ var allUser = listOf(
 var allUser : MutableList<Pair<Int, String>> = mutableListOf()
 
 @Composable
-fun friendSection( USER_ID : Int, savedSections : MutableList<SectionUnit>) {
+fun friendSection(USER_ID : Int, savedSections : MutableList<SectionUnit>, fullHeight : Dp, fullWidth : Dp) {
     val friendsList = remember { mutableStateOf(runBlocking {
         fetchFriendList(USER_ID)
     }) }
@@ -228,9 +229,8 @@ fun friendSection( USER_ID : Int, savedSections : MutableList<SectionUnit>) {
                                             onClick = {
                                                 runBlocking {
                                                     approveFriendRequest(USER_ID, user.first)
-                                                    //friendRequestList.clear()
-                                                    //friendRequestList.addAll(fetchFriendRequests(USER_ID))
                                                     friendRequestList.value = fetchFriendRequests(USER_ID)
+                                                    print(friendRequestList)
                                                 }},
                                             modifier = Modifier.padding(5.dp)
                                         ) {
@@ -239,6 +239,7 @@ fun friendSection( USER_ID : Int, savedSections : MutableList<SectionUnit>) {
                                         OutlinedButton(
                                             onClick = { runBlocking {
                                                 denyFriendRequest(USER_ID, user.first)
+                                                friendRequestList.value = fetchFriendRequests(USER_ID)
                                             }},
                                             modifier = Modifier.padding(5.dp),
                                         ) {
@@ -256,20 +257,20 @@ fun friendSection( USER_ID : Int, savedSections : MutableList<SectionUnit>) {
             }
         }
     }
-    viewProfilePageDialog(friendID, ifViewProfile, friendName)
+    viewProfilePageDialog(friendID, ifViewProfile, friendName, fullHeight, fullWidth)
 }
 
 @Composable
-fun viewProfilePageDialog(friendID : Int, ifViewProfile : MutableState<Boolean>, friendName : MutableState<String>) {
+fun viewProfilePageDialog(friendID : Int, ifViewProfile : MutableState<Boolean>, friendName : MutableState<String>, fullHeight : Dp, fullWidth : Dp) {
     if (ifViewProfile.value) {
         Dialog(
             onDismissRequest = { ifViewProfile.value = false },
             properties = DialogProperties(dismissOnClickOutside = true, usePlatformDefaultWidth = false),
-        ){
-            var friendSections : MutableList<SectionUnit>
+        ) {
+            var friendSections: MutableList<SectionUnit>
             runBlocking { friendSections = fromSectionToSectionUnit(fetchFriendProfile(USER_ID, friendID)) }
             Column(
-                modifier = Modifier.fillMaxHeight().width(900.dp).padding(top = 20.dp, bottom = 20.dp),
+                modifier = Modifier.size(fullWidth * 6 / 10, fullHeight * 8 / 10).padding(top = 20.dp, bottom = 20.dp),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {

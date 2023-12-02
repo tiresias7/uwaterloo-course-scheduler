@@ -1,12 +1,10 @@
 package com.example.database.users
 
 import Section
-import com.zaxxer.hikari.HikariDataSource
-import com.example.database.common.createDataSource
-import kotlinx.datetime.toKotlinLocalTime
-import java.time.DayOfWeek
+import com.example.database.common.DBUtil
+import com.example.database.sections.parseSectionListResultSet
 
-fun createUserProfileTableIfNotExists(db: HikariDataSource) {
+fun createUserProfileTableIfNotExists() {
     val createSQL = """
         CREATE TABLE IF NOT EXISTS user_profiles (
             user INT,
@@ -17,17 +15,13 @@ fun createUserProfileTableIfNotExists(db: HikariDataSource) {
         )
     """.trimIndent()
 
-    db.connection.use { conn ->
-        conn.createStatement().use { stmt ->
-            stmt.execute(createSQL)
-        }
-    }
+    DBUtil.executeUpdate(createSQL)
 }
 
 // Return true for successful reset, false for invalid SectionUnit length
-fun resetUserProfileByUID(id: Int, profileNumber: Int, profile: List<Int>, db: HikariDataSource) {
-    dropExistingUserProfileByUID(id, profileNumber, db)
-    profile.forEach { insertNewSectionByUIDClassNumber(id, profileNumber, it, db) }
+fun resetUserProfileByUID(id: Int, profileNumber: Int, profile: List<Int>) {
+    dropExistingUserProfileByUID(id, profileNumber)
+    profile.forEach { insertNewSectionByUIDClassNumber(id, profileNumber, it) }
 }
 
 //private fun resetUserProfileWithSerializationByUID(id: Int, profile: List<String>, db: HikariDataSource) {
@@ -35,79 +29,42 @@ fun resetUserProfileByUID(id: Int, profileNumber: Int, profile: List<Int>, db: H
 //    profile.forEach { insertNewSectionUnitWithSerializationByUID(id, it, db) }
 //}
 
-private fun insertNewSectionByUIDClassNumber(id: Int, profileNumber: Int, classNumber: Int, db: HikariDataSource) {
+private fun insertNewSectionByUIDClassNumber(id: Int, profileNumber: Int, classNumber: Int) {
     val insertSQL = """
         INSERT IGNORE INTO user_profiles 
         (user, profile_number, section)  
         VALUES (?, ?, ?)
     """.trimIndent()
 
-    db.connection.use { conn ->
-        conn.prepareStatement(insertSQL).use { stmt ->
-            stmt.setInt(1, id)
-            stmt.setInt(2, profileNumber)
-            stmt.setInt(3, classNumber)
-            stmt.execute()
-        }
-    }
+    DBUtil.executeUpdate(insertSQL, id, profileNumber, classNumber)
 }
 
-private fun dropExistingUserProfileByUID(id: Int, profileNumber: Int, db: HikariDataSource) {
+private fun dropExistingUserProfileByUID(id: Int, profileNumber: Int) {
     val deleteSQL = """
         DELETE FROM user_profiles
-        WHERE user = $id AND profile_number = $profileNumber
+        WHERE user = ? AND profile_number = ?
     """.trimIndent()
 
-    db.connection.use { conn ->
-        conn.createStatement().use { stmt ->
-            stmt.execute(deleteSQL)
-        }
-    }
+    DBUtil.executeUpdate(deleteSQL, id, profileNumber)
 }
 
-fun queryExisingUserProfileByUID(id: Int, profileNumber: Int, db: HikariDataSource): MutableList<Section> {
+fun queryExisingUserProfileByUID(id: Int, profileNumber: Int): MutableList<Section> {
     val querySQL = """
        SELECT *
        FROM user_profiles
        JOIN courses.sections s on s.classNumber = user_profiles.section
-       WHERE user = $id AND profile_number = $profileNumber
+       WHERE user = ? AND profile_number = ?
     """.trimIndent()
 
-    val sections = mutableListOf<Section>()
-    db.connection.use { conn ->
-        conn.prepareStatement(querySQL).use { stmt ->
-            stmt.executeQuery().use { result ->
-                while (result.next()) {
-                    val days: Set<DayOfWeek> = if (result.getString("days") == "") emptySet()
-                    else result.getString("days").split(",").map { DayOfWeek.valueOf(it) }.toSet()
-                    sections.add(
-                        Section(
-                            result.getInt("classNumber"),
-                            result.getString("component"),
-                            result.getInt("sectionNumber"),
-                            result.getString("campus"),
-                            result.getString("room"),
-                            result.getString("instructor"),
-                            result.getTime("startTime").toLocalTime().toKotlinLocalTime(),
-                            result.getTime("endTime").toLocalTime().toKotlinLocalTime(),
-                            days,
-                            result.getString("faculty") + result.getString("courseID")
-                        )
-                    )
-                }
-            }
-        }
+    return DBUtil.executeQuery(querySQL, id, profileNumber) { result ->
+        parseSectionListResultSet(result).toMutableList()
     }
-    return sections
 }
 
 fun main() {
-    createDataSource().use {
-        createUserProfileTableIfNotExists(it)
-//       insertNewSectionByUIDClassNumber(1, 1, 2785, it)
-//        insertNewSectionByUIDClassNumber(1, 1, 2786, it)
-//
-//        insertNewSectionByUIDClassNumber(1, 2, 2789, it)
-       queryExisingUserProfileByUID(1, 1, it).forEach { temp -> println(temp) }
-    }
+    insertNewSectionByUIDClassNumber(1, 1, 2785)
+    insertNewSectionByUIDClassNumber(1, 1, 2786)
+
+    insertNewSectionByUIDClassNumber(1, 2, 2789)
+    queryExisingUserProfileByUID(1, 1).forEach { temp -> println(temp) }
 }

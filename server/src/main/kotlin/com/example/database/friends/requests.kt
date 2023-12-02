@@ -1,83 +1,69 @@
 package com.example.database.friends
 
-import com.example.database.common.createDataSource
-import com.zaxxer.hikari.HikariDataSource
+import com.example.database.common.DBUtil
 
-fun createRequestsTableIfNotExists(db: HikariDataSource) {
-    createFriendsCommonTableIfNotExists("requests", db)
+fun createRequestsTableIfNotExists() {
+    createFriendsCommonTableIfNotExists("requests")
 }
-
 
 // Request sent from id1 to id2
-fun insertNewFriendRequest(id1: Int, id2: Int, db: HikariDataSource) {
+fun insertNewFriendRequest(id1: Int, id2: Int) {
     val insertSQL = """
         INSERT IGNORE INTO requests (user1, user2)
-        VALUES (${id1}, ${id2});
+        VALUES (?, ?);
     """.trimIndent()
 
-    db.connection.use { conn ->
-        conn.prepareStatement(insertSQL).use { stmt ->
-            stmt.execute()
-        }
-    }
+    DBUtil.executeUpdate(insertSQL, id1, id2)
 }
 
-fun verifyFriendRequest(id1: Int, id2: Int, db: HikariDataSource): Boolean {
+fun verifyFriendRequest(id1: Int, id2: Int): Boolean {
     val querySQL = """
        SELECT * 
        FROM requests
-       WHERE user1 = $id1 AND user2 = $id2
+       WHERE user1 = ? AND user2 = ?
     """.trimIndent()
 
-    db.connection.use { conn ->
-        conn.prepareStatement(querySQL).use { stmt ->
-            stmt.executeQuery().use { result ->
-                return result.next()
-            }
-        }
-    }
+    return DBUtil.executeQuery(querySQL, id1, id2) { result -> result.next() }
 }
 
-fun queryAllFriendRequestsByUID(id: Int, db: HikariDataSource): List<Pair<Int, String>> {
+fun queryAllFriendRequestsByUID(id: Int): List<Pair<Int, String>> {
     val querySQL = """
         SELECT DISTINCT requests.user1, users.username
         FROM requests
         JOIN users ON requests.user1 = users.id
-        WHERE requests.user2 = $id
+        WHERE requests.user2 = ?
     """.trimIndent()
     val friendData = mutableListOf<Pair<Int, String>>()
 
-    db.connection.use { conn ->
-        conn.prepareStatement(querySQL).use { stmt ->
-            stmt.executeQuery().use { result ->
-                while (result.next()) {
-                    val friendId = result.getInt("user1")
-                    val friendName = result.getString("username")
-                    if (friendId != id) friendData.add(Pair(friendId, friendName))
-                }
-            }
+    DBUtil.executeQuery(querySQL, id) { result ->
+        while (result.next()) {
+            val friendId = result.getInt("user1")
+            val friendName = result.getString("username")
+            if (friendId != id) friendData.add(Pair(friendId, friendName))
         }
     }
     return friendData
 }
 
 
-fun deleteFriendRequestsByUID(id1: Int, id2: Int, db: HikariDataSource) {
+fun deleteFriendRequestsByUID(id1: Int, id2: Int) {
     val deleteSQl = """
         DELETE FROM requests
-        WHERE user1 = $id1 AND  user2 = $id2;
+        WHERE user1 = ? AND  user2 = ?
     """.trimIndent()
 
-    db.connection.use { conn ->
-        conn.createStatement().use { stmt ->
-            stmt.executeUpdate(deleteSQl)
-        }
-    }
+    DBUtil.executeUpdate(deleteSQl, id1, id2)
 }
 
 fun main() {
-    createDataSource().use {
-        createRequestsTableIfNotExists(it)
-        println(verifyFriendRequest(1, 2, it))
+    insertNewFriendRequest(10, 4)
+    println(verifyFriendRequest(10, 4))
+    println(verifyFriendRequest(10, 5))
+    queryAllFriendRequestsByUID(13).forEach {
+        println(it.first.toString() + it.second)
     }
+    queryAllFriendRequestsByUID(1).forEach {
+        println(it.first.toString() + it.second)
+    }
+    deleteFriendRequestsByUID(10, 4)
 }

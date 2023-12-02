@@ -15,6 +15,8 @@ import androidx.compose.ui.unit.sp
 import common.navDrawer
 import pages.SchedulePage.ScheduleSection.schedule
 import SectionUnit
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import common.navcontroller.NavController
 import kotlinx.coroutines.runBlocking
 import logic.ktorClient.fetchFriendProfile
@@ -35,10 +37,17 @@ fun profilePageContent(
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     var savedSections: MutableList<SectionUnit>
+    val localDensity = LocalDensity.current
+    var fullHeight by remember { mutableStateOf(0.dp) }
+    var fullWidth by remember { mutableStateOf(0.dp) }
     runBlocking { savedSections = fromSectionToSectionUnit(fetchFriendProfile(USER_ID, USER_ID)) }
     Column(
         modifier = Modifier.fillMaxSize()
-            .padding(start = 40.dp),
+            .padding(start = 40.dp)
+            .onGloballyPositioned { coordinates ->
+                fullHeight = with(localDensity) { coordinates.size.height.toDp() }
+                fullWidth = with(localDensity) { coordinates.size.width.toDp() }
+            },
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -105,7 +114,7 @@ fun profilePageContent(
                 horizontalAlignment = Alignment.Start,
             ) {
                 ///////// friend ///////////////
-                friendSection(USER_ID, savedSections)
+                friendSection(USER_ID, savedSections, fullHeight, fullWidth)
                 ///////////////////////////////
             }
             Column(

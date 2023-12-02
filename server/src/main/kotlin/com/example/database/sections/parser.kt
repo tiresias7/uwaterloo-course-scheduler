@@ -40,11 +40,11 @@ fun parseSectionTime(input: String): Pair<String, Int> {
     return Pair(sectionType, sectionNumber.toInt())
 }
 
-fun parseDistinctLocation(input: String) {
-    if (input.lowercase().contains("online") or input.contains("TBA")) return
-    return
+//fun parseDistinctLocation(input: String) {
+//    if (input.lowercase().contains("online") or input.contains("TBA")) return
+//    return
+//}
 
-}
 fun parser(filepath: String): ArrayList<Section> {
     val file = File(filepath)
     val document: Document = Jsoup.parse(file, "UTF-8")
