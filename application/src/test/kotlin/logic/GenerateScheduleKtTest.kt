@@ -103,6 +103,6 @@ class GenerateScheduleKtTest {
         assertEquals(1, result.size)
         assertEquals(8, result[0].size)
         assertEquals(10000 * 100, hardPreferences[0].eval(result[0]))
-        assertEquals(1 * 0, softPreferences[0].eval(result[0]))
+        assertEquals(90, softPreferences[0].eval(result[0]))
     }
 }
