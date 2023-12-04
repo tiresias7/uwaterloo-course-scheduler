@@ -18,11 +18,12 @@ import SectionUnit
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import common.navcontroller.NavController
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import logic.ktorClient.fetchFriendProfile
 import pages.LoginPage.USER_EMAIL
 import pages.LoginPage.USER_ID
 import pages.LoginPage.USER_NAME
+import java.util.function.UnaryOperator
 
 @Composable
 fun profilePage(
@@ -36,11 +37,14 @@ fun profilePageContent(
     navController: NavController
 ) {
     val interactionSource = remember { MutableInteractionSource() }
-    var savedSections: MutableList<SectionUnit>
+    val savedSections = remember { mutableListOf<SectionUnit>() }
     val localDensity = LocalDensity.current
     var fullHeight by remember { mutableStateOf(0.dp) }
     var fullWidth by remember { mutableStateOf(0.dp) }
-    runBlocking { savedSections = fromSectionToSectionUnit(fetchFriendProfile(USER_ID, USER_ID)) }
+    var coroutineScope = rememberCoroutineScope()
+    coroutineScope.launch {
+        savedSections.addAll(fromSectionToSectionUnit(fetchFriendProfile(USER_ID, USER_ID)))
+    }
     Column(
         modifier = Modifier.fillMaxSize()
             .padding(start = 40.dp)
@@ -67,22 +71,21 @@ fun profilePageContent(
                     horizontalArrangement = Arrangement.Start,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    val name : String
-                    val email : String
-                    if (USER_NAME.length > 10) { name = USER_NAME.take(10) + "..."}
-                    else { name = USER_NAME }
-                    if (USER_EMAIL.length > 30) { email = USER_NAME.take(30) + "..."}
-                    else { email = USER_EMAIL }
+                    val email : String = if (USER_EMAIL.length > 30) {
+                        USER_NAME.take(30) + "..."
+                    } else {
+                        USER_EMAIL
+                    }
                     Text(
                         text = "My profile", fontSize = 45.sp,
                         modifier = Modifier.padding(end = 50.dp)
                     )
                     Text(
-                        "UID: " + USER_ID, fontSize = 15.sp,
+                        "UID: $USER_ID", fontSize = 15.sp,
                         modifier = Modifier.padding(end = 20.dp)
                     )
                     Text(
-                        "Email: " + email, fontSize = 15.sp,
+                        "Email: $email", fontSize = 15.sp,
                         modifier = Modifier.padding(end = 50.dp)
                     )
                 }
@@ -122,6 +125,7 @@ fun profilePageContent(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Spacer(modifier = Modifier.weight(0.4f))
+                print(savedSections)
                 schedule(savedSections, modifier = Modifier.weight(5f))
                 Row(
                     modifier = Modifier.weight(0.6f),
@@ -140,7 +144,7 @@ fun profilePageContent(
 }
 
 fun fromSectionToSectionUnit(sections : List<Section>) : MutableList<SectionUnit> {
-    var sectionUnits = mutableListOf<SectionUnit>()
+    val sectionUnits = mutableListOf<SectionUnit>()
     for (section in sections) {
         sectionUnits.addAll(section.toSectionUnit())
     }
