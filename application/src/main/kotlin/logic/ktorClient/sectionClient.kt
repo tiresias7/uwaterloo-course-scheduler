@@ -4,12 +4,12 @@ import Section
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
-import ktor.FacultyIDQueryRequest
 
 suspend fun querySectionsByFacultyId(faculty: String, courseID: String): List<List<Section>> {
     return httpClient.get("$baseUrl/section/faculty/id") {
         contentType(ContentType.Application.Json)
-        setBody(FacultyIDQueryRequest(faculty, courseID))
+        parameter("faculty", faculty)
+        parameter("courseID", courseID)
     }.body()
 }
 

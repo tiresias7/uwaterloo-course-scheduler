@@ -18,4 +18,4 @@ val httpClient = HttpClient(CIO) {
 }
 
 // Shared base URL
-const val baseUrl = "http://127.0.0.1:8081"
+const val baseUrl = "https://ktor-course-select-pbz7aoqn4a-pd.a.run.app"

@@ -37,23 +37,29 @@ fun Application.configureRouting() {
             }
 
             get("/list") {
-                val input = call.receive<ID>()
-
-                val friendList = queryAllFriendsRelationByUID(input.id)
-                call.respond(HttpStatusCode.OK, friendList)
+                val id = call.request.queryParameters["id"]?.toInt()
+                if (id != null) {
+                    call.respond(HttpStatusCode.OK, queryAllFriendsRelationByUID(id))
+                } else {
+                    call.respond(HttpStatusCode.BadRequest, "Invalid get parameters")
+                }
             }
 
             route("/profile") {
                 get("") {
-                    val input = call.receive<PairID>()
+                    val senderId = call.request.queryParameters["senderId"]?.toInt()
+                    val receiverId = call.request.queryParameters["receiverId"]?.toInt()
+                    if (senderId != null && receiverId != null) {
 
-                    var profile = mutableListOf<Section>()
-                    if (input.senderId == input.receiverId || verifyFriendRelation(input.senderId, input.receiverId)) {
-                        profile = queryExisingUserProfileByUID(input.receiverId, 1)
+                        var profile = mutableListOf<Section>()
+                        if (senderId == receiverId || verifyFriendRelation(senderId, receiverId)) {
+                            profile = queryExisingUserProfileByUID(receiverId, 1)
+                        } else call.respond(HttpStatusCode.BadRequest, profile)
+
+                        call.respond(HttpStatusCode.OK, profile)
+                    } else {
+                        call.respond(HttpStatusCode.BadRequest, "Invalid get parameters")
                     }
-                    else call.respond(HttpStatusCode.BadRequest, profile)
-
-                    call.respond(HttpStatusCode.OK, profile)
                 }
 
                 put("") {
@@ -65,10 +71,12 @@ fun Application.configureRouting() {
             }
             route("/request") {
                 get("") {
-                    val input = call.receive<ID>()
-
-                    val requestList = queryAllFriendRequestsByUID(input.id)
-                    call.respond(HttpStatusCode.OK, requestList)
+                    val id = call.request.queryParameters["id"]?.toInt()
+                    if (id != null) {
+                        call.respond(HttpStatusCode.OK, queryAllFriendRequestsByUID(id))
+                    } else {
+                        call.respond(HttpStatusCode.BadRequest, "Invalid get parameters")
+                    }
                 }
 
                 post("") {
@@ -144,16 +152,19 @@ fun Application.configureRouting() {
         }
 
         route("/section") {
-            get("courses") {
+            get("/courses") {
                 val result = queryAllClasses()
 
                 call.respond(HttpStatusCode.OK, result)
             }
             get("/faculty/id") {
-                val request = call.receive<FacultyIDQueryRequest>()
-                val result = querySectionsByFacultyId(request.faculty, request.courseID)
-
-                call.respond(HttpStatusCode.OK, result)
+                val faculty = call.request.queryParameters["faculty"]
+                val courseID = call.request.queryParameters["courseID"]
+                if (!faculty.isNullOrBlank() && !courseID.isNullOrBlank()) {
+                    call.respond(HttpStatusCode.OK, querySectionsByFacultyId(faculty, courseID))
+                } else {
+                    call.respond(HttpStatusCode.BadRequest, "Invalid get parameters")
+                }
             }
         }
     }
