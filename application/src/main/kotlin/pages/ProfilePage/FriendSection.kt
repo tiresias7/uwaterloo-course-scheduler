@@ -5,14 +5,14 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -22,7 +22,6 @@ import androidx.compose.ui.window.DialogProperties
 import friendSearchInputField
 import kotlinx.coroutines.runBlocking
 import logic.ktorClient.*
-import org.jetbrains.skia.Color
 import pages.LoginPage.USER_ID
 import pages.LoginPage.USER_NAME
 import pages.SchedulePage.CourseSelection.dropDownExpanded
@@ -269,18 +268,27 @@ fun viewProfilePageDialog(friendID : Int, ifViewProfile : MutableState<Boolean>,
         ) {
             var friendSections: MutableList<SectionUnit>
             runBlocking { friendSections = fromSectionToSectionUnit(fetchFriendProfile(USER_ID, friendID)) }
-            Column(
-                modifier = Modifier.size(fullWidth * 6 / 10, fullHeight * 8 / 10).padding(top = 20.dp, bottom = 20.dp),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
+            Card(
+                modifier = Modifier.width(fullWidth * 6 / 10),
+                shape = RoundedCornerShape(8.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = Transparent,
+                ),
+                elevation = CardDefaults.cardElevation(3.dp)
             ) {
-                val name: String = if (friendName.value.length > 10) {
-                    friendName.value.take(10) + "..."
-                } else {
-                    friendName.value
+                Column(
+                    modifier = Modifier.size(fullWidth * 6 / 10, fullHeight * 8 / 10).padding(top = 20.dp, bottom = 20.dp),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    val name: String = if (friendName.value.length > 10) {
+                        friendName.value.take(10) + "..."
+                    } else {
+                        friendName.value
+                    }
+                    Text("$name's Schedule", fontSize = 35.sp, color = androidx.compose.ui.graphics.Color.White,)
+                    schedule(friendSections, modifier = Modifier.padding(top = 20.dp, bottom = 20.dp))
                 }
-                Text("$name's Schedule", fontSize = 35.sp, color = androidx.compose.ui.graphics.Color.White,)
-                schedule(friendSections, modifier = Modifier.padding(top = 20.dp, bottom = 20.dp))
             }
         }
     }
