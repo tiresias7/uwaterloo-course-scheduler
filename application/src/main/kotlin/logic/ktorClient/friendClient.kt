@@ -4,21 +4,20 @@ import Section
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
-import ktor.ID
 import ktor.PairID
 import request.RequestStatus
 
 suspend fun fetchFriendList(id: Int): List<Pair<Int, String>> {
     return httpClient.get("$baseUrl/friend/list") {
         contentType(ContentType.Application.Json)
-        setBody(ID(id))
+        parameter("id", id)
     }.body()
 }
 
 suspend fun fetchFriendRequests(id: Int): List<Pair<Int, String>> {
     return httpClient.get("$baseUrl/friend/request") {
         contentType(ContentType.Application.Json)
-        setBody(ID(id))
+        parameter("id", id)
     }.body()
 }
 
@@ -26,7 +25,8 @@ suspend fun fetchFriendRequests(id: Int): List<Pair<Int, String>> {
 suspend fun fetchFriendProfile(senderId: Int, receiverId: Int): List<Section> {
     return httpClient.get("$baseUrl/friend/profile") {
         contentType(ContentType.Application.Json)
-        setBody(PairID(senderId, receiverId))
+        parameter("senderId", senderId)
+        parameter("receiverId", receiverId)
     }.body()
 }
 
@@ -88,7 +88,7 @@ suspend fun deleteFriendRelation(senderId: Int, receiverId: Int): RequestStatus 
     }
 }
 
-suspend fun main () {
+fun main () {
 //    println(deleteFriendRelation(1, 10))
 //    println(deleteFriendRelation(10, 1))
 //    println(deleteFriendRelation(4, 2))
