@@ -19,7 +19,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import common.LoadingFullScreen
+import common.isLoading
 import friendSearchInputField
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import logic.ktorClient.*
 import pages.LoginPage.USER_ID
@@ -52,7 +55,7 @@ var allUser = listOf(
 var allUser : MutableList<Pair<Int, String>> = mutableListOf()
 
 @Composable
-fun friendSection(USER_ID : Int, savedSections : MutableList<SectionUnit>, fullHeight : Dp, fullWidth : Dp) {
+fun friendSection(USER_ID : Int, fullHeight : Dp, fullWidth : Dp) {
     val friendsList = remember { mutableStateOf(runBlocking {
         fetchFriendList(USER_ID)
     }) }
@@ -172,12 +175,11 @@ fun friendSection(USER_ID : Int, savedSections : MutableList<SectionUnit>, fullH
                                     trailingContent = {
                                         Row() {
                                             TextButton(
-                                                onClick = { runBlocking {
-                                                    fetchFriendProfile(USER_ID, friend.first)
+                                                onClick = {
                                                     ifViewProfile.value = true;
                                                     friendID = friend.first
                                                     friendName.value = friend.second
-                                                }},
+                                                },
                                                 modifier = Modifier.padding(end = 4.dp)
                                             ) {
                                                 Text("View Schedule")
@@ -266,28 +268,48 @@ fun viewProfilePageDialog(friendID : Int, ifViewProfile : MutableState<Boolean>,
             onDismissRequest = { ifViewProfile.value = false },
             properties = DialogProperties(dismissOnClickOutside = true, usePlatformDefaultWidth = false),
         ) {
-            var friendSections: MutableList<SectionUnit>
-            runBlocking { friendSections = fromSectionToSectionUnit(fetchFriendProfile(USER_ID, friendID)) }
-            Card(
-                modifier = Modifier.width(fullWidth * 6 / 10),
-                shape = RoundedCornerShape(8.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = Transparent,
-                ),
-                elevation = CardDefaults.cardElevation(3.dp)
-            ) {
-                Column(
-                    modifier = Modifier.size(fullWidth * 6 / 10, fullHeight * 8 / 10).padding(top = 20.dp, bottom = 20.dp),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    val name: String = if (friendName.value.length > 10) {
-                        friendName.value.take(10) + "..."
-                    } else {
-                        friendName.value
+            Box(){
+                val isInit = remember { mutableStateOf(false) }
+                var friendSections = remember { mutableStateListOf<SectionUnit>() }
+                var coroutineScope = rememberCoroutineScope()
+                coroutineScope.launch {
+                    if (!isInit.value){
+                        isLoading.value = true
+                        friendSections.clear()
+                        friendSections.addAll(fromSectionToSectionUnit(fetchFriendProfile(USER_ID, friendID)).toMutableStateList())
+                        isLoading.value = false
+                        isInit.value = true
                     }
-                    Text("$name's Schedule", fontSize = 35.sp, color = androidx.compose.ui.graphics.Color.White,)
-                    schedule(friendSections, modifier = Modifier.padding(top = 20.dp, bottom = 20.dp))
+                }
+                DisposableEffect(isLoading){
+                    onDispose {
+                        isLoading.value = false
+                    }
+                }
+                Card(
+                    modifier = Modifier.width(fullWidth * 6 / 10),
+                    shape = RoundedCornerShape(8.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = Transparent,
+                    ),
+                    elevation = CardDefaults.cardElevation(3.dp)
+                ) {
+                    Column(
+                        modifier = Modifier.size(fullWidth * 6 / 10, fullHeight * 8 / 10).padding(top = 20.dp, bottom = 20.dp),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        val name: String = if (friendName.value.length > 10) {
+                            friendName.value.take(10) + "..."
+                        } else {
+                            friendName.value
+                        }
+                        Text("$name's Schedule", fontSize = 35.sp, color = androidx.compose.ui.graphics.Color.White,)
+                        schedule(friendSections, modifier = Modifier.padding(top = 20.dp, bottom = 20.dp))
+                    }
+                }
+                if (isLoading.value) {
+                    LoadingFullScreen("loading...", modifier = Modifier.matchParentSize())
                 }
             }
         }

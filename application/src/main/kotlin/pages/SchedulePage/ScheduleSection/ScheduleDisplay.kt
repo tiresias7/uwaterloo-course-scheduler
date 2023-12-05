@@ -18,7 +18,7 @@ import style.currentColorScheme
 
 @Composable
 fun schedule(
-    sections: MutableList<SectionUnit>,
+    sections: List<SectionUnit>,
     modifier: Modifier = Modifier
 ) {
     var img_width by remember { mutableStateOf(0.dp) }
