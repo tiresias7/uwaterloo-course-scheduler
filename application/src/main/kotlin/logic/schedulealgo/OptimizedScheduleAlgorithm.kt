@@ -8,7 +8,8 @@ class OptimizedScheduleAlgorithm : ScheduleAlgorithm() {
     override fun generateSchedules(
         sectionLists: List<List<Section>>,
         preferences: List<Preference>,
-        totalSchedules: Int
+        totalSchedules: Int,
+        softScoreLowerBound: Int
     ): List<List<Section>> {
 
         val hardPreferences = preferences.filter { it.isHard() }
@@ -34,10 +35,15 @@ class OptimizedScheduleAlgorithm : ScheduleAlgorithm() {
                 return
             }
 
-            val nextSections = heuristicOrderedSections[index]
+            // Sort by evaluated score (descending) after appending each section
+            val nextSections: List<Section> = heuristicOrderedSections[index]
+                .map { Pair(it, evalSoftPreference(currentSections + it)) }
+                .sortedByDescending { it.second }
+                .map { it.first }
+
             for (section in nextSections) {
                 val newSections = currentSections + section
-                if (!violatesHardPreference(newSections)) {
+                if (!violatesHardPreference(newSections) && evalSoftPreference(newSections) > softScoreLowerBound) {
                     if (topSchedules.size < totalSchedules ||
                         evalSoftPreference(newSections) > topSchedules.peek().second) {
                         search(newSections, index + 1)
