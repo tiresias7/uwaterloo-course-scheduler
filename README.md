@@ -1,6 +1,6 @@
 # UWaterloo Course Scheduler ω
 
-Welcome to ω! Made by TEAM PP-Legend.
+Welcome to ω!, by TEAM PP-Legend.
 
 #### [Brief Introduction](https://git.uwaterloo.ca/q258wu/pplegend-project/-/wikis/Introduction)
 
