@@ -2,17 +2,23 @@
 
 ### Welcome to ω!
 
-Produced by PP-Legend.
+Produced by PP-Legend team.
+
+Authors: Alex Lin, Eddy Yang, Jason Ye, Ryan Wu (in alphabetical order)
 
 #### [Brief Introduction](https://git.uwaterloo.ca/q258wu/pplegend-project/-/wikis/Introduction)
 
-#### [Documentation](https://git.uwaterloo.ca/q258wu/pplegend-project/-/wikis/Final-Submission-Documentation)
+#### [Requirements, Architecture & Design, Reflections](https://git.uwaterloo.ca/q258wu/pplegend-project/-/wikis/Final-Submission-Documentation)
 
-#### [Installation Details and Releases](https://git.uwaterloo.ca/q258wu/pplegend-project/-/wikis/Installation-Details)
+#### [Installation Instructions and Software Releases](https://git.uwaterloo.ca/q258wu/pplegend-project/-/wikis/Installation-Details)
+
+#### [Implementation Details](https://git.uwaterloo.ca/q258wu/pplegend-project/-/wikis/Installation-Details)
 
 #### [Schedule Algo Design](https://git.uwaterloo.ca/q258wu/pplegend-project/-/wikis/Schedule-Algo-Design)
 
 #### [APIs](https://git.uwaterloo.ca/q258wu/pplegend-project/-/wikis/APIs)
+
+#### [Meeting Minutes](https://git.uwaterloo.ca/q258wu/pplegend-project/-/wikis/Meeting-Minutes)
 
 #### [Meeting Minutes For Sprint One](https://git.uwaterloo.ca/q258wu/pplegend-project/-/wikis/Meeting-Minutes-Sprint-one)
 
