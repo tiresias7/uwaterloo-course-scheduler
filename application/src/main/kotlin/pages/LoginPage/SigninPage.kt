@@ -191,7 +191,7 @@ fun loginPage(
                         )
                     } else {
                         TextButton(
-                            content = { Text("Please create a new account", fontSize = 15.sp) },
+                            content = { Text("Please contact us", fontSize = 15.sp) },
                             onClick = { forgotPassword = false }
                         )
                     }
@@ -268,9 +268,8 @@ fun loginPage(
             ) {
                 Text("UWCourseScheduler@2023")
                 Text("    University of Waterloo")
-                Text("    CS346")
-                Text("    PPLegend")
-                //Text("    ")
+                Text("    PP-Legend")
+                Text("    help@pplegend.com")
             }
         }
         if (isLoading.value) {
