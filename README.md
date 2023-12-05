@@ -2,13 +2,15 @@
 
 ### Welcome to ω!
 
-Produced by PP-Legend.
+Produced by PP-Legend team.
+
+Authors: Alex Lin, Eddy Yang, Jason Ye, Ryan Wu (in alphabetical order)
 
 #### [Brief Introduction](https://git.uwaterloo.ca/q258wu/pplegend-project/-/wikis/Introduction)
 
 #### [Documentation](https://git.uwaterloo.ca/q258wu/pplegend-project/-/wikis/Final-Submission-Documentation)
 
-#### [Installation Details and Releases](https://git.uwaterloo.ca/q258wu/pplegend-project/-/wikis/Installation-Details)
+#### [Software Releases and Installation Details](https://git.uwaterloo.ca/q258wu/pplegend-project/-/wikis/Installation-Details)
 
 #### [Schedule Algo Design](https://git.uwaterloo.ca/q258wu/pplegend-project/-/wikis/Schedule-Algo-Design)
 
