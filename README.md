@@ -14,7 +14,6 @@ Authors: Alex Lin, Eddy Yang, Jason Ye, Ryan Wu (in alphabetical order)
 
 #### [Implementation Details](https://git.uwaterloo.ca/q258wu/pplegend-project/-/wikis/Implementation-Details)
 
-
 #### [Meeting Minutes](https://git.uwaterloo.ca/q258wu/pplegend-project/-/wikis/Meeting-Minutes)
 
 
