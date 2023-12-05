@@ -1,8 +1,6 @@
-# Waterloo Course Scheduler
+# ω UWaterloo Course Scheduler
 
 Welcome to the Waterloo Course Scheduler applicataion made by TEAM PP-Legend.
-
-#### [Introduction](https://git.uwaterloo.ca/q258wu/pplegend-project/-/wikis/Introduction)
 
 #### [Documentation](https://git.uwaterloo.ca/q258wu/pplegend-project/-/wikis/Final-Submission-Documentation)
 
