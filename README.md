@@ -125,7 +125,7 @@ If you encounter any issues or have questions, please feel free to contact us fo
 
 ## Contact
 
-If you have any questions, need assistance, or want to provide feedback, please don't hesitate to [contact us](mailto:nobody@pp-legend.com).
+If you have any questions, need assistance, or want to provide feedback, please don't hesitate to [contact us](mailto:help@pp-legend.com).
 
 We hope you enjoy using our project!
 
