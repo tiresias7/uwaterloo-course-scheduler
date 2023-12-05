@@ -2,9 +2,15 @@
 
 Welcome to ω! Made by TEAM PP-Legend.
 
+#### [Brief Introduction](https://git.uwaterloo.ca/q258wu/pplegend-project/-/wikis/Introduction)
+
 #### [Documentation](https://git.uwaterloo.ca/q258wu/pplegend-project/-/wikis/Final-Submission-Documentation)
 
 #### [Installation Details and Releases](https://git.uwaterloo.ca/q258wu/pplegend-project/-/wikis/Installation-Details)
+
+#### [Schedule Algo Design](https://git.uwaterloo.ca/q258wu/pplegend-project/-/wikis/Schedule-Algo-Design)
+
+#### [APIs](https://git.uwaterloo.ca/q258wu/pplegend-project/-/wikis/APIs)
 
 #### [Meeting Minutes For Sprint One](https://git.uwaterloo.ca/q258wu/pplegend-project/-/wikis/Meeting-Minutes-Sprint-one)
 
