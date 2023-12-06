@@ -8,7 +8,8 @@ class NaiveScheduleAlgorithm : ScheduleAlgorithm() {
     override fun generateSchedules(
         sectionLists: List<List<Section>>,
         preferences: List<Preference>,
-        totalSchedules: Int
+        totalSchedules: Int,
+        softScoreLowerBound: Int
     ): List<List<Section>> {
         // A priority queue to keep the lowest score at the top (min-heap based on score).
         val topSchedules = PriorityQueue<Pair<List<Section>, Int>>(compareBy { it.second })
