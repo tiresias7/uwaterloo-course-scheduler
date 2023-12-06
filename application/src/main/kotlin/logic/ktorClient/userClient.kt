@@ -3,6 +3,7 @@ package logic.ktorClient
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
+import kotlinx.coroutines.delay
 import ktor.ProfileUpdateRequest
 import ktor.SignInRequest
 import ktor.SignResponse

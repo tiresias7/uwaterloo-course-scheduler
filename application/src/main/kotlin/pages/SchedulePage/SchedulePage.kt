@@ -62,6 +62,11 @@ fun schedulePageContent(
     val localDensity = LocalDensity.current
     var column1HeightDp by remember { mutableStateOf(0.dp) }
     val reason = remember { mutableStateOf("") }
+    DisposableEffect(isLoading){
+        onDispose {
+            isLoading.value = false
+        }
+    }
     Box() {
         Row(
             modifier = Modifier
