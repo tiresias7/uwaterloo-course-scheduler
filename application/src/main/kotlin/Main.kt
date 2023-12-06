@@ -29,7 +29,7 @@ val outputFile = Paths.get(outputDir.toString(), "local.properties").toString()
 
 fun main() = application {
     val savedPreferences = readFromFile()
-    val windowState = savedPreferences.second ?: rememberWindowState(placement = WindowPlacement.Floating)
+    val windowState = savedPreferences.second ?: rememberWindowState(placement = WindowPlacement.Maximized)
     if (savedPreferences.first != null){
         currentColorScheme.value = savedPreferences.first!!
         isDark.value = savedPreferences.first!!.name.contains("dark", ignoreCase = true)
