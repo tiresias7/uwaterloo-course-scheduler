@@ -14,8 +14,12 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import SectionUnit
+import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.input.pointer.PointerEventType
+import androidx.compose.ui.input.pointer.onPointerEvent
 import style.currentColorScheme
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun schedule(
     sections: List<SectionUnit>,
@@ -33,10 +37,10 @@ fun schedule(
             ),
             colors = CardDefaults.cardColors(containerColor = currentColorScheme.value.cs.background),
             shape = RoundedCornerShape((0.dp)),
-//            modifier = Modifier.onPointerEvent(PointerEventType.Move) {
-//                val position = it.changes.first().position;
-//                println(position)
-//            }
+            modifier = Modifier.onPointerEvent(PointerEventType.Move) {
+                val position = it.changes.first().position;
+                println(position)
+            }
         ) {
             Box(
                 contentAlignment = Alignment.TopStart,

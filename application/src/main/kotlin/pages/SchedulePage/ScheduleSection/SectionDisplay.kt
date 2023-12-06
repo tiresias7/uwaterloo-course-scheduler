@@ -20,6 +20,7 @@ import SectionUnit
 import androidx.compose.runtime.*
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
 import style.*
 
@@ -73,7 +74,6 @@ fun sectionBlock(section: SectionUnit, baseWidth: Dp) {
             )
             .hoverable(interactionSource)
     ) {
-        SelectionContainer {
             Text(
                 text = (section.courseName + " "
                         + section.component + " "
@@ -81,8 +81,8 @@ fun sectionBlock(section: SectionUnit, baseWidth: Dp) {
                 modifier = Modifier
                     .padding(5.dp),
                 textAlign = TextAlign.Start,
+                fontSize = 13.sp
             )
-        }
     }
 
 }

@@ -1,11 +1,11 @@
 import kotlinx.serialization.Serializable
 
 // Hardcoded values
-val BASE_IMAGE_WIDTH = 830
-val MON_CENTER_X: Float = 193F
-val FRI_CENTER_X: Float = 770F
-val TIME_LINE_START_Y: Float = 35F
-val TIME_LINE_END_Y: Float = 766F
+val BASE_IMAGE_WIDTH = 903
+val MON_CENTER_X: Float = 189F
+val FRI_CENTER_X: Float = 774F
+val TIME_LINE_START_Y: Float = 43F
+val TIME_LINE_END_Y: Float = 772F
 val INTERVAL_NUM: Int = 14   // the number of 1-hour intervals between start and finish
 val DAY_PADDING: Float = 5F    // the padding distance between two adjacent block
 // Hardcoded values end
