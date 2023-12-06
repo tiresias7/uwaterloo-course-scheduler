@@ -29,7 +29,7 @@ val outputFile = Paths.get(outputDir.toString(), "local.properties").toString()
 
 fun main() = application {
     val savedPreferences = readFromFile()
-    val windowState = savedPreferences.second ?: rememberWindowState(placement = WindowPlacement.Maximized)
+    val windowState = savedPreferences.second ?: rememberWindowState(placement = WindowPlacement.Fullscreen)
     if (savedPreferences.first != null){
         currentColorScheme.value = savedPreferences.first!!
         isDark.value = savedPreferences.first!!.name.contains("dark", ignoreCase = true)
@@ -43,8 +43,8 @@ fun main() = application {
             exitApplication()
         },
     ) {
-        val density = LocalDensity.current.density
-        window.minimumSize = Dimension((1152 * density).toInt(), (786 * density).toInt())
+        //val density = LocalDensity.current.density
+        window.minimumSize = Dimension((1152).toInt(), (786).toInt())
 
         AppTheme { App() }
     }
