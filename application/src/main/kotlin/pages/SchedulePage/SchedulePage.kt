@@ -171,7 +171,7 @@ fun schedulePageContent(
                                 errorCauses.add("soft + hard < num")
                             } else {
                                 reason.value = "Generating Schedule"
-                                //isLoading.value = true
+                                isLoading.value = true
                                 coroutineScope.launch(Dispatchers.IO) {
                                     returnedSections.clear()
                                     val tempSections = getScheduleService(
