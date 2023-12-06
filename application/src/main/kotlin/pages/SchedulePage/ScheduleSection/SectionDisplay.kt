@@ -74,6 +74,7 @@ fun sectionBlock(section: SectionUnit, baseWidth: Dp) {
             )
             .hoverable(interactionSource)
     ) {
+        SelectionContainer {
             Text(
                 text = (section.courseName + " "
                         + section.component + " "
@@ -83,6 +84,7 @@ fun sectionBlock(section: SectionUnit, baseWidth: Dp) {
                 textAlign = TextAlign.Start,
                 fontSize = 13.sp
             )
+        }
     }
 
 }
