@@ -37,10 +37,10 @@ fun schedule(
             ),
             colors = CardDefaults.cardColors(containerColor = currentColorScheme.value.cs.background),
             shape = RoundedCornerShape((0.dp)),
-            modifier = Modifier.onPointerEvent(PointerEventType.Move) {
-                val position = it.changes.first().position;
-                println(position)
-            }
+//            modifier = Modifier.onPointerEvent(PointerEventType.Move) {
+//                val position = it.changes.first().position;
+//                println(position)
+//            }
         ) {
             Box(
                 contentAlignment = Alignment.TopStart,
